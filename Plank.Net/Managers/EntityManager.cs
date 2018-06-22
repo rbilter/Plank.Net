@@ -176,25 +176,25 @@ namespace Plank.Net.Managers
                     validation.AddAllResults(v.Validate(entity));
                 }
 
-                var children = entity.GetType().GetProperties()
-                    .Where(e => e.IsDefined(typeof(InversePropertyAttribute), false))
-                    .ToList();
+                //var children = entity.GetType().GetProperties()
+                //    .Where(e => e.IsDefined(typeof(InversePropertyAttribute), false))
+                //    .ToList();
 
-                foreach (var child in children)
-                {
-                    var enumerable = child.GetValue(entity) as IEnumerable;
-                    if (enumerable != null)
-                    {
-                        foreach(var childEntity in enumerable)
-                        {
-                            validation.AddAllResults(ValidateEntity(childEntity));
-                        }
-                    }
-                    else
-                    {
-                        //validation.AddAllResults(ValidateEntity());
-                    }
-                }
+                //foreach (var child in children)
+                //{
+                //    var enumerable = child.GetValue(entity) as IEnumerable;
+                //    if (enumerable != null)
+                //    {
+                //        foreach(var childEntity in enumerable)
+                //        {
+                //            validation.AddAllResults(ValidateEntity(childEntity));
+                //        }
+                //    }
+                //    else
+                //    {
+                //        //validation.AddAllResults(ValidateEntity());
+                //    }
+                //}
 
                     // if object is not null
 
