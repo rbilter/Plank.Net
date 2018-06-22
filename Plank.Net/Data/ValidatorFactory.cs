@@ -1,10 +1,9 @@
-﻿using Plank.Net.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Plank.Net.Managers
+namespace Plank.Net.Data
 {
     public static class ValidatorFactory
     {
@@ -26,6 +25,13 @@ namespace Plank.Net.Managers
 
         #region METHODS
 
+        public static IEnumerable<IValidator> CreateInstance(Type type)
+        {
+            return _validators
+                .Where(v => v.Item1 == type.Name)
+                .Select(v => (IValidator)v.Item2);
+        }
+
         public static IEnumerable<IValidator<T>> CreateInstance<T>() where T : Entity
         {
             return _validators
@@ -40,13 +46,10 @@ namespace Plank.Net.Managers
 
         private static void LoadValidators()
         {
-            var asm = Assembly.GetExecutingAssembly();
-            var types = from type in asm.GetTypes()
-                        where
-                            type.IsClass
-                            && type.IsAbstract == false
-                            && type.GetInterface("IValidator`1") != null
-                        select type;
+            var asm   = AppDomain.CurrentDomain.GetAssemblies();
+            var types = asm.SelectMany(a => a.GetTypes())
+                            .Where(t => t.IsClass && !t.IsAbstract && t.GetInterface("IValidator`1") != null)
+                            .ToList();
 
             foreach (var type in types)
             {

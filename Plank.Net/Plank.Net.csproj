@@ -141,10 +141,10 @@
     <Compile Include="Managers\GetResponse.cs" />
     <Compile Include="Managers\ILogger.cs" />
     <Compile Include="Managers\IManager.cs" />
-    <Compile Include="Managers\IValidator.cs" />
+    <Compile Include="Data\IValidator.cs" />
     <Compile Include="Managers\PostEnumerationResponse.cs" />
     <Compile Include="Managers\PostResponse.cs" />
-    <Compile Include="Managers\ValidatorFactory.cs" />
+    <Compile Include="Data\ValidatorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ExtensionMethods.cs" />
   </ItemGroup>

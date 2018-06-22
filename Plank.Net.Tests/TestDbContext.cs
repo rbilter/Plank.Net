@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using Plank.Net.Tests.Models;
+using System.Data.Entity;
 
 namespace Plank.Net.Tests
 {
@@ -18,7 +19,7 @@ namespace Plank.Net.Tests
 
         public DbSet<ParentEntity> ParentEntity { get; set; }
 
-        public DbSet<ChildEntity> ChildEntity { get; set; }
+        public DbSet<ChildOne> ChildEntity { get; set; }
 
         #endregion
     }

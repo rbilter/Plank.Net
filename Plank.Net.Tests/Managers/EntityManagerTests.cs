@@ -2,6 +2,7 @@
 using Moq;
 using Plank.Net.Data;
 using Plank.Net.Managers;
+using Plank.Net.Tests.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,12 +34,11 @@ namespace Plank.Net.Tests.Managers
         public void Constructor_RepositoryNull_ArgumentNullException()
         {
             // Arrange
-            var validators = new List<IValidator<ParentEntity>>();
 
             // Act
             try
             {
-                var manager = new EntityManager<ParentEntity>(null, validators, _logger.Object);
+                var manager = new EntityManager<ParentEntity>(null, _logger.Object);
                 Assert.Fail("ArgumentNullException should have been thrown for repository.");
             }
             // Assert
@@ -50,7 +50,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [TestMethod]
-        public void Constructor_ValidatorsNull_ArgumentNullException()
+        public void Constructor_LoggerNull_ArgumentNullException()
         {
             // Arrange
             var repo = new Mock<IRepository<ParentEntity>>();
@@ -58,28 +58,7 @@ namespace Plank.Net.Tests.Managers
             // Act
             try
             {
-                var manager = new EntityManager<ParentEntity>(repo.Object, null, _logger.Object);
-                Assert.Fail("ArgumentNullException should have been thrown for validators.");
-            }
-            // Assert
-            catch (ArgumentNullException e)
-            {
-                var msg = "Value cannot be null.\r\nParameter name: validators";
-                Assert.AreEqual(msg, e.Message);
-            }
-        }
-
-        [TestMethod]
-        public void Constructor_LoggerNull_ArgumentNullException()
-        {
-            // Arrange
-            var repo       = new Mock<IRepository<ParentEntity>>();
-            var validators = new List<IValidator<ParentEntity>>();
-
-            // Act
-            try
-            {
-                var manager = new EntityManager<ParentEntity>(repo.Object, validators, null);
+                var manager = new EntityManager<ParentEntity>(repo.Object, null);
                 Assert.Fail("ArgumentNullException should have been thrown for logger.");
             }
             // Assert
@@ -94,14 +73,13 @@ namespace Plank.Net.Tests.Managers
         public void Create_EntityValid_Created()
         {
             // Arrange
-            var item       = TestHelper.GetParentEntity();
-            var validators = new List<IValidator<ParentEntity>>();
-            var repo       = new Mock<IRepository<ParentEntity>>();
-            repo.Setup(m   => m.Create(item)).Returns(item.Id);
+            var item = TestHelper.GetParentEntity();
+            var repo = new Mock<IRepository<ParentEntity>>();
+            repo.Setup(m => m.Create(item)).Returns(item.Id);
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
-            var result = manager.Create(item);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var result  = manager.Create(item);
 
             // Assert
             Assert.IsTrue(result.ValidationResults.IsValid);
@@ -118,11 +96,10 @@ namespace Plank.Net.Tests.Managers
             item.FirstName = string.Empty;
 
             var repo       = new Mock<IRepository<ParentEntity>>();
-            var validators = new List<IValidator<ParentEntity>>();
 
             // Act
             //
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = manager.Create(item);
 
             // Assert
@@ -136,21 +113,20 @@ namespace Plank.Net.Tests.Managers
         public void Create_ChildEntityNotValid_NotCreated()
         {
             // Arrange
-            var invalidChild     = TestHelper.GetChildEntity();
+            var invalidChild     = TestHelper.GetChildOne();
             invalidChild.Address = string.Empty;
 
             var item = TestHelper.GetParentEntity();
-            item.ChildEntities = new List<ChildEntity>
+            item.ChildOne = new List<ChildOne>
             {
-                TestHelper.GetChildEntity(),
+                TestHelper.GetChildOne(),
                 invalidChild
             };
 
-            var validators = new List<IValidator<ParentEntity>>();
-            var repo       = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IRepository<ParentEntity>>();
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = manager.Create(item);
 
             // Assert
@@ -163,12 +139,11 @@ namespace Plank.Net.Tests.Managers
         public void Create_EntityNull_NotCreated()
         {
             // Arrange
-            var repo       = new Mock<IRepository<ParentEntity>>();
-            var validators = new List<IValidator<ParentEntity>>();
+            var repo = new Mock<IRepository<ParentEntity>>();
 
             // Act
             //
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = manager.Create(null);
 
             // Assert
@@ -183,25 +158,19 @@ namespace Plank.Net.Tests.Managers
         public void Create_ValidatorHasFailResult_NotCreated()
         {
             // Arrange
-            var contact    = TestHelper.GetParentEntity();
-            var repo       = new Mock<IRepository<ParentEntity>>();
-            var validators = new List<IValidator<ParentEntity>>();
-            var validate1  = TestHelper.GetPassValidator();
-            var validate2  = TestHelper.GetFailValidator();
-            validators.AddRange(new[] { validate1.Object, validate2.Object });
+            var entity = TestHelper.GetParentEntity();
+            entity.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
+            entity.ChildTwo = new List<ChildTwo> { TestHelper.GetChildTwo() };
+            var repo   = new Mock<IRepository<ParentEntity>>();
 
             // Act
-            //
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
-            var result = manager.Create(contact);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var result  = manager.Create(entity);
 
             // Assert
-            //
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("There was a problem", result.ValidationResults.ElementAt(0).Message);
             repo.Verify(m => m.Create(It.IsAny<ParentEntity>()), Times.Never());
-            validate1.Verify(m => m.Validate(It.IsAny<ParentEntity>()), Times.Once());
-            validate2.Verify(m => m.Validate(It.IsAny<ParentEntity>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -213,11 +182,9 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
             repo.Setup(m => m.Create(item)).Throws(new DataException("Error"));
 
-            var validators = new List<IValidator<ParentEntity>>();
-
             // Act
             //
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = manager.Create(item);
 
             // Assert
@@ -239,10 +206,8 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.Delete(id)).Returns(id);
             repo.Setup(m => m.Get(id)).Returns(item);
 
-            var validators = new List<IValidator<ParentEntity>>();
-
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var results = manager.Delete(id);
 
             // Assert
@@ -263,10 +228,8 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Returns(item);
 
-            var validators = new List<IValidator<ParentEntity>>();
-
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var results = manager.Delete(id);
 
             // Assert
@@ -287,10 +250,8 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.Get(id)).Returns(item);
             repo.Setup(m => m.Delete(id)).Throws(new DataException("Error"));
 
-            var validators = new List<IValidator<ParentEntity>>();
-
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var results = manager.Delete(id);
 
             // Assert
@@ -313,10 +274,8 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Returns(item);
 
-            var validators = new List<IValidator<ParentEntity>>();
-
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = manager.Get(id);
 
             // Assert
@@ -335,10 +294,8 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Throws(new DataException("Error"));
 
-            var validators = new List<IValidator<ParentEntity>>();
-
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result = manager.Get(id);
 
             // Assert
@@ -360,10 +317,8 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.Get(item.Id)).Returns(item);
             repo.Setup(m => m.Update(item)).Returns(item.Id);
 
-            var validators = new List<IValidator<ParentEntity>>();
-
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result = manager.Update(item);
 
             // Assert
@@ -381,12 +336,11 @@ namespace Plank.Net.Tests.Managers
             var item = TestHelper.GetParentEntity();
             item.FirstName = null;
 
-            var repo       = new Mock<IRepository<ParentEntity>>();
-            var validators = new List<IValidator<ParentEntity>>();
+            var repo = new Mock<IRepository<ParentEntity>>();
 
             // Act
             //
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result = manager.Update(item);
 
             // Assert
@@ -401,10 +355,9 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var repo = new Mock<IRepository<ParentEntity>>();
-            var validators = new List<IValidator<ParentEntity>>();
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result = manager.Update(null);
 
             // Assert
@@ -423,10 +376,8 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
             repo.Setup(m => m.Get(item.Id)).Returns(rItem);
 
-            var validators = new List<IValidator<ParentEntity>>();
-
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result = manager.Update(item);
 
             // Assert
@@ -442,23 +393,18 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
+            item.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
+            item.ChildTwo = new List<ChildTwo> { TestHelper.GetChildTwo() };
             var repo = new Mock<IRepository<ParentEntity>>();
 
-            var validators = new List<IValidator<ParentEntity>>();
-            var validate1 = TestHelper.GetPassValidator();
-            var validate2 = TestHelper.GetFailValidator();
-            validators.AddRange(new[] { validate1.Object, validate2.Object });
-
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result = manager.Update(item);
 
             // Assert
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("There was a problem", result.ValidationResults.ElementAt(0).Message);
             repo.Verify(m => m.Update(It.IsAny<ParentEntity>()), Times.Never());
-            validate1.Verify(m => m.Validate(It.IsAny<ParentEntity>()), Times.Once());
-            validate2.Verify(m => m.Validate(It.IsAny<ParentEntity>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -472,11 +418,9 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.Get(item.Id)).Returns(item);
             repo.Setup(m => m.Update(item)).Throws(new DataException("Error"));
 
-            var validators = new List<IValidator<ParentEntity>>();
-
             // Act
             //
-            var manager = new EntityManager<ParentEntity>(repo.Object, validators, _logger.Object);
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result = manager.Update(item);
 
             // Assert

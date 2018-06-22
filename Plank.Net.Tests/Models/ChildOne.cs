@@ -1,11 +1,13 @@
-﻿using Plank.Net.Data;
+﻿using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
+using Plank.Net.Data;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Plank.Net.Tests
+namespace Plank.Net.Tests.Models
 {
-    internal class ChildEntity : Entity
+    [HasSelfValidation]
+    internal class ChildOne : Entity
     {
         #region PROPERTIES
 

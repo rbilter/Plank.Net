@@ -19,11 +19,10 @@ namespace Plank.Net.Controllers
 
         public EntityController(DbContext context)
         {
-            var repo       = new EntityRepository<T>(context);
-            var validators = ValidatorFactory.CreateInstance<T>();
-            var logger     = new EntityLogger<T>();
+            var repo   = new EntityRepository<T>(context);
+            var logger = new EntityLogger<T>();
 
-            _manager    = new EntityManager<T>(repo, validators, logger);
+            _manager    = new EntityManager<T>(repo, logger);
         }
 
         #endregion

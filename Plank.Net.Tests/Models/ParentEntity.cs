@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Plank.Net.Tests
+namespace Plank.Net.Tests.Models
 {
+    [HasSelfValidation]
     [NotNullValidator(MessageTemplate = "ParentEntity cannot be null.")]
     internal class ParentEntity : Entity
     {
@@ -28,7 +29,10 @@ namespace Plank.Net.Tests
         #region NAVIGATION PROPERTIES
 
         [InverseProperty("ParentEntity")]
-        public virtual IEnumerable<ChildEntity> ChildEntities { get; set; }
+        public virtual IEnumerable<ChildOne> ChildOne { get; set; }
+
+        [InverseProperty("ParentEntity")]
+        public virtual IEnumerable<ChildTwo> ChildTwo { get; set; }
 
         #endregion
     }

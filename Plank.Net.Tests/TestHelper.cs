@@ -1,6 +1,4 @@
-﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Moq;
-using Plank.Net.Managers;
+﻿using Plank.Net.Tests.Models;
 using System;
 using System.Linq;
 
@@ -15,25 +13,6 @@ namespace Plank.Net.Tests
         #endregion
 
         #region METHODS
-
-        public static Mock<IValidator<ParentEntity>> GetFailValidator()
-        {
-            var validator = new Mock<IValidator<ParentEntity>>();
-            var fail      = new ValidationResults();
-            fail.AddResult(new ValidationResult("There was a problem", null, null, null, null));
-            validator.Setup(m => m.Validate(It.IsAny<ParentEntity>())).Returns(fail);
-
-            return validator;
-        }
-
-        public static Mock<IValidator<ParentEntity>> GetPassValidator()
-        {
-                var validator     = new Mock<IValidator<ParentEntity>>();
-                var pass          = new ValidationResults();
-                validator.Setup(m => m.Validate(It.IsAny<ParentEntity>())).Returns(pass);
-
-                return validator;
-        }
 
         public static string GetRandomString(int length)
         {
@@ -51,12 +30,19 @@ namespace Plank.Net.Tests
             };
         }
 
-        public static ChildEntity GetChildEntity()
+        public static ChildOne GetChildOne()
         {
-            return new ChildEntity()
+            return new ChildOne()
             {
                 Address = GetRandomString(30),
                 City    = GetRandomString(20)
+            };
+        }
+
+        public static ChildTwo GetChildTwo()
+        {
+            return new ChildTwo()
+            {
             };
         }
 

@@ -2,11 +2,7 @@
 using Plank.Net.Data;
 using Plank.Net.Utilities;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
-using System.Linq;
 
 namespace Plank.Net.Managers
 {
@@ -15,17 +11,15 @@ namespace Plank.Net.Managers
         #region MEMBERS
 
         protected IRepository<T> _repository;
-        protected IEnumerable<IValidator<T>> _validators;
         protected ILogger<T> _logger;
 
         #endregion
 
         #region CONSTRUCTORS
 
-        public EntityManager(IRepository<T> repository, IEnumerable<IValidator<T>> validators, ILogger<T> logger)
+        public EntityManager(IRepository<T> repository, ILogger<T> logger)
         {
             _repository = repository ?? throw new ArgumentNullException("repository");
-            _validators = validators ?? throw new ArgumentNullException("validators");
             _logger     = logger ?? throw new ArgumentNullException("logger");
         }
 
@@ -168,42 +162,6 @@ namespace Plank.Net.Managers
         {
             var validator  = ValidationFactory.CreateValidator<T>();
             var validation = validator.Validate(entity);
-
-            if(validation.IsValid)
-            {
-                foreach (var v in _validators)
-                {
-                    validation.AddAllResults(v.Validate(entity));
-                }
-
-                //var children = entity.GetType().GetProperties()
-                //    .Where(e => e.IsDefined(typeof(InversePropertyAttribute), false))
-                //    .ToList();
-
-                //foreach (var child in children)
-                //{
-                //    var enumerable = child.GetValue(entity) as IEnumerable;
-                //    if (enumerable != null)
-                //    {
-                //        foreach(var childEntity in enumerable)
-                //        {
-                //            validation.AddAllResults(ValidateEntity(childEntity));
-                //        }
-                //    }
-                //    else
-                //    {
-                //        //validation.AddAllResults(ValidateEntity());
-                //    }
-                //}
-
-                    // if object is not null
-
-                    // create entity
-                    
-                    // recursive call to this method
-
-                    // if !valid exit loop
-            }
 
             return validation;
         }
