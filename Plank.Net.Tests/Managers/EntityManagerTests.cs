@@ -175,7 +175,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [TestMethod]
-        public void Create_RepositoryCreateThrowException_NotCreated()
+        public void Create_RepositoryThrowException_NotCreated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
@@ -241,7 +241,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [TestMethod]
-        public void Delete_RepositoryDeleteThrowsException_NotDeleted()
+        public void Delete_RepositoryThrowsException_NotDeleted()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
@@ -287,7 +287,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [TestMethod]
-        public void Get_RepositoryGetByIdThrowsException_NullReturned()
+        public void Get_RepositoryThrowsException_NullReturned()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -409,7 +409,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [TestMethod]
-        public void Update_RepositoryUpdateThrowsException_NotUpdated()
+        public void Update_RepositoryThrowsException_NotUpdated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
@@ -430,6 +430,75 @@ namespace Plank.Net.Tests.Managers
             Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
             repo.Verify(m => m.Get(item.Id), Times.Once());
             repo.Verify(m => m.Update(item), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
+        }
+
+        [TestMethod]
+        public void Update_PartialUpdateEntityValid_Updated()
+        {
+            // Arrange
+            var item = new ParentEntity { Id = Guid.Empty, IsActive = false };
+            var repo = new Mock<IRepository<ParentEntity>>();
+            repo.Setup(m => m.Get(item.Id)).Returns(item);
+            repo.Setup(m => m.Update(item, p => p.IsActive)).Returns(item.Id);
+
+            // Act
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var result  = manager.Update(item, p => p.IsActive);
+
+            // Assert
+            Assert.IsTrue(result.ValidationResults.IsValid);
+            Assert.AreEqual(item.Id, result.Id);
+            repo.Verify(m => m.Get(item.Id), Times.Once());
+            repo.Verify(m => m.Update(item, p => p.IsActive), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+
+        }
+
+        [TestMethod]
+        public void Update_PartialUpdateEntityNotFound_NotUpdated()
+        {
+            // Arrange
+            var item = TestHelper.GetParentEntity();
+            ParentEntity rItem = null;
+            var repo = new Mock<IRepository<ParentEntity>>();
+            repo.Setup(m => m.Get(item.Id)).Returns(rItem);
+
+            // Act
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var result = manager.Update(item, p => p.FirstName);
+
+            // Assert
+            Assert.IsFalse(result.ValidationResults.IsValid);
+            Assert.AreEqual("Item could not be found.", result.ValidationResults.ElementAt(0).Message);
+            Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
+            repo.Verify(m => m.Get(item.Id), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [TestMethod]
+        public void Update_PartialUpdateRepositoryThrowsException_NotUpdated()
+        {
+            // Arrange
+            var item = TestHelper.GetParentEntity();
+            var repo = new Mock<IRepository<ParentEntity>>();
+
+            repo.Setup(m => m.Get(item.Id)).Returns(item);
+            repo.Setup(m => m.Update(item, p => p.FirstName)).Throws(new DataException("Error"));
+
+            // Act
+            //
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var result  = manager.Update(item, p => p.FirstName);
+
+            // Assert
+            //
+            Assert.IsFalse(result.ValidationResults.IsValid);
+            Assert.AreEqual("There was an issue processing the request, please try again", result.ValidationResults.ElementAt(0).Message);
+            Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
+            repo.Verify(m => m.Get(item.Id), Times.Once());
+            repo.Verify(m => m.Update(item, p => p.FirstName), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }

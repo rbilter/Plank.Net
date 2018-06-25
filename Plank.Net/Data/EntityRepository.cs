@@ -62,6 +62,21 @@ namespace Plank.Net.Data
             return entity.Id;
         }
 
+        public Guid Update(T entity, params Expression<Func<T, object>>[] properties)
+        {
+            var existing = Get(entity.Id);
+
+            foreach (var p in properties)
+            {
+                var property = _context.Entry(existing).Property(p);
+                property.CurrentValue = entity.GetType().GetProperty(property.Name).GetValue(entity);
+            }
+
+            _context.SaveChanges();
+
+            return entity.Id;
+        }
+
         #endregion
     }
 }

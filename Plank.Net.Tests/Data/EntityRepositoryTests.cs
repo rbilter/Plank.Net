@@ -107,6 +107,27 @@ namespace Plank.Net.Tests.Data
             Assert.AreEqual(lastName, actual.LastName);
         }
 
+        [TestMethod]
+        public void Update_PartialUpdate_PropertiesInExpressionUpdated()
+        {
+            // Arrange
+            var added = TestHelper.GetParentEntity();
+
+            // Act
+            _repo.Create(added);
+            Assert.AreEqual(true, added.IsActive);
+
+            var updated = new ParentEntity { Id = added.Id, IsActive = false };
+            var id      = _repo.Update(updated, p => p.IsActive);
+            var actual  = _repo.Get(id);
+
+            // Assert
+            Assert.AreEqual(added.Id, actual.Id);
+            Assert.AreEqual(added.FirstName, actual.FirstName);
+            Assert.AreEqual(added.LastName, actual.LastName);
+            Assert.AreEqual(false, actual.IsActive);
+        }
+
         #endregion
     }
 }

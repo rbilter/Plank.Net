@@ -3,6 +3,7 @@ using Plank.Net.Data;
 using Plank.Net.Utilities;
 using System;
 using System.Data;
+using System.Linq.Expressions;
 
 namespace Plank.Net.Managers
 {
@@ -146,6 +147,43 @@ namespace Plank.Net.Managers
 
                     validation.AddResult(valresult);
                 }
+            }
+
+            var results = new PostResponse { Id = guid, ValidationResults = validation };
+            _logger.Info(results.ToJson());
+
+            return results;
+        }
+
+        public virtual PostResponse Update(T entity, params Expression<Func<T, object>>[] properties)
+        {
+            _logger.Info(entity.ToJson());
+
+            var guid       = Guid.Empty;
+            var validation = new ValidationResults();
+
+            try
+            {
+                if (_repository.Get(entity.Id) != null)
+                {
+                    guid = _repository.Update(entity, properties);
+                }
+                else
+                {
+                    var msg = "Item could not be found.";
+                    var valresult = new ValidationResult(msg, this, "Error", null, null);
+
+                    validation.AddResult(valresult);
+                }
+            }
+            catch (DataException e)
+            {
+                _logger.Error(e);
+
+                var msg = "There was an issue processing the request, please try again";
+                var valresult = new ValidationResult(msg, this, "Error", null, null);
+
+                validation.AddResult(valresult);
             }
 
             var results = new PostResponse { Id = guid, ValidationResults = validation };

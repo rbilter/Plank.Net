@@ -17,6 +17,8 @@ namespace Plank.Net.Tests.Models
         [MaxLength(30, ErrorMessage = "First name cannot be greater than 30 characters.")]
         public string FirstName { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
         [Required(ErrorMessage = "Last name must be entered.", AllowEmptyStrings = false)]
         [MaxLength(50, ErrorMessage = "Last name cannot be greater than 50 characters.")]
         public string LastName { get; set; }

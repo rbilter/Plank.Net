@@ -2,6 +2,7 @@
 using Plank.Net.Managers;
 using System;
 using System.Data.Entity;
+using System.Linq.Expressions;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -62,6 +63,13 @@ namespace Plank.Net.Controllers
         public PostResponse Update(T entity)
         {
             return _manager.Update(entity);
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(PostResponse))]
+        public PostResponse Update(T entity, params Expression<Func<T, object>>[] properties)
+        {
+            return _manager.Update(entity, properties);
         }
 
         #endregion

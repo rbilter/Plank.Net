@@ -18,6 +18,8 @@ namespace Plank.Net.Data
 
         Guid Update(T entity);
 
+        Guid Update(T entity, params Expression<Func<T, object>>[] properties);
+
         #endregion
     }
 }

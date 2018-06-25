@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace Plank.Net.Managers
 {
@@ -15,6 +16,8 @@ namespace Plank.Net.Managers
         PostEnumerationResponse<T> Search(T entity);
 
         PostResponse Update(T entity);
+
+        PostResponse Update(T entity, params Expression<Func<T, object>>[] properties);
 
         #endregion
     }
