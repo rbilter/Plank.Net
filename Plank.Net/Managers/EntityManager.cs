@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Managers
 {
-    public class EntityManager<T> : IManager<T> where T : Entity
+    public sealed class EntityManager<T> : IManager<T> where T : Entity
     {
         #region MEMBERS
 
@@ -28,7 +28,7 @@ namespace Plank.Net.Managers
 
         #region METHODS
 
-        public virtual PostResponse Create(T entity)
+        public PostResponse Create(T entity)
         {
             _logger.Info(entity.ToJson());
 
@@ -58,7 +58,7 @@ namespace Plank.Net.Managers
             return results;
         }
 
-        public virtual PostResponse Delete(Guid id)
+        public PostResponse Delete(Guid id)
         {
             _logger.Info(id);
 
@@ -87,7 +87,7 @@ namespace Plank.Net.Managers
             return results;
         }
 
-        public virtual GetResponse<T> Get(Guid id)
+        public GetResponse<T> Get(Guid id)
         {
             _logger.Info(id);
             GetResponse<T> result = null;
@@ -110,12 +110,12 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public virtual PostEnumerationResponse<T> Search(T entity)
+        public PostEnumerationResponse<T> Search(T entity)
         {
             throw new NotImplementedException("Need to implement");
         }
 
-        public virtual PostResponse Update(T entity)
+        public PostResponse Update(T entity)
         {
             _logger.Info(entity.ToJson());
 
@@ -155,7 +155,7 @@ namespace Plank.Net.Managers
             return results;
         }
 
-        public virtual PostResponse Update(T entity, params Expression<Func<T, object>>[] properties)
+        public PostResponse Update(T entity, params Expression<Func<T, object>>[] properties)
         {
             _logger.Info(entity.ToJson());
 

@@ -8,7 +8,7 @@ using System.Web.Http.Description;
 
 namespace Plank.Net.Controllers
 {
-    public class EntityController<T> : ApiController where T : Entity
+    public sealed class EntityController<T> : ApiController where T : Entity
     {
         #region MEMBERS
 

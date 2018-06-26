@@ -4,7 +4,7 @@ using System;
 
 namespace Plank.Net.Managers
 {
-    public class EntityLogger<T> : ILogger<T> where T : Entity
+    public sealed class EntityLogger<T> : ILogger<T> where T : Entity
     {
         #region MEMBERS
 
