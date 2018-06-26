@@ -6,6 +6,12 @@ namespace Plank.Net.Tests.Validators
 {
     public class FailValidator : IValidator<ChildTwo>
     {
+        #region PROPERTIES
+
+        public int Priority { get; set; } = 1;
+
+        #endregion
+
         #region METHODS
 
         public ValidationResults Validate(ChildTwo item)

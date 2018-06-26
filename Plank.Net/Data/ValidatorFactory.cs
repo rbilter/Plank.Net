@@ -29,14 +29,16 @@ namespace Plank.Net.Data
         {
             return _validators
                 .Where(v => v.Item1 == type.Name)
-                .Select(v => (IValidator)v.Item2);
+                .Select(v => (IValidator)v.Item2)
+                .OrderBy(v => v.Priority);
         }
 
         public static IEnumerable<IValidator<T>> CreateInstance<T>() where T : Entity
         {
             return _validators
                 .Where(v => v.Item1 == typeof(T).Name)
-                .Select(v => (IValidator<T>)v.Item2);
+                .Select(v => (IValidator<T>)v.Item2)
+                .OrderBy(v => v.Priority);
 
         }
 
