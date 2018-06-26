@@ -11,8 +11,8 @@ namespace Plank.Net.Managers
     {
         #region MEMBERS
 
-        protected IRepository<T> _repository;
-        protected ILogger<T> _logger;
+        private readonly IRepository<T> _repository;
+        private readonly ILogger<T> _logger;
 
         #endregion
 
