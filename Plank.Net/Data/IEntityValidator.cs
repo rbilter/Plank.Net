@@ -2,7 +2,7 @@
 
 namespace Plank.Net.Data
 {
-    public interface IValidator
+    public interface IEntityValidator
     {
         #region PROPERTIES
 
@@ -13,15 +13,6 @@ namespace Plank.Net.Data
         #region METHODS
 
         ValidationResults Validate(object entity);
-
-        #endregion
-    }
-
-    public interface IValidator<T> : IValidator where T : Entity
-    {
-        #region METHODS
-
-        ValidationResults Validate(T item);
 
         #endregion
     }

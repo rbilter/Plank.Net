@@ -22,8 +22,8 @@ using System.Reflection;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.5.1")]
-[assembly: AssemblyFileVersion("0.5.1.0")]
+[assembly: AssemblyVersion("0.5.2")]
+[assembly: AssemblyFileVersion("0.5.2.0")]
 
 // log4net 
 [assembly: XmlConfigurator(ConfigFile = "plank.net.log4net.config", Watch = true)]

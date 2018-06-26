@@ -133,7 +133,9 @@
     <Compile Include="Data\ChildEntity.cs" />
     <Compile Include="Data\Entity.cs" />
     <Compile Include="Data\EntityRepository.cs" />
+    <Compile Include="Data\IEntityValidatorT.cs" />
     <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\EntityValidator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -142,7 +144,7 @@
     <Compile Include="Managers\GetResponse.cs" />
     <Compile Include="Managers\ILogger.cs" />
     <Compile Include="Managers\IManager.cs" />
-    <Compile Include="Data\IValidator.cs" />
+    <Compile Include="Data\IEntityValidator.cs" />
     <Compile Include="Managers\PostEnumerationResponse.cs" />
     <Compile Include="Managers\PostResponse.cs" />
     <Compile Include="Data\ValidatorFactory.cs" />

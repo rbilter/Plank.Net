@@ -25,19 +25,19 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public static IEnumerable<IValidator> CreateInstance(Type type)
+        public static IEnumerable<IEntityValidator> CreateInstance(Type type)
         {
             return _validators
                 .Where(v => v.Item1 == type.Name)
-                .Select(v => (IValidator)v.Item2)
+                .Select(v => (IEntityValidator)v.Item2)
                 .OrderBy(v => v.Priority);
         }
 
-        public static IEnumerable<IValidator<T>> CreateInstance<T>() where T : Entity
+        public static IEnumerable<IEntityValidator<T>> CreateInstance<T>() where T : Entity
         {
             return _validators
                 .Where(v => v.Item1 == typeof(T).Name)
-                .Select(v => (IValidator<T>)v.Item2)
+                .Select(v => (IEntityValidator<T>)v.Item2)
                 .OrderBy(v => v.Priority);
 
         }
@@ -50,13 +50,13 @@ namespace Plank.Net.Data
         {
             var asm   = AppDomain.CurrentDomain.GetAssemblies();
             var types = asm.SelectMany(a => a.GetTypes())
-                            .Where(t => t.IsClass && !t.IsAbstract && t.GetInterface("IValidator`1") != null)
+                            .Where(t => t.IsClass && !t.IsAbstract && t.GetInterface("IEntityValidator`1") != null)
                             .ToList();
 
             foreach (var type in types)
             {
                 var instance = Activator.CreateInstance(type);
-                var inter = type.GetInterface("IValidator`1");
+                var inter = type.GetInterface("IEntityValidator`1");
                 var entity = inter.GetTypeInfo().GenericTypeArguments[0];
                 
                 _validators.Add(new Tuple<string, object>(entity.Name, instance));
