@@ -1,6 +1,5 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 using Plank.Net.Data;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,9 +21,6 @@ namespace Plank.Net.Tests.Models
         [Required(ErrorMessage = "Last name must be entered.", AllowEmptyStrings = false)]
         [MaxLength(50, ErrorMessage = "Last name cannot be greater than 50 characters.")]
         public string LastName { get; set; }
-
-        [NotMapped]
-        public override Guid ParentId { get; set; }
 
         #endregion
 

@@ -6,7 +6,7 @@ using Plank.Net.Data;
 namespace Plank.Net.Tests.Models
 {
     [HasSelfValidation]
-    public class ChildTwo : Entity
+    public class ChildTwo : ChildEntity
     {
         #region NAVIGATION PROPERTIES
 

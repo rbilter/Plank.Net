@@ -30,8 +30,6 @@ namespace Plank.Net.Data
 
         public Guid Id { get; set; }
 
-        public abstract Guid ParentId { get; set; }
-
         public DateTime DateCreated { get; set; }
 
         public DateTime DateLastModified { get; set; }
