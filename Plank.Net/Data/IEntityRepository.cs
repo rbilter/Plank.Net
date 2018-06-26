@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Data
 {
-    public interface IRepository<T> where T : Entity
+    public interface IEntityRepository<T> where T : Entity
     {
         #region METHODS
 

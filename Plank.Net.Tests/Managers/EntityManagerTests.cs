@@ -53,7 +53,7 @@ namespace Plank.Net.Tests.Managers
         public void Constructor_LoggerNull_ArgumentNullException()
         {
             // Arrange
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
             try
@@ -74,7 +74,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Create(item)).Returns(item.Id);
 
             // Act
@@ -95,7 +95,7 @@ namespace Plank.Net.Tests.Managers
             var item       = TestHelper.GetParentEntity();
             item.FirstName = string.Empty;
 
-            var repo       = new Mock<IRepository<ParentEntity>>();
+            var repo       = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
             //
@@ -123,7 +123,7 @@ namespace Plank.Net.Tests.Managers
                 invalidChild
             };
 
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
@@ -139,7 +139,7 @@ namespace Plank.Net.Tests.Managers
         public void Create_EntityNull_NotCreated()
         {
             // Arrange
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
             //
@@ -161,7 +161,7 @@ namespace Plank.Net.Tests.Managers
             var entity = TestHelper.GetParentEntity();
             entity.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
             entity.ChildTwo = new List<ChildTwo> { TestHelper.GetChildTwo() };
-            var repo   = new Mock<IRepository<ParentEntity>>();
+            var repo   = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
@@ -179,7 +179,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Create(item)).Throws(new DataException("Error"));
 
             // Act
@@ -202,7 +202,7 @@ namespace Plank.Net.Tests.Managers
             // Arrange
             var item = TestHelper.GetParentEntity();
             var id   = Guid.NewGuid();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Delete(id)).Returns(id);
             repo.Setup(m => m.Get(id)).Returns(item);
 
@@ -225,7 +225,7 @@ namespace Plank.Net.Tests.Managers
             // Arrange
             ParentEntity item = null;
             var id   = Guid.NewGuid();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Returns(item);
 
             // Act
@@ -246,7 +246,7 @@ namespace Plank.Net.Tests.Managers
             // Arrange
             var item = TestHelper.GetParentEntity();
             var id   = Guid.NewGuid();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Returns(item);
             repo.Setup(m => m.Delete(id)).Throws(new DataException("Error"));
 
@@ -271,7 +271,7 @@ namespace Plank.Net.Tests.Managers
             // Arrange
             var id   = Guid.Empty;
             var item = TestHelper.GetParentEntity();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Returns(item);
 
             // Act
@@ -291,7 +291,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var id = Guid.NewGuid();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Throws(new DataException("Error"));
 
             // Act
@@ -313,7 +313,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(item.Id)).Returns(item);
             repo.Setup(m => m.Update(item)).Returns(item.Id);
 
@@ -336,7 +336,7 @@ namespace Plank.Net.Tests.Managers
             var item = TestHelper.GetParentEntity();
             item.FirstName = null;
 
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
             //
@@ -354,7 +354,7 @@ namespace Plank.Net.Tests.Managers
         public void Update_EntityNull_NotUpdated()
         {
             // Arrange
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
@@ -373,7 +373,7 @@ namespace Plank.Net.Tests.Managers
             // Arrange
             var item = TestHelper.GetParentEntity();
             ParentEntity rItem = null;
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(item.Id)).Returns(rItem);
 
             // Act
@@ -395,7 +395,7 @@ namespace Plank.Net.Tests.Managers
             var item = TestHelper.GetParentEntity();
             item.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
             item.ChildTwo = new List<ChildTwo> { TestHelper.GetChildTwo() };
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
@@ -413,7 +413,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             repo.Setup(m => m.Get(item.Id)).Returns(item);
             repo.Setup(m => m.Update(item)).Throws(new DataException("Error"));
@@ -439,7 +439,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var item = new ParentEntity { Id = Guid.Empty, IsActive = false };
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(item.Id)).Returns(item);
             repo.Setup(m => m.Update(item, p => p.IsActive)).Returns(item.Id);
 
@@ -462,7 +462,7 @@ namespace Plank.Net.Tests.Managers
             // Arrange
             var item = TestHelper.GetParentEntity();
             ParentEntity rItem = null;
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(item.Id)).Returns(rItem);
 
             // Act
@@ -482,7 +482,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
-            var repo = new Mock<IRepository<ParentEntity>>();
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             repo.Setup(m => m.Get(item.Id)).Returns(item);
             repo.Setup(m => m.Update(item, p => p.FirstName)).Throws(new DataException("Error"));

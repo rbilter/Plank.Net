@@ -7,18 +7,18 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Managers
 {
-    public sealed class EntityManager<T> : IManager<T> where T : Entity
+    public sealed class EntityManager<T> : IEntityManager<T> where T : Entity
     {
         #region MEMBERS
 
-        private readonly IRepository<T> _repository;
+        private readonly IEntityRepository<T> _repository;
         private readonly ILogger<T> _logger;
 
         #endregion
 
         #region CONSTRUCTORS
 
-        public EntityManager(IRepository<T> repository, ILogger<T> logger)
+        public EntityManager(IEntityRepository<T> repository, ILogger<T> logger)
         {
             _repository = repository ?? throw new ArgumentNullException("repository");
             _logger     = logger ?? throw new ArgumentNullException("logger");

@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Data
 {
-    public sealed class EntityRepository<T> : IRepository<T> where T : Entity
+    public sealed class EntityRepository<T> : IEntityRepository<T> where T : Entity
     {
         #region MEMBERS
 

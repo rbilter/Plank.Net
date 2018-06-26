@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Plank.Net.Data;
+using System;
 using System.Linq.Expressions;
 
 namespace Plank.Net.Managers
 {
-    public interface IManager<T>
+    public interface IEntityManager<T> where T : Entity
     {
         #region METHODS
 
