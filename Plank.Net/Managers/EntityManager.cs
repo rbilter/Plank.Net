@@ -3,6 +3,7 @@ using Plank.Net.Data;
 using Plank.Net.Utilities;
 using System;
 using System.Data;
+using System.Data.Entity;
 using System.Linq.Expressions;
 
 namespace Plank.Net.Managers
@@ -17,6 +18,12 @@ namespace Plank.Net.Managers
         #endregion
 
         #region CONSTRUCTORS
+
+        public EntityManager(DbContext context)
+            : this(new EntityRepository<T>(context), new EntityLogger<T>())
+        {
+
+        }
 
         public EntityManager(IEntityRepository<T> repository, ILogger<T> logger)
         {
