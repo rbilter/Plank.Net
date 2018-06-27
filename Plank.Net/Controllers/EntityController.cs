@@ -3,12 +3,10 @@ using Plank.Net.Managers;
 using System;
 using System.Data.Entity;
 using System.Linq.Expressions;
-using System.Web.Http;
-using System.Web.Http.Description;
 
 namespace Plank.Net.Controllers
 {
-    public sealed class EntityController<T> : ApiController where T : Entity
+    public sealed class EntityController<T> where T : Entity
     {
         #region MEMBERS
 
@@ -30,43 +28,31 @@ namespace Plank.Net.Controllers
 
         #region METHODS
 
-        [HttpPost]
-        [ResponseType(typeof(PostResponse))]
         public PostResponse Create(T entity)
         {
             return _manager.Create(entity);
         }
 
-        [HttpPost]
-        [ResponseType(typeof(PostResponse))]
         public PostResponse Delete(Guid id)
         {
             return _manager.Delete(id);
         }
 
-        [HttpGet]
-        [ResponseType(typeof(GetResponse<>))]
         public GetResponse<T> Get(Guid id)
         {
             return _manager.Get(id);
         }
 
-        [HttpPost]
-        [ResponseType(typeof(PostEnumerationResponse<>))]
         public PostEnumerationResponse<T> Search(T entity)
         {
             return _manager.Search(entity);
         }
 
-        [HttpPost]
-        [ResponseType(typeof(PostResponse))]
         public PostResponse Update(T entity)
         {
             return _manager.Update(entity);
         }
 
-        [HttpPost]
-        [ResponseType(typeof(PostResponse))]
         public PostResponse Update(T entity, params Expression<Func<T, object>>[] properties)
         {
             return _manager.Update(entity, properties);
