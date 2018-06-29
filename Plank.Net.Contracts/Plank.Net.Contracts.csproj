@@ -7,8 +7,8 @@
     <ProjectGuid>{39E80F71-BC3A-46EE-BB37-4AC61CDFC6D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Plank.Net.Contract</RootNamespace>
-    <AssemblyName>Plank.Net.Contract</AssemblyName>
+    <RootNamespace>Plank.Net.Contracts</RootNamespace>
+    <AssemblyName>Plank.Net.Contracts</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
