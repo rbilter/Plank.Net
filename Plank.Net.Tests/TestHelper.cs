@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Plank.Net.Tests
 {
-    internal static class TestHelper
+    public static class TestHelper
     {
         #region MEMBERS
 

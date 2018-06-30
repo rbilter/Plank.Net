@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Plank.Net.Tests.Models
 {
     [HasSelfValidation]
-    internal class ChildOne : ChildEntity
+    public class ChildOne : ChildEntity
     {
         #region PROPERTIES
 

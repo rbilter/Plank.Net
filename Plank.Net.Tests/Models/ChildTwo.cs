@@ -8,11 +8,17 @@ namespace Plank.Net.Tests.Models
     [HasSelfValidation]
     public class ChildTwo : ChildEntity
     {
-        #region NAVIGATION PROPERTIES
-
+        #region PROPERTIES
 
         [Column("ParentEntityId")]
         public override Guid ParentId { get; set; }
+
+        #endregion
+
+        #region NAVIGATION PROPERTIES
+
+        [ForeignKey("ParentId")]
+        public virtual ParentEntity ParentEntity { get; set; }
 
         #endregion
     }

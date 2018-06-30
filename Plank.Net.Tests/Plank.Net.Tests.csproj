@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Controllers\EntityControllerTests.cs" />
     <Compile Include="Data\EntityRepositoryTests.cs" />
     <Compile Include="Managers\EntityManagerTests.cs" />
     <Compile Include="Models\ChildOne.cs" />

@@ -43,6 +43,7 @@
     <Compile Include="PlankGetResponse.cs" />
     <Compile Include="PlankEnumerationResponse.cs" />
     <Compile Include="PlankPostResponse.cs" />
+    <Compile Include="PlankValidationResults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlankValidationResult.cs" />
   </ItemGroup>

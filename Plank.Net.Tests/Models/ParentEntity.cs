@@ -8,7 +8,7 @@ namespace Plank.Net.Tests.Models
 {
     [HasSelfValidation]
     [NotNullValidator(MessageTemplate = "ParentEntity cannot be null.")]
-    internal class ParentEntity : Entity
+    public class ParentEntity : Entity
     {
         #region PROPERTIES
 

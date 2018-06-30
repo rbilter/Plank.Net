@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 namespace Plank.Net.Tests
 {
-    internal class TestDbContext : DbContext
+    public class TestDbContext : DbContext
     {
         #region CONSTRUCTORS
 
@@ -19,7 +19,9 @@ namespace Plank.Net.Tests
 
         public DbSet<ParentEntity> ParentEntity { get; set; }
 
-        public DbSet<ChildOne> ChildEntity { get; set; }
+        public DbSet<ChildOne> ChildOneEntity { get; set; }
+
+        public DbSet<ChildTwo> ChildTwoEntity { get; set; }
 
         #endregion
     }

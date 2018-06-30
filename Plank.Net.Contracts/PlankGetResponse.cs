@@ -21,7 +21,11 @@ namespace Plank.Net.Contracts
 
         #region PROPERTIES
 
-        public T Item { get { return _item; } }
+        public T Item
+        {
+            get { return _item; }
+            set { _item = value; }
+        }
 
         public bool IsValid { get; set; }
 

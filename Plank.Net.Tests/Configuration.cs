@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Plank.Net.Tests
 {
-    internal sealed class Configuration : DbMigrationsConfiguration<TestDbContext>
+    public sealed class Configuration : DbMigrationsConfiguration<TestDbContext>
     {
         #region  CONSTRUCTORS
 
@@ -22,9 +22,8 @@ namespace Plank.Net.Tests
 
         protected override void Seed(TestDbContext context)
         {
-            LoadTestModel(context);
-
             base.Seed(context);
+            LoadTestModel(context);
         }
 
         #endregion
@@ -45,23 +44,39 @@ namespace Plank.Net.Tests
             var ids = GetGuids();
             if(context.ParentEntity.FirstOrDefault(m => ids.Contains(m.Id)) == null)
             {
-                var models = new[]
+                var parent1 = new ParentEntity
                 {
-                    new ParentEntity
+                    Id        = ids[0],
+                    FirstName = "Luke",
+                    LastName  = "Skywalker",
+                    ChildOne  = new List<ChildOne>
                     {
-                        Id        = ids[0],
-                        FirstName = "Luke",
-                        LastName  = "Skywalker"
-                    },
-                    new ParentEntity
-                    {
-                        Id        = ids[1],
-                        FirstName = "Han",
-                        LastName  = "Solo"
+                        new ChildOne
+                        {
+                            Id      = ids[0],
+                            Address = "Luke Skywalker Address",
+                            City    = "Skywalker City"
+                        }
                     }
                 };
 
-                context.ParentEntity.AddRange(models);
+                var parent2 = new ParentEntity
+                {
+                    Id        = ids[1],
+                    FirstName = "Han",
+                    LastName  = "Solo",
+                    ChildOne  = new List<ChildOne>
+                    {
+                        new ChildOne
+                        {
+                            Id      = ids[1],
+                            Address = "Han Solo Address",
+                            City    = "Solo City"
+                        }
+                    }
+                };
+
+                context.ParentEntity.AddRange(new[] { parent1, parent2 });
                 context.SaveChanges();
             }
         }

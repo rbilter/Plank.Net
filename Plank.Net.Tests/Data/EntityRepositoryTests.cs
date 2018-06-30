@@ -2,6 +2,7 @@
 using Plank.Net.Data;
 using Plank.Net.Tests.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Plank.Net.Tests.Data
@@ -30,13 +31,16 @@ namespace Plank.Net.Tests.Data
         public void Create_EntityValid_EntityCreated()
         {
             // Arrange
-            var entity = TestHelper.GetParentEntity();
+            var entity      = TestHelper.GetParentEntity();
+            entity.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
 
             // Act
-            var id = _repo.Create(entity);
+            var id      = _repo.Create(entity);
+            var created = _repo.Get(id);
 
             // Assert
             Assert.AreEqual(entity.Id, id);
+            Assert.AreEqual(entity.ChildOne.First().Id, created.ChildOne.First().Id);
         }
 
         [TestMethod]

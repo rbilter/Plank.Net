@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Plank.Net.Contracts
 {
@@ -18,7 +17,7 @@ namespace Plank.Net.Contracts
 
         public Guid Id { get; set; }
 
-        public IEnumerable<PlankValidationResult> ValidationResults { get; set; }
+        public PlankValidationResults ValidationResults { get; set; }
 
         #endregion
     }
