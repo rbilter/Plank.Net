@@ -2,11 +2,11 @@
 
 namespace Plank.Net.Contracts
 {
-    public class PlankPostResponse
+    public class ApiPostResponse
     {
         #region CONSTRUCTORS
 
-        public PlankPostResponse()
+        public ApiPostResponse()
         {
 
         }
@@ -17,7 +17,7 @@ namespace Plank.Net.Contracts
 
         public Guid Id { get; set; }
 
-        public PlankValidationResults ValidationResults { get; set; }
+        public ApiValidationResults ValidationResults { get; set; }
 
         #endregion
     }

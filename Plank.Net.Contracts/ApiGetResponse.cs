@@ -2,7 +2,7 @@
 
 namespace Plank.Net.Contracts
 {
-    public class PlankGetResponse<T>
+    public class ApiGetResponse<T>
     {
         #region MEMBERS
 
@@ -12,7 +12,7 @@ namespace Plank.Net.Contracts
 
         #region CONSTRUCTORS
 
-        public PlankGetResponse()
+        public ApiGetResponse()
         {
             _item = (T)Activator.CreateInstance(typeof(T));
         }

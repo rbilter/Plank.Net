@@ -30,29 +30,29 @@ namespace Plank.Net.Controllers
 
         #region METHODS
 
-        public PlankPostResponse Create(T entity)
+        public ApiPostResponse Create(T entity)
         {
-            return Mapping<T>.Mapper.Map<PlankPostResponse>(_manager.Create(entity));
+            return Mapping<T>.Mapper.Map<ApiPostResponse>(_manager.Create(entity));
         }
 
-        public PlankPostResponse Delete(Guid id)
+        public ApiPostResponse Delete(Guid id)
         {
-            return Mapping<T>.Mapper.Map<PlankPostResponse>(_manager.Delete(id));
+            return Mapping<T>.Mapper.Map<ApiPostResponse>(_manager.Delete(id));
         }
 
-        public PlankGetResponse<T> Get(Guid id)
+        public ApiGetResponse<T> Get(Guid id)
         {
-            return Mapping<T>.Mapper.Map<PlankGetResponse<T>>(_manager.Get(id));
+            return Mapping<T>.Mapper.Map<ApiGetResponse<T>>(_manager.Get(id));
         }
 
-        public PlankEnumerationResponse<T> Search(T entity)
+        public ApiEnumerationResponse<T> Search(T entity)
         {
-            return Mapping<T>.Mapper.Map<PlankEnumerationResponse<T>>(_manager.Search(entity));
+            return Mapping<T>.Mapper.Map<ApiEnumerationResponse<T>>(_manager.Search(entity));
         }
 
-        public PlankPostResponse Update(T entity)
+        public ApiPostResponse Update(T entity)
         {
-            return Mapping<T>.Mapper.Map<PlankPostResponse>(_manager.Update(entity));
+            return Mapping<T>.Mapper.Map<ApiPostResponse>(_manager.Update(entity));
         }
 
         public PostResponse Update(T entity, params Expression<Func<T, object>>[] properties)

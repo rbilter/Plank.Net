@@ -10,9 +10,9 @@ namespace Plank.Net.Profiles
 
         public MappingProfile()
         {
-            CreateMap<PostResponse, PlankPostResponse>();
-            CreateMap<GetResponse<T>, PlankGetResponse<T>>();
-            CreateMap<PostEnumerationResponse<T>, PlankEnumerationResponse<T>>();
+            CreateMap<PostResponse, ApiPostResponse>();
+            CreateMap<GetResponse<T>, ApiGetResponse<T>>();
+            CreateMap<PostEnumerationResponse<T>, ApiEnumerationResponse<T>>();
         }
 
         #endregion
