@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiGetResponse.cs" />
-    <Compile Include="ApiEnumerationResponse.cs" />
+    <Compile Include="ApiEnumerableResponse.cs" />
     <Compile Include="ApiPostResponse.cs" />
     <Compile Include="ApiValidationResults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

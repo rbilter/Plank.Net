@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Plank.Net.Contracts
 {
-    public class ApiEnumerationResponse<T> : IEnumerable<T>
+    public class ApiEnumerableResponse<T> : IEnumerable<T>
     {
         #region MEMBERS
 
@@ -13,7 +13,7 @@ namespace Plank.Net.Contracts
 
         #region CONSTRUCTORS
 
-        public ApiEnumerationResponse()
+        public ApiEnumerableResponse()
         {
             _list = new List<T>();
         }

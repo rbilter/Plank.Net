@@ -12,7 +12,7 @@ namespace Plank.Net.Profiles
         {
             CreateMap<PostResponse, ApiPostResponse>();
             CreateMap<GetResponse<T>, ApiGetResponse<T>>();
-            CreateMap<PostEnumerationResponse<T>, ApiEnumerationResponse<T>>();
+            CreateMap<PostEnumerationResponse<T>, ApiEnumerableResponse<T>>();
         }
 
         #endregion
