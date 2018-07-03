@@ -83,7 +83,7 @@
     <Compile Include="Managers\GetResponse.cs" />
     <Compile Include="Managers\IEntityLogger.cs" />
     <Compile Include="Managers\IEntityManager.cs" />
-    <Compile Include="Managers\PostEnumerationResponse.cs" />
+    <Compile Include="Managers\PostEnumerableResponse.cs" />
     <Compile Include="Managers\PostResponse.cs" />
     <Compile Include="Profiles\Mapping.cs" />
     <Compile Include="Profiles\MappingProfile.cs" />

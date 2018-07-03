@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using PagedList;
 using Plank.Net.Contracts;
 using Plank.Net.Managers;
+using System.Linq;
 
 namespace Plank.Net.Profiles
 {
@@ -11,8 +13,14 @@ namespace Plank.Net.Profiles
         public MappingProfile()
         {
             CreateMap<PostResponse, ApiPostResponse>();
+
             CreateMap<GetResponse<T>, ApiGetResponse<T>>();
-            CreateMap<PostEnumerationResponse<T>, ApiEnumerableResponse<T>>();
+
+            CreateMap<PostEnumerableResponse<T>, ApiEnumerableResponse<T>>()
+                .ConstructUsing(src => new ApiEnumerableResponse<T>(src.ToList()));
+
+            CreateMap<IPagedList<T>, PostEnumerableResponse<T>>()
+                .ConstructUsing(src => new PostEnumerableResponse<T>(src.ToList()));
         }
 
         #endregion

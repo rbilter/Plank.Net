@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using PagedList;
 using Plank.Net.Data;
 using Plank.Net.Managers;
 using Plank.Net.Tests.Models;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Plank.Net.Tests.Managers
 {
@@ -287,7 +289,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [TestMethod]
-        public void Get_RepositoryThrowsException_NullReturned()
+        public void Get_RepositoryThrowsException_IsValidFalse()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -306,6 +308,58 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<Guid>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
+        }
+
+        [TestMethod]
+        public void Search_NoCriteria_PageReturned()
+        {
+            // Arrange
+            var pageNumber = 1;
+            var pageSize = 10;
+            var item = TestHelper.GetParentEntity();
+            var list = new List<ParentEntity>() { item, item }.ToPagedList(1, 10);
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
+            repo.Setup(m => m.Search(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Returns(list);
+
+            // Act
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var result  = manager.Search(null, pageNumber, pageSize);
+
+            // Assert
+            Assert.IsTrue(result.IsValid);
+            Assert.IsTrue(result.IsFirstPage);
+            Assert.IsTrue(result.IsLastPage);
+            Assert.IsFalse(result.HasNextPage);
+            Assert.IsFalse(result.HasPreviousPage);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(1, result.PageNumber);
+            Assert.AreEqual(10, result.PageSize);
+            Assert.AreEqual(2, result.TotalItemCount);
+            repo.Verify(m => m.Search(It.IsAny<Expression<Func<ParentEntity, bool>>>(), 1, 10), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [TestMethod]
+        public void Search_RepositoryThrowsException_IsValidFalse()
+        {
+            // Arrange
+            var pageNumber = 1;
+            var pageSize   = 10;
+            var repo = new Mock<IEntityRepository<ParentEntity>>();
+            repo.Setup(m => m.Search(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Throws(new DataException("Error"));
+
+            // Act
+            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var result  = manager.Search(null, pageNumber, pageSize);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual("There was an issue processing the request, please try again", result.Message);
+            repo.Verify(m => m.Search(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
+
         }
 
         [TestMethod]

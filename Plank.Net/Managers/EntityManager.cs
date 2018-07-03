@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Plank.Net.Data;
+using Plank.Net.Profiles;
 using Plank.Net.Utilities;
 using System;
 using System.Data;
@@ -117,9 +118,29 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public PostEnumerationResponse<T> Search(T entity)
+        public PostEnumerableResponse<T> Search(T entity, int pageNumber, int pageSize)
         {
-            throw new NotImplementedException("Need to implement");
+            _logger.Info(entity);
+
+            Expression<Func<T, bool>> expression = x => true;
+            PostEnumerableResponse<T> result = null;
+
+            try
+            {
+                var pagedList  = _repository.Search(expression, pageNumber, pageSize);
+                result         = Mapping<T>.Mapper.Map<PostEnumerableResponse<T>>(pagedList);
+                result.IsValid = true;
+            }
+            catch(DataException e)
+            {
+                _logger.Error(e);
+                result         = new PostEnumerableResponse<T>();
+                result.IsValid = false;
+                result.Message = "There was an issue processing the request, please try again";
+            }
+
+            _logger.Info(result.ToJson());
+            return result;
         }
 
         public PostResponse Update(T entity)

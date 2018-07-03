@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Plank.Net.Managers
 {
-    public class PostEnumerationResponse<T> : IEnumerable<T>
+    public class PostEnumerableResponse<T> : IEnumerable<T>
     {
         #region MEMBERS
 
@@ -13,19 +13,19 @@ namespace Plank.Net.Managers
 
         #region CONSTRUCTORS
 
-        public PostEnumerationResponse()
+        public PostEnumerableResponse()
             : this(new List<T>())
         {
 
         }
 
-        public PostEnumerationResponse(List<T> list)
+        public PostEnumerableResponse(List<T> list)
         {
             _list = new List<T>();
             _list.AddRange(list);
         }
 
-        public PostEnumerationResponse(IEnumerable<T> list)
+        public PostEnumerableResponse(IEnumerable<T> list)
         {
             _list = new List<T>();
             _list.AddRange(list);
@@ -35,9 +35,23 @@ namespace Plank.Net.Managers
 
         #region PROPERTIES
 
+        public bool HasNextPage { get; set; }
+
+        public bool HasPreviousPage { get; set; }
+
+        public bool IsFirstPage { get; set; }
+
+        public bool IsLastPage { get; set; }
+
         public bool IsValid { get; set; }
 
         public string Message { get; set; }
+
+        public int PageNumber { get; set; }
+
+        public int PageSize { get; set; }
+
+        public int TotalItemCount { get; set; }
 
         #endregion
 

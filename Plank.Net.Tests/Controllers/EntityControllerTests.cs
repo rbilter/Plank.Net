@@ -73,6 +73,26 @@ namespace Plank.Net.Tests.Controllers
         }
 
         [TestMethod]
+        public void Search_EntitiesExist_PageReturned()
+        {
+            // Arrange
+
+            // Act
+            var response = _controller.Search(null, 1, 10);
+
+            // Assert
+            Assert.IsTrue(response.Count() > 0);
+            Assert.AreEqual(1, response.PageNumber);
+            Assert.AreEqual(10, response.PageSize);
+            Assert.IsTrue(response.TotalItemCount >= response.Count());
+            Assert.IsTrue(response.IsValid);
+            Assert.IsTrue(response.IsFirstPage);
+            Assert.IsTrue(response.TotalItemCount <= response.PageSize ? response.IsLastPage == true : response.IsLastPage == false);
+            Assert.IsTrue(response.TotalItemCount <= response.PageSize ? response.HasNextPage == false : response.HasNextPage == true);
+            Assert.IsFalse(response.HasPreviousPage);
+        }
+
+        [TestMethod]
         public void Update_EntityValid_Updated()
         {
             // Arrange

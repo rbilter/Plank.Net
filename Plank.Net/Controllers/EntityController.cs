@@ -45,9 +45,9 @@ namespace Plank.Net.Controllers
             return Mapping<T>.Mapper.Map<ApiGetResponse<T>>(_manager.Get(id));
         }
 
-        public ApiEnumerableResponse<T> Search(T entity)
+        public ApiEnumerableResponse<T> Search(T entity, int pageNumber, int pageSize)
         {
-            return Mapping<T>.Mapper.Map<ApiEnumerableResponse<T>>(_manager.Search(entity));
+            return Mapping<T>.Mapper.Map<ApiEnumerableResponse<T>>(_manager.Search(entity, pageNumber, pageSize));
         }
 
         public ApiPostResponse Update(T entity)
