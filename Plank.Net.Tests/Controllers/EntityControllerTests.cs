@@ -81,10 +81,10 @@ namespace Plank.Net.Tests.Controllers
             var response = _controller.Search(null, 1, 10);
 
             // Assert
-            Assert.IsTrue(response.Count() > 0);
+            Assert.IsTrue(response.Items.Count() > 0);
             Assert.AreEqual(1, response.PageNumber);
             Assert.AreEqual(10, response.PageSize);
-            Assert.IsTrue(response.TotalItemCount >= response.Count());
+            Assert.IsTrue(response.TotalItemCount >= response.Items.Count());
             Assert.IsTrue(response.IsValid);
             Assert.IsTrue(response.IsFirstPage);
             Assert.IsTrue(response.TotalItemCount <= response.PageSize ? response.IsLastPage == true : response.IsLastPage == false);

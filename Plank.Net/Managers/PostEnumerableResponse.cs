@@ -1,34 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Plank.Net.Managers
 {
-    public class PostEnumerableResponse<T> : IEnumerable<T>
+    public class PostEnumerableResponse<T>
     {
-        #region MEMBERS
-
-        private List<T> _list;
-
-        #endregion
-
         #region CONSTRUCTORS
 
         public PostEnumerableResponse()
-            : this(new List<T>())
         {
 
-        }
-
-        public PostEnumerableResponse(List<T> list)
-        {
-            _list = new List<T>();
-            _list.AddRange(list);
-        }
-
-        public PostEnumerableResponse(IEnumerable<T> list)
-        {
-            _list = new List<T>();
-            _list.AddRange(list);
         }
 
         #endregion
@@ -45,6 +25,8 @@ namespace Plank.Net.Managers
 
         public bool IsValid { get; set; }
 
+        public IEnumerable<T> Items { get; set; }
+
         public string Message { get; set; }
 
         public int PageNumber { get; set; }
@@ -52,20 +34,6 @@ namespace Plank.Net.Managers
         public int PageSize { get; set; }
 
         public int TotalItemCount { get; set; }
-
-        #endregion
-
-        #region METHODS
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
 
         #endregion
     }

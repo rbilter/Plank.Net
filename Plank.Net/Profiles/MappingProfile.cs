@@ -2,7 +2,6 @@
 using PagedList;
 using Plank.Net.Contracts;
 using Plank.Net.Managers;
-using System.Linq;
 
 namespace Plank.Net.Profiles
 {
@@ -16,11 +15,10 @@ namespace Plank.Net.Profiles
 
             CreateMap<GetResponse<T>, ApiGetResponse<T>>();
 
-            CreateMap<PostEnumerableResponse<T>, ApiEnumerableResponse<T>>()
-                .ConstructUsing(src => new ApiEnumerableResponse<T>(src.ToList()));
+            CreateMap<PostEnumerableResponse<T>, ApiEnumerableResponse<T>>();
 
             CreateMap<IPagedList<T>, PostEnumerableResponse<T>>()
-                .ConstructUsing(src => new PostEnumerableResponse<T>(src.ToList()));
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
         }
 
         #endregion

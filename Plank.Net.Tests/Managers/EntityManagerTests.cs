@@ -331,7 +331,7 @@ namespace Plank.Net.Tests.Managers
             Assert.IsTrue(result.IsLastPage);
             Assert.IsFalse(result.HasNextPage);
             Assert.IsFalse(result.HasPreviousPage);
-            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(2, result.Items.Count());
             Assert.AreEqual(1, result.PageNumber);
             Assert.AreEqual(10, result.PageSize);
             Assert.AreEqual(2, result.TotalItemCount);
