@@ -6,18 +6,17 @@ using Plank.Net.Data;
 namespace Plank.Net.Tests.Models
 {
     [HasSelfValidation]
-    public class ChildTwo : ChildEntity
+    public class ChildTwo : Entity
     {
         #region PROPERTIES
 
-        [Column("ParentEntityId")]
-        public override Guid ParentId { get; set; }
+        public Guid ParentEntityId { get; set; }
 
         #endregion
 
         #region NAVIGATION PROPERTIES
 
-        [ForeignKey("ParentId")]
+        [ForeignKey("ParentEntityId")]
         public virtual ParentEntity ParentEntity { get; set; }
 
         #endregion

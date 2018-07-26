@@ -70,7 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EntityController.cs" />
-    <Compile Include="Data\ChildEntity.cs" />
     <Compile Include="Data\Entity.cs" />
     <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\EntityValidator.cs" />

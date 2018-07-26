@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Plank.Net.Tests.Models
 {
     [HasSelfValidation]
-    public class ChildOne : ChildEntity
+    public class ChildOne : Entity
     {
         #region PROPERTIES
 
@@ -19,15 +19,14 @@ namespace Plank.Net.Tests.Models
         [MaxLength(30, ErrorMessage = "City cannot be longer than 30 characters")]
         public string City { get; set; }
 
-        [Column("ParentEntityId")]
-        public override Guid ParentId { get; set; }
+        public Guid ParentEntityId { get; set; }
 
         #endregion
 
         #region NAVIGATION PROPERTIES
 
 
-        [ForeignKey("ParentId")]
+        [ForeignKey("ParentEntityId")]
         public virtual ParentEntity ParentEntity { get; set; }
 
         #endregion
