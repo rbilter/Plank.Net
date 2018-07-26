@@ -118,12 +118,12 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public PostEnumerableResponse<T> Search(T entity, int pageNumber, int pageSize)
+        public PostEnumerableResponse<T> Search(Expression<Func<T, bool>> expression, int pageNumber, int pageSize)
         {
-            _logger.Info(entity);
+            _logger.Info(expression);
 
-            Expression<Func<T, bool>> expression = x => true;
             PostEnumerableResponse<T> result = null;
+            expression = expression ?? (f => true);
 
             try
             {

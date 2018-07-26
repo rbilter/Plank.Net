@@ -14,7 +14,7 @@ namespace Plank.Net.Managers
 
         GetResponse<T> Get(Guid id);
 
-        PostEnumerableResponse<T> Search(T entity, int pageNumber, int pageSize);
+        PostEnumerableResponse<T> Search(Expression<Func<T, bool>> expression, int pageNumber, int pageSize);
 
         PostResponse Update(T entity);
 
