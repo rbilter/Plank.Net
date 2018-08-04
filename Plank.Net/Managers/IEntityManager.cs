@@ -4,21 +4,21 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Managers
 {
-    public interface IEntityManager<T> where T : Entity
+    public interface IEntityManager<TEntity> where TEntity : Entity
     {
         #region METHODS
 
-        PostResponse Create(T entity);
+        PostResponse Create(TEntity entity);
 
         PostResponse Delete(Guid id);
 
-        GetResponse<T> Get(Guid id);
+        GetResponse<TEntity> Get(Guid id);
 
-        PostEnumerableResponse<T> Search(Expression<Func<T, bool>> expression, int pageNumber, int pageSize);
+        PostEnumerableResponse<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
 
-        PostResponse Update(T entity);
+        PostResponse Update(TEntity entity);
 
-        PostResponse Update(T entity, params Expression<Func<T, object>>[] properties);
+        PostResponse Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
 
         #endregion
     }

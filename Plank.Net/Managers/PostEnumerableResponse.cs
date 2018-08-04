@@ -2,7 +2,7 @@
 
 namespace Plank.Net.Managers
 {
-    public class PostEnumerableResponse<T>
+    public class PostEnumerableResponse<TEntity>
     {
         #region CONSTRUCTORS
 
@@ -25,7 +25,7 @@ namespace Plank.Net.Managers
 
         public bool IsValid { get; set; }
 
-        public IEnumerable<T> Items { get; set; }
+        public IEnumerable<TEntity> Items { get; set; }
 
         public string Message { get; set; }
 

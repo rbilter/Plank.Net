@@ -9,24 +9,24 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Managers
 {
-    public sealed class EntityManager<T> : IEntityManager<T> where T : Entity
+    public sealed class EntityManager<TEntity> : IEntityManager<TEntity> where TEntity : Entity
     {
         #region MEMBERS
 
-        private readonly IEntityRepository<T> _repository;
-        private readonly ILogger<T> _logger;
+        private readonly IEntityRepository<TEntity> _repository;
+        private readonly ILogger<TEntity> _logger;
 
         #endregion
 
         #region CONSTRUCTORS
 
         public EntityManager(DbContext context)
-            : this(new EntityRepository<T>(context), new EntityLogger<T>())
+            : this(new EntityRepository<TEntity>(context), new EntityLogger<TEntity>())
         {
 
         }
 
-        public EntityManager(IEntityRepository<T> repository, ILogger<T> logger)
+        public EntityManager(IEntityRepository<TEntity> repository, ILogger<TEntity> logger)
         {
             _repository = repository ?? throw new ArgumentNullException("repository");
             _logger     = logger ?? throw new ArgumentNullException("logger");
@@ -36,7 +36,7 @@ namespace Plank.Net.Managers
 
         #region METHODS
 
-        public PostResponse Create(T entity)
+        public PostResponse Create(TEntity entity)
         {
             _logger.Info(entity.ToJson());
 
@@ -95,21 +95,21 @@ namespace Plank.Net.Managers
             return results;
         }
 
-        public GetResponse<T> Get(Guid id)
+        public GetResponse<TEntity> Get(Guid id)
         {
             _logger.Info(id);
-            GetResponse<T> result = null;
+            GetResponse<TEntity> result = null;
 
             try
             {
                 var item = _repository.Get(id);
-                result = new GetResponse<T>(item);
+                result = new GetResponse<TEntity>(item);
                 result.IsValid = true;
             }
             catch (DataException e)
             {
                 _logger.Error(e);
-                result = new GetResponse<T>();
+                result = new GetResponse<TEntity>();
                 result.IsValid = false;
                 result.Message = "There was an issue processing the request, please try again";
             }
@@ -118,23 +118,23 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public PostEnumerableResponse<T> Search(Expression<Func<T, bool>> expression, int pageNumber, int pageSize)
+        public PostEnumerableResponse<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
             _logger.Info(expression);
 
-            PostEnumerableResponse<T> result = null;
+            PostEnumerableResponse<TEntity> result = null;
             expression = expression ?? (f => true);
 
             try
             {
                 var pagedList  = _repository.Search(expression, pageNumber, pageSize);
-                result         = Mapping<T>.Mapper.Map<PostEnumerableResponse<T>>(pagedList);
+                result         = Mapping<TEntity>.Mapper.Map<PostEnumerableResponse<TEntity>>(pagedList);
                 result.IsValid = true;
             }
             catch(DataException e)
             {
                 _logger.Error(e);
-                result         = new PostEnumerableResponse<T>();
+                result         = new PostEnumerableResponse<TEntity>();
                 result.IsValid = false;
                 result.Message = "There was an issue processing the request, please try again";
             }
@@ -143,7 +143,7 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public PostResponse Update(T entity)
+        public PostResponse Update(TEntity entity)
         {
             _logger.Info(entity.ToJson());
 
@@ -183,7 +183,7 @@ namespace Plank.Net.Managers
             return results;
         }
 
-        public PostResponse Update(T entity, params Expression<Func<T, object>>[] properties)
+        public PostResponse Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             _logger.Info(entity.ToJson());
 
@@ -224,9 +224,9 @@ namespace Plank.Net.Managers
 
         #region PRIVATE METHODS
 
-        private ValidationResults ValidateEntity(T entity)
+        private ValidationResults ValidateEntity(TEntity entity)
         {
-            var validator  = ValidationFactory.CreateValidator<T>();
+            var validator  = ValidationFactory.CreateValidator<TEntity>();
             var validation = validator.Validate(entity);
 
             return validation;

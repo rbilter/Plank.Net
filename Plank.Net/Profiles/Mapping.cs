@@ -3,7 +3,7 @@ using System;
 
 namespace Plank.Net.Profiles
 {
-    public static class Mapping<T>
+    public static class Mapping<TEntity>
     {
         #region PROPERTIES
 
@@ -18,7 +18,7 @@ namespace Plank.Net.Profiles
             var config = new MapperConfiguration(cfg => {
                 // This line ensures that internal properties are also mapped over.
                 cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
-                cfg.AddProfile<MappingProfile<T>>();
+                cfg.AddProfile<MappingProfile<TEntity>>();
             });
             var mapper = config.CreateMapper();
             return mapper;

@@ -2,11 +2,11 @@
 
 namespace Plank.Net.Data
 {
-    public interface IEntityValidator<T> : IEntityValidator where T : Entity
+    public interface IEntityValidator<TEntity> : IEntityValidator where TEntity : Entity
     {
         #region METHODS
 
-        ValidationResults Validate(T item);
+        ValidationResults Validate(TEntity item);
 
         #endregion
     }

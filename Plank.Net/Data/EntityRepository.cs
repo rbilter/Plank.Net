@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Data
 {
-    public sealed class EntityRepository<T> : IEntityRepository<T> where T : Entity
+    public sealed class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : Entity
     {
         #region MEMBERS
 
@@ -25,9 +25,9 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public Guid Create(T entity)
+        public Guid Create(TEntity entity)
         {
-            _context.Set<T>().Add(entity);
+            _context.Set<TEntity>().Add(entity);
             _context.SaveChanges();
 
             return entity.Id;
@@ -35,25 +35,25 @@ namespace Plank.Net.Data
 
         public Guid Delete(Guid id)
         {
-            var item = _context.Set<T>().SingleOrDefault(i => i.Id == id);
-            _context.Set<T>().Attach(item);
-            _context.Set<T>().Remove(item);
+            var item = _context.Set<TEntity>().SingleOrDefault(i => i.Id == id);
+            _context.Set<TEntity>().Attach(item);
+            _context.Set<TEntity>().Remove(item);
             _context.SaveChanges();
 
             return id;
         }
 
-        public IPagedList<T> Search(Expression<Func<T, bool>> query, int pageNumber = 1, int pageSize = 10)
+        public IPagedList<TEntity> Search(Expression<Func<TEntity, bool>> query, int pageNumber = 1, int pageSize = 10)
         {
-            return _context.Set<T>().Where(query).OrderBy(e => e.Id).ToPagedList(pageNumber, pageSize);
+            return _context.Set<TEntity>().Where(query).OrderBy(e => e.Id).ToPagedList(pageNumber, pageSize);
         }
 
-        public T Get(Guid id)
+        public TEntity Get(Guid id)
         {
-            return _context.Set<T>().SingleOrDefault(i => i.Id == id);
+            return _context.Set<TEntity>().SingleOrDefault(i => i.Id == id);
         }
 
-        public Guid Update(T entity)
+        public Guid Update(TEntity entity)
         {
             var existing = Get(entity.Id);
             _context.Entry(existing).CurrentValues.SetValues(entity);
@@ -62,7 +62,7 @@ namespace Plank.Net.Data
             return entity.Id;
         }
 
-        public Guid Update(T entity, params Expression<Func<T, object>>[] properties)
+        public Guid Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             var existing = Get(entity.Id);
 

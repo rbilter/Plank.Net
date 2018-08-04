@@ -4,21 +4,21 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Data
 {
-    public interface IEntityRepository<T> where T : Entity
+    public interface IEntityRepository<TEntity> where TEntity : Entity
     {
         #region METHODS
 
-        Guid Create(T entity);
+        Guid Create(TEntity entity);
 
         Guid Delete(Guid id);
 
-        T Get(Guid id);
+        TEntity Get(Guid id);
 
-        IPagedList<T> Search(Expression<Func<T, bool>> expression, int pageNumber, int pageSize);
+        IPagedList<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
 
-        Guid Update(T entity);
+        Guid Update(TEntity entity);
 
-        Guid Update(T entity, params Expression<Func<T, object>>[] properties);
+        Guid Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
 
         #endregion
     }

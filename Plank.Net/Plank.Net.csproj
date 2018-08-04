@@ -75,7 +75,7 @@
     <Compile Include="Data\EntityValidator.cs" />
     <Compile Include="Data\IEntityRepository.cs" />
     <Compile Include="Data\IEntityValidator.cs" />
-    <Compile Include="Data\IEntityValidatorT.cs" />
+    <Compile Include="Data\IEntityValidatorOfTEntity.cs" />
     <Compile Include="Data\ValidatorFactory.cs" />
     <Compile Include="Managers\EntityLogger.cs" />
     <Compile Include="Managers\EntityManager.cs" />

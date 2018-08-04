@@ -8,11 +8,11 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Controllers
 {
-    public sealed class EntityController<T> where T : Entity
+    public sealed class EntityController<TEntity> where TEntity : Entity
     {
         #region MEMBERS
 
-        private readonly EntityManager<T> _manager;
+        private readonly EntityManager<TEntity> _manager;
 
         #endregion
 
@@ -20,44 +20,44 @@ namespace Plank.Net.Controllers
 
         public EntityController(DbContext context)
         {
-            var repo   = new EntityRepository<T>(context);
-            var logger = new EntityLogger<T>();
+            var repo   = new EntityRepository<TEntity>(context);
+            var logger = new EntityLogger<TEntity>();
 
-            _manager    = new EntityManager<T>(repo, logger);
+            _manager    = new EntityManager<TEntity>(repo, logger);
         }
 
         #endregion
 
         #region METHODS
 
-        public ApiPostResponse Create(T entity)
+        public ApiPostResponse Create(TEntity entity)
         {
-            return Mapping<T>.Mapper.Map<ApiPostResponse>(_manager.Create(entity));
+            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Create(entity));
         }
 
         public ApiPostResponse Delete(Guid id)
         {
-            return Mapping<T>.Mapper.Map<ApiPostResponse>(_manager.Delete(id));
+            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Delete(id));
         }
 
-        public ApiGetResponse<T> Get(Guid id)
+        public ApiGetResponse<TEntity> Get(Guid id)
         {
-            return Mapping<T>.Mapper.Map<ApiGetResponse<T>>(_manager.Get(id));
+            return Mapping<TEntity>.Mapper.Map<ApiGetResponse<TEntity>>(_manager.Get(id));
         }
 
-        public ApiEnumerableResponse<T> Search(Expression<Func<T, bool>> expression, int pageNumber, int pageSize)
+        public ApiEnumerableResponse<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
-            return Mapping<T>.Mapper.Map<ApiEnumerableResponse<T>>(_manager.Search(expression, pageNumber, pageSize));
+            return Mapping<TEntity>.Mapper.Map<ApiEnumerableResponse<TEntity>>(_manager.Search(expression, pageNumber, pageSize));
         }
 
-        public ApiPostResponse Update(T entity)
+        public ApiPostResponse Update(TEntity entity)
         {
-            return Mapping<T>.Mapper.Map<ApiPostResponse>(_manager.Update(entity));
+            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Update(entity));
         }
 
-        public ApiPostResponse Update(T entity, params Expression<Func<T, object>>[] properties)
+        public ApiPostResponse Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
-            return Mapping<T>.Mapper.Map<ApiPostResponse>(_manager.Update(entity, properties));
+            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Update(entity, properties));
         }
 
         #endregion

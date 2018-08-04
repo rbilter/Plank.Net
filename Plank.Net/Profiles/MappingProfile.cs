@@ -5,7 +5,7 @@ using Plank.Net.Managers;
 
 namespace Plank.Net.Profiles
 {
-    public class MappingProfile<T> : Profile
+    public class MappingProfile<TEntity> : Profile
     {
         #region CONSTRUCTORS
 
@@ -13,11 +13,11 @@ namespace Plank.Net.Profiles
         {
             CreateMap<PostResponse, ApiPostResponse>();
 
-            CreateMap<GetResponse<T>, ApiGetResponse<T>>();
+            CreateMap<GetResponse<TEntity>, ApiGetResponse<TEntity>>();
 
-            CreateMap<PostEnumerableResponse<T>, ApiEnumerableResponse<T>>();
+            CreateMap<PostEnumerableResponse<TEntity>, ApiEnumerableResponse<TEntity>>();
 
-            CreateMap<IPagedList<T>, PostEnumerableResponse<T>>()
+            CreateMap<IPagedList<TEntity>, PostEnumerableResponse<TEntity>>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
         }
 

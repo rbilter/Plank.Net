@@ -33,11 +33,11 @@ namespace Plank.Net.Data
                 .OrderBy(v => v.Priority);
         }
 
-        public static IEnumerable<IEntityValidator<T>> CreateInstance<T>() where T : Entity
+        public static IEnumerable<IEntityValidator<TEntity>> CreateInstance<TEntity>() where TEntity : Entity
         {
             return _validators
-                .Where(v => v.Item1 == typeof(T).Name)
-                .Select(v => (IEntityValidator<T>)v.Item2)
+                .Where(v => v.Item1 == typeof(TEntity).Name)
+                .Select(v => (IEntityValidator<TEntity>)v.Item2)
                 .OrderBy(v => v.Priority);
 
         }

@@ -4,11 +4,11 @@ using System;
 
 namespace Plank.Net.Managers
 {
-    public sealed class EntityLogger<T> : ILogger<T> where T : Entity
+    public sealed class EntityLogger<TEntity> : ILogger<TEntity> where TEntity : Entity
     {
         #region MEMBERS
 
-        private readonly ILog _logger = LogManager.GetLogger(typeof(EntityLogger<T>));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(EntityLogger<TEntity>));
 
         #endregion
 
