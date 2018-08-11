@@ -2,6 +2,7 @@
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 using System;
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
@@ -12,15 +13,14 @@ namespace Plank.Net.Data
         #region CONSTRUCTORS
 
         public Entity()
-            : this(Guid.NewGuid(), DateTime.Now, DateTime.Now)
         {
 
         }
 
         public Entity(Guid id, DateTime dateCreated, DateTime dateLastModified)
         {
-            Id = id;
-            DateCreated = dateCreated;
+            Id               = id;
+            DateCreated      = dateCreated;
             DateLastModified = dateLastModified;
         }
 
@@ -28,10 +28,17 @@ namespace Plank.Net.Data
 
         #region PROPERTIES
 
+        [Key]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
 
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateLastModified { get; set; }
 
         #endregion
