@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Plank.Net.Data;
 using Plank.Net.Tests.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -64,7 +63,7 @@ namespace Plank.Net.Tests.Data
         public void Get_EntityExists_EntityReturned()
         {
             // Arrange
-            var id = Guid.Parse("8BDE13A5-DB5B-46FC-8437-0E914EBED531");
+            var id = TestHelper.GetParentId();
 
             // Act
             var entity = _repo.Get(id);

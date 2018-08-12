@@ -62,9 +62,10 @@ namespace Plank.Net.Tests.Controllers
         public void Get_EntityFoundById_EntityReturned()
         {
             // Arrange
+            var id = TestHelper.GetParentId();
 
             // Act
-            var response = _controller.Get(Guid.Parse("8BDE13A5-DB5B-46FC-8437-0E914EBED531"));
+            var response = _controller.Get(id);
 
             // Assert
             Assert.IsTrue(response.IsValid);

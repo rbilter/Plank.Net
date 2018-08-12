@@ -20,6 +20,12 @@ namespace Plank.Net.Data
             base.Generate(createTableOperation);
         }
 
+        protected override void Generate(AlterColumnOperation alterColumnOperation)
+        {
+            SetEntityDefaultValue(alterColumnOperation.Column);
+            base.Generate(alterColumnOperation);
+        }
+
         #endregion
 
         #region PRIVATE METHODS

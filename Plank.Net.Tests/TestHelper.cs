@@ -14,6 +14,14 @@ namespace Plank.Net.Tests
 
         #region METHODS
 
+        public static Guid GetParentId()
+        {
+            using (var context = new TestDbContext())
+            {
+                return context.ParentEntity.First().Id;
+            }
+        }
+
         public static string GetRandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

@@ -17,13 +17,6 @@ namespace Plank.Net.Data
 
         }
 
-        public Entity(Guid id, DateTime dateCreated, DateTime dateLastModified)
-        {
-            Id               = id;
-            DateCreated      = dateCreated;
-            DateLastModified = dateLastModified;
-        }
-
         #endregion
 
         #region PROPERTIES
