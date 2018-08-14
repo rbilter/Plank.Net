@@ -203,7 +203,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
-            var id   = Guid.NewGuid();
+            var id   = 1;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Delete(id)).Returns(id);
             repo.Setup(m => m.Get(id)).Returns(item);
@@ -217,7 +217,7 @@ namespace Plank.Net.Tests.Managers
             Assert.AreEqual(id, results.Id);
             repo.Verify(m => m.Get(id), Times.Once());
             repo.Verify(m => m.Delete(id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<Guid>()), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
         }
 
@@ -226,7 +226,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             ParentEntity item = null;
-            var id   = Guid.NewGuid();
+            var id   = 1;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Returns(item);
 
@@ -238,7 +238,7 @@ namespace Plank.Net.Tests.Managers
             Assert.IsTrue(results.ValidationResults.IsValid);
             repo.Verify(m => m.Get(id), Times.Once());
             repo.Verify(m => m.Delete(id), Times.Never());
-            _logger.Verify(m => m.Info(It.IsAny<Guid>()), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
         }
 
@@ -247,7 +247,7 @@ namespace Plank.Net.Tests.Managers
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
-            var id   = Guid.NewGuid();
+            var id   = 1;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Returns(item);
             repo.Setup(m => m.Delete(id)).Throws(new DataException("Error"));
@@ -262,7 +262,7 @@ namespace Plank.Net.Tests.Managers
             Assert.AreEqual("Error", results.ValidationResults.ElementAt(0).Key);
             repo.Verify(m => m.Get(id), Times.Once());
             repo.Verify(m => m.Delete(id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<Guid>()), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }
@@ -271,7 +271,7 @@ namespace Plank.Net.Tests.Managers
         public void Get_EntityFoundById_ItemReturned()
         {
             // Arrange
-            var id   = Guid.Empty;
+            var id   = 1;
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Returns(item);
@@ -284,7 +284,7 @@ namespace Plank.Net.Tests.Managers
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsValid);
             repo.Verify(m => m.Get(id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<Guid>()), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
         }
 
@@ -292,7 +292,7 @@ namespace Plank.Net.Tests.Managers
         public void Get_RepositoryThrowsException_IsValidFalse()
         {
             // Arrange
-            var id = Guid.NewGuid();
+            var id = 1;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(id)).Throws(new DataException("Error"));
 
@@ -305,7 +305,7 @@ namespace Plank.Net.Tests.Managers
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual("There was an issue processing the request, please try again", result.Message);
             repo.Verify(m => m.Get(id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<Guid>()), Times.Once());
+            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }
@@ -492,7 +492,7 @@ namespace Plank.Net.Tests.Managers
         public void Update_PartialUpdateEntityValid_Updated()
         {
             // Arrange
-            var item = new ParentEntity { Id = Guid.Empty, IsActive = false };
+            var item = new ParentEntity { Id = 0, IsActive = false };
             var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.Get(item.Id)).Returns(item);
             repo.Setup(m => m.Update(item, p => p.IsActive)).Returns(item.Id);

@@ -45,7 +45,7 @@ namespace Plank.Net.Data
                 column.DefaultValueSql = "GETUTCDATE()";
             }
 
-            if (column.Name == "Id")
+            if (column.Name == "GlobalId")
             {
                 column.DefaultValueSql = "NEWSEQUENTIALID()";
             }

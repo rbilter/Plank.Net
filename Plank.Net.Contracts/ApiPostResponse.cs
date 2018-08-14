@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Plank.Net.Contracts
+﻿namespace Plank.Net.Contracts
 {
     public class ApiPostResponse
     {
@@ -15,7 +13,7 @@ namespace Plank.Net.Contracts
 
         #region PROPERTIES
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public ApiValidationResults ValidationResults { get; set; }
 

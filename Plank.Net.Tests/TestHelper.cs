@@ -14,7 +14,7 @@ namespace Plank.Net.Tests
 
         #region METHODS
 
-        public static Guid GetParentId()
+        public static int GetParentId()
         {
             using (var context = new TestDbContext())
             {

@@ -16,7 +16,7 @@ namespace Plank.Net.Managers
 
         #region PROPERTIES
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public ValidationResults ValidationResults { get; set; }
 

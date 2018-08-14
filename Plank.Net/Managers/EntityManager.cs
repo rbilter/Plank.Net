@@ -40,14 +40,14 @@ namespace Plank.Net.Managers
         {
             _logger.Info(entity.ToJson());
 
-            var newguid    = Guid.Empty;
+            var newid      = 0;
             var validation = ValidateEntity(entity);
 
             if (validation.IsValid)
             {
                 try
                 {
-                    newguid = _repository.Create(entity);
+                    newid = _repository.Create(entity);
                 }
                 catch (DataException e)
                 {
@@ -60,13 +60,13 @@ namespace Plank.Net.Managers
                 }
             }
 
-            var results = new PostResponse { Id = newguid, ValidationResults = validation };
+            var results = new PostResponse { Id = newid, ValidationResults = validation };
             _logger.Info(results.ToJson());
 
             return results;
         }
 
-        public PostResponse Delete(Guid id)
+        public PostResponse Delete(int id)
         {
             _logger.Info(id);
 
@@ -95,7 +95,7 @@ namespace Plank.Net.Managers
             return results;
         }
 
-        public GetResponse<TEntity> Get(Guid id)
+        public GetResponse<TEntity> Get(int id)
         {
             _logger.Info(id);
             GetResponse<TEntity> result = null;
@@ -147,7 +147,7 @@ namespace Plank.Net.Managers
         {
             _logger.Info(entity.ToJson());
 
-            var guid      = Guid.Empty;
+            var id         = 0;
             var validation = ValidateEntity(entity);
 
             if (validation.IsValid)
@@ -156,7 +156,7 @@ namespace Plank.Net.Managers
                 {
                     if (_repository.Get(entity.Id) != null)
                     {
-                        guid = _repository.Update(entity);
+                        id = _repository.Update(entity);
                     }
                     else
                     {
@@ -177,7 +177,7 @@ namespace Plank.Net.Managers
                 }
             }
 
-            var results = new PostResponse { Id = guid, ValidationResults = validation };
+            var results = new PostResponse { Id = id, ValidationResults = validation };
             _logger.Info(results.ToJson());
 
             return results;
@@ -187,14 +187,14 @@ namespace Plank.Net.Managers
         {
             _logger.Info(entity.ToJson());
 
-            var guid       = Guid.Empty;
+            var id         = 0;
             var validation = new ValidationResults();
 
             try
             {
                 if (_repository.Get(entity.Id) != null)
                 {
-                    guid = _repository.Update(entity, properties);
+                    id = _repository.Update(entity, properties);
                 }
                 else
                 {
@@ -214,7 +214,7 @@ namespace Plank.Net.Managers
                 validation.AddResult(valresult);
             }
 
-            var results = new PostResponse { Id = guid, ValidationResults = validation };
+            var results = new PostResponse { Id = id, ValidationResults = validation };
             _logger.Info(results.ToJson());
 
             return results;

@@ -8,17 +8,17 @@ namespace Plank.Net.Data
     {
         #region METHODS
 
-        Guid Create(TEntity entity);
+        int Create(TEntity entity);
 
-        Guid Delete(Guid id);
+        int Delete(int id);
 
-        TEntity Get(Guid id);
+        TEntity Get(int id);
 
         IPagedList<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
 
-        Guid Update(TEntity entity);
+        int Update(TEntity entity);
 
-        Guid Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
+        int Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
 
         #endregion
     }

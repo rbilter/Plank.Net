@@ -25,7 +25,7 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public Guid Create(TEntity entity)
+        public int Create(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
             _context.SaveChanges();
@@ -33,7 +33,7 @@ namespace Plank.Net.Data
             return entity.Id;
         }
 
-        public Guid Delete(Guid id)
+        public int Delete(int id)
         {
             var item = _context.Set<TEntity>().SingleOrDefault(i => i.Id == id);
             _context.Set<TEntity>().Attach(item);
@@ -48,12 +48,12 @@ namespace Plank.Net.Data
             return _context.Set<TEntity>().Where(query).OrderBy(e => e.Id).ToPagedList(pageNumber, pageSize);
         }
 
-        public TEntity Get(Guid id)
+        public TEntity Get(int id)
         {
             return _context.Set<TEntity>().SingleOrDefault(i => i.Id == id);
         }
 
-        public Guid Update(TEntity entity)
+        public int Update(TEntity entity)
         {
             var existing = Get(entity.Id);
             _context.Entry(existing).CurrentValues.SetValues(entity);
@@ -62,7 +62,7 @@ namespace Plank.Net.Data
             return entity.Id;
         }
 
-        public Guid Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public int Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             var existing = Get(entity.Id);
 

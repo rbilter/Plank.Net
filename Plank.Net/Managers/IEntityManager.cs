@@ -10,9 +10,9 @@ namespace Plank.Net.Managers
 
         PostResponse Create(TEntity entity);
 
-        PostResponse Delete(Guid id);
+        PostResponse Delete(int id);
 
-        GetResponse<TEntity> Get(Guid id);
+        GetResponse<TEntity> Get(int id);
 
         PostEnumerableResponse<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
 

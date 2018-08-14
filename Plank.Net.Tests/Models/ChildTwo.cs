@@ -10,7 +10,7 @@ namespace Plank.Net.Tests.Models
     {
         #region PROPERTIES
 
-        public Guid ParentEntityId { get; set; }
+        public int ParentEntityId { get; set; }
 
         #endregion
 

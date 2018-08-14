@@ -35,12 +35,12 @@ namespace Plank.Net.Controllers
             return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Create(entity));
         }
 
-        public ApiPostResponse Delete(Guid id)
+        public ApiPostResponse Delete(int id)
         {
             return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Delete(id));
         }
 
-        public ApiGetResponse<TEntity> Get(Guid id)
+        public ApiGetResponse<TEntity> Get(int id)
         {
             return Mapping<TEntity>.Mapper.Map<ApiGetResponse<TEntity>>(_manager.Get(id));
         }

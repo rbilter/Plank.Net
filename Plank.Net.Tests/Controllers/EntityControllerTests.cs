@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Plank.Net.Controllers;
 using Plank.Net.Tests.Models;
-using System;
 using System.Linq;
 
 namespace Plank.Net.Tests.Controllers

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 using Plank.Net.Data;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,7 +18,7 @@ namespace Plank.Net.Tests.Models
         [MaxLength(30, ErrorMessage = "City cannot be longer than 30 characters")]
         public string City { get; set; }
 
-        public Guid ParentEntityId { get; set; }
+        public int ParentEntityId { get; set; }
 
         #endregion
 

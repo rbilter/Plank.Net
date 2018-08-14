@@ -24,7 +24,11 @@ namespace Plank.Net.Data
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
+
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public Guid GlobalId { get; set; }
 
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
