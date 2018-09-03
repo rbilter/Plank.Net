@@ -2,7 +2,7 @@
 
 namespace Plank.Net.Utilities
 {
-    public static class ExtensionMethods
+    internal static class ExtensionMethods
     {
         #region METHODS
 

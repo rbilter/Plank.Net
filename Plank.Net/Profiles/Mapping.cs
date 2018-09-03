@@ -3,7 +3,7 @@ using System;
 
 namespace Plank.Net.Profiles
 {
-    public static class Mapping<TEntity>
+    internal static class Mapping<TEntity>
     {
         #region PROPERTIES
 

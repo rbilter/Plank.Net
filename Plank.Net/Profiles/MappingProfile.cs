@@ -5,7 +5,7 @@ using Plank.Net.Managers;
 
 namespace Plank.Net.Profiles
 {
-    public class MappingProfile<TEntity> : Profile
+    internal class MappingProfile<TEntity> : Profile
     {
         #region CONSTRUCTORS
 
