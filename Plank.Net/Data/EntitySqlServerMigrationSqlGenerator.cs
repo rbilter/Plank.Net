@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity.Migrations.Model;
 using System.Data.Entity.SqlServer;
+using System.Linq;
 
 namespace Plank.Net.Data
 {
@@ -18,6 +19,11 @@ namespace Plank.Net.Data
         {
             SetEntityDefaultValue(createTableOperation.Columns);
             base.Generate(createTableOperation);
+
+            if(createTableOperation.Columns.Any(c => c.Name == "Id"))
+            {
+                Statement(CreateTriggerStatement(createTableOperation.Name));
+            }
         }
 
         protected override void Generate(AlterColumnOperation alterColumnOperation)
@@ -29,6 +35,19 @@ namespace Plank.Net.Data
         #endregion
 
         #region PRIVATE METHODS
+
+        private static string CreateTriggerStatement(string tableName)
+        {
+            tableName = tableName.StartsWith("dbo.") ? tableName : $"dbo.{tableName}";
+
+            return $"create trigger upd_trg_{tableName.Replace("dbo.", string.Empty).ToLower()} on {tableName} for update as "
+                + "begin "
+                + $"set nocount on; "
+                + $"update {tableName} set DateLastModified = GETUTCDATE() "
+                + $"from {tableName} tbl join "
+                + $"inserted ins on tbl.Id = ins.Id;"
+                + "end";
+        }
 
         private static void SetEntityDefaultValue(IEnumerable<ColumnModel> columns)
         {
