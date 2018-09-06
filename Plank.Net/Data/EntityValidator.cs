@@ -2,7 +2,7 @@
 
 namespace Plank.Net.Data
 {
-    public abstract class EntityValidator<TEntity> : IEntityValidator<TEntity> where TEntity : Entity
+    public abstract class EntityValidator<TEntity> : IEntityValidator<TEntity> where TEntity : class, IEntity
     {
         #region PROPERTIES
 

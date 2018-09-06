@@ -3,7 +3,7 @@ using System;
 
 namespace Plank.Net.Managers
 {
-    public interface ILogger<TEntity> where TEntity : Entity
+    public interface ILogger<TEntity> where TEntity : IEntity
     {
         #region METHODS
 

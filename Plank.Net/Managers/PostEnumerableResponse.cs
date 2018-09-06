@@ -2,7 +2,7 @@
 
 namespace Plank.Net.Managers
 {
-    public class PostEnumerableResponse<TEntity>
+    public sealed class PostEnumerableResponse<TEntity>
     {
         #region CONSTRUCTORS
 

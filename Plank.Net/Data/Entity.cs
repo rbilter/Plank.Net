@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Plank.Net.Data
 {
-    public abstract class Entity
+    public abstract class Entity : IEntity
     {
         #region CONSTRUCTORS
 
@@ -43,7 +43,7 @@ namespace Plank.Net.Data
         #region METHODS
 
         [SelfValidation]
-        protected virtual void Validate(ValidationResults results)
+        public void Validate(ValidationResults results)
         {
             var inverseProperties = this.GetType()
                 .GetProperties()

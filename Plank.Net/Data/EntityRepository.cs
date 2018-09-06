@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Data
 {
-    public sealed class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : Entity
+    public sealed class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
 

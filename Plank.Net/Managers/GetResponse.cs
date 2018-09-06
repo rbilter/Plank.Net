@@ -2,7 +2,7 @@
 
 namespace Plank.Net.Managers
 {
-    public class GetResponse<T>
+    public sealed class GetResponse<T>
     {
         #region MEMBERS
 

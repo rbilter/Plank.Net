@@ -3,7 +3,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 namespace Plank.Net.Managers
 {
-    public class PostResponse
+    public sealed class PostResponse
     {
         #region CONSTRUCTORS
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Data
 {
-    public interface IEntityRepository<TEntity> where TEntity : Entity
+    public interface IEntityRepository<TEntity> where TEntity : IEntity
     {
         #region METHODS
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Controllers
 {
-    public sealed class EntityController<TEntity> where TEntity : Entity
+    public sealed class EntityController<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
 

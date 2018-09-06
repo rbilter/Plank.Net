@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Managers
 {
-    public sealed class EntityManager<TEntity> : IEntityManager<TEntity> where TEntity : Entity
+    public sealed class EntityManager<TEntity> : IEntityManager<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
 

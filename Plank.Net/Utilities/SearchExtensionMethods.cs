@@ -9,12 +9,12 @@ namespace Plank.Net.Utilities
     {
         #region METHODS
 
-        public static Expression<Func<TEntity, bool>> And<TEntity>(this Expression<Func<TEntity, bool>> first, Expression<Func<TEntity, bool>> second) where TEntity : Entity
+        public static Expression<Func<TEntity, bool>> And<TEntity>(this Expression<Func<TEntity, bool>> first, Expression<Func<TEntity, bool>> second) where TEntity : IEntity
         {
             return first.Compose(second, Expression.And);
         }
 
-        public static Expression<Func<TEntity, bool>> Or<TEntity>(this Expression<Func<TEntity, bool>> first, Expression<Func<TEntity, bool>> second) where TEntity : Entity
+        public static Expression<Func<TEntity, bool>> Or<TEntity>(this Expression<Func<TEntity, bool>> first, Expression<Func<TEntity, bool>> second) where TEntity : IEntity
         {
             return first.Compose(second, Expression.Or);
         }
