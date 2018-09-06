@@ -3,6 +3,7 @@ using Plank.Net.Data;
 using Plank.Net.Tests.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Plank.Net.Tests.Data
 {
@@ -27,15 +28,15 @@ namespace Plank.Net.Tests.Data
         #region TEST METHODS
 
         [TestMethod]
-        public void Create_EntityValid_EntityCreated()
+        public async Task Create_EntityValid_EntityCreated()
         {
             // Arrange
             var entity      = TestHelper.GetParentEntity();
             entity.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
 
             // Act
-            var id      = _repo.Create(entity);
-            var created = _repo.Get(id);
+            var id      = await _repo.CreateAsync(entity);
+            var created = await _repo.GetAsync(id);
 
             // Assert
             Assert.AreEqual(entity.Id, id);
@@ -43,16 +44,16 @@ namespace Plank.Net.Tests.Data
         }
 
         [TestMethod]
-        public void Delete_EntityExists_EntityDeleted()
+        public async Task Delete_EntityExists_EntityDeleted()
         {
             // Arrange
             var expected = TestHelper.GetParentEntity();
 
             // Act
-            _repo.Create(expected);
+            await _repo.CreateAsync(expected);
 
-            var id     = _repo.Delete(expected.Id);
-            var actual = _repo.Get(id);
+            var id     = await _repo.DeleteAsync(expected.Id);
+            var actual = await _repo.GetAsync(id);
 
             // Assert
             Assert.IsNull(actual, "Item was not deleted.");
@@ -60,13 +61,13 @@ namespace Plank.Net.Tests.Data
         }
 
         [TestMethod]
-        public void Get_EntityExists_EntityReturned()
+        public async Task Get_EntityExists_EntityReturned()
         {
             // Arrange
             var id = TestHelper.GetParentId();
 
             // Act
-            var entity = _repo.Get(id);
+            var entity = await _repo.GetAsync(id);
 
             // Assert
             Assert.AreEqual(id, entity.Id);
@@ -75,33 +76,33 @@ namespace Plank.Net.Tests.Data
         }
 
         [TestMethod]
-        public void Search_EntitiesFound_ListReturned()
+        public async Task Search_EntitiesFound_ListReturned()
         {
             // Arrange
 
             // Act
-            var result = _repo.Search(i => i.FirstName == "Han" && i.LastName == "Solo");
+            var result = await _repo.SearchAsync(i => i.FirstName == "Han" && i.LastName == "Solo");
 
             // Assert
             Assert.AreEqual(1, result.Count());
         }
 
         [TestMethod]
-        public void Update_EntityExists_EntityUpdated()
+        public async Task Update_EntityExists_EntityUpdated()
         {
             // Arrange
             var expected = TestHelper.GetParentEntity();
 
             // Act
-            _repo.Create(expected);
+            await _repo.CreateAsync(expected);
 
             var firstName      = TestHelper.GetRandomString(10);
             var lastName       = TestHelper.GetRandomString(20);
             expected.FirstName = firstName;
             expected.LastName  = lastName;
 
-            var id     = _repo.Update(expected);
-            var actual = _repo.Get(id);
+            var id     = await _repo.UpdateAsync(expected);
+            var actual = await _repo.GetAsync(id);
 
             // Assert
             Assert.AreEqual(expected.Id, id);
@@ -111,18 +112,18 @@ namespace Plank.Net.Tests.Data
         }
 
         [TestMethod]
-        public void Update_PartialUpdate_PropertiesInExpressionUpdated()
+        public async Task Update_PartialUpdate_PropertiesInExpressionUpdated()
         {
             // Arrange
             var added = TestHelper.GetParentEntity();
 
             // Act
-            _repo.Create(added);
+            await _repo.CreateAsync(added);
             Assert.AreEqual(true, added.IsActive);
 
             var updated = new ParentEntity { Id = added.Id, IsActive = false };
-            var id      = _repo.Update(updated, p => p.IsActive);
-            var actual  = _repo.Get(id);
+            var id      = await _repo.UpdateAsync(updated, p => p.IsActive);
+            var actual  = await _repo.GetAsync(id);
 
             // Assert
             Assert.AreEqual(added.Id, actual.Id);

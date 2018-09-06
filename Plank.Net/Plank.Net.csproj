@@ -70,10 +70,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EntityController.cs" />
+    <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\EntitySqlServerMigrationSqlGenerator.cs" />
     <Compile Include="Data\Entity.cs" />
     <Compile Include="Data\EntityConfiguration.cs" />
-    <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\EntityValidator.cs" />
     <Compile Include="Data\IEntityRepository.cs" />
     <Compile Include="Data\IEntityValidator.cs" />

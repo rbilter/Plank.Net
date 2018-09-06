@@ -1,6 +1,7 @@
 ﻿using PagedList;
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Plank.Net.Data
 {
@@ -8,17 +9,17 @@ namespace Plank.Net.Data
     {
         #region METHODS
 
-        int Create(TEntity entity);
+        Task<int> CreateAsync(TEntity entity);
 
-        int Delete(int id);
+        Task<int> DeleteAsync(int id);
 
-        TEntity Get(int id);
+        Task<TEntity> GetAsync(int id);
 
-        IPagedList<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
+        Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
 
-        int Update(TEntity entity);
+        Task<int> UpdateAsync(TEntity entity);
 
-        int Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
+        Task<int> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
 
         #endregion
     }

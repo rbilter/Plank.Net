@@ -1,6 +1,7 @@
 ﻿using Plank.Net.Data;
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Plank.Net.Managers
 {
@@ -8,17 +9,17 @@ namespace Plank.Net.Managers
     {
         #region METHODS
 
-        PostResponse Create(TEntity entity);
+        Task<PostResponse> CreateAsync(TEntity entity);
 
-        PostResponse Delete(int id);
+        Task<PostResponse> DeleteAsync(int id);
 
-        GetResponse<TEntity> Get(int id);
+        Task<GetResponse<TEntity>> GetAsync(int id);
 
-        PostEnumerableResponse<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
+        Task<PostEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
 
-        PostResponse Update(TEntity entity);
+        Task<PostResponse> UpdateAsync(TEntity entity);
 
-        PostResponse Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
+        Task<PostResponse> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
 
         #endregion
     }

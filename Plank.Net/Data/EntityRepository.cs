@@ -3,6 +3,7 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Plank.Net.Data
 {
@@ -25,46 +26,46 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public int Create(TEntity entity)
+        public async Task<int> CreateAsync(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return entity.Id;
         }
 
-        public int Delete(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            var item = _context.Set<TEntity>().SingleOrDefault(i => i.Id == id);
+            var item = await _context.Set<TEntity>().SingleOrDefaultAsync(i => i.Id == id);
             _context.Set<TEntity>().Attach(item);
             _context.Set<TEntity>().Remove(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return id;
         }
 
-        public IPagedList<TEntity> Search(Expression<Func<TEntity, bool>> query, int pageNumber = 1, int pageSize = 10)
+        public async Task<TEntity> GetAsync(int id)
         {
-            return _context.Set<TEntity>().Where(query).OrderBy(e => e.Id).ToPagedList(pageNumber, pageSize);
+            return await _context.Set<TEntity>().SingleOrDefaultAsync(i => i.Id == id);
         }
 
-        public TEntity Get(int id)
+        public async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber = 1, int pageSize = 10)
         {
-            return _context.Set<TEntity>().SingleOrDefault(i => i.Id == id);
+            return await Task.Run(() => _context.Set<TEntity>().Where(expression).OrderBy(e => e.Id).ToPagedList(pageNumber, pageSize));
         }
 
-        public int Update(TEntity entity)
+        public async Task<int> UpdateAsync(TEntity entity)
         {
-            var existing = Get(entity.Id);
+            var existing = await GetAsync(entity.Id);
             _context.Entry(existing).CurrentValues.SetValues(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return entity.Id;
         }
 
-        public int Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public async Task<int> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
-            var existing = Get(entity.Id);
+            var existing = await GetAsync(entity.Id);
 
             foreach (var p in properties)
             {
@@ -72,7 +73,7 @@ namespace Plank.Net.Data
                 property.CurrentValue = entity.GetType().GetProperty(property.Name).GetValue(entity);
             }
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return entity.Id;
         }

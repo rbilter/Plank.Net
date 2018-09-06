@@ -6,6 +6,7 @@ using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Plank.Net.Managers
 {
@@ -36,7 +37,7 @@ namespace Plank.Net.Managers
 
         #region METHODS
 
-        public PostResponse Create(TEntity entity)
+        public async Task<PostResponse> CreateAsync(TEntity entity)
         {
             _logger.Info(entity.ToJson());
 
@@ -47,7 +48,7 @@ namespace Plank.Net.Managers
             {
                 try
                 {
-                    newid = _repository.Create(entity);
+                    newid = await _repository.CreateAsync(entity);
                 }
                 catch (DataException e)
                 {
@@ -66,7 +67,7 @@ namespace Plank.Net.Managers
             return results;
         }
 
-        public PostResponse Delete(int id)
+        public async Task<PostResponse> DeleteAsync(int id)
         {
             _logger.Info(id);
 
@@ -74,9 +75,9 @@ namespace Plank.Net.Managers
 
             try
             {
-                if (_repository.Get(id) != null)
+                if (await _repository.GetAsync(id) != null)
                 {
-                    _repository.Delete(id);
+                    await _repository.DeleteAsync(id);
                 }
             }
             catch (DataException e)
@@ -95,14 +96,14 @@ namespace Plank.Net.Managers
             return results;
         }
 
-        public GetResponse<TEntity> Get(int id)
+        public async Task<GetResponse<TEntity>> GetAsync(int id)
         {
             _logger.Info(id);
             GetResponse<TEntity> result = null;
 
             try
             {
-                var item = _repository.Get(id);
+                var item = await _repository.GetAsync(id);
                 result = new GetResponse<TEntity>(item);
                 result.IsValid = true;
             }
@@ -118,7 +119,7 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public PostEnumerableResponse<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
+        public async Task<PostEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
             _logger.Info(expression);
 
@@ -127,7 +128,7 @@ namespace Plank.Net.Managers
 
             try
             {
-                var pagedList  = _repository.Search(expression, pageNumber, pageSize);
+                var pagedList  = await _repository.SearchAsync(expression, pageNumber, pageSize);
                 result         = Mapping<TEntity>.Mapper.Map<PostEnumerableResponse<TEntity>>(pagedList);
                 result.IsValid = true;
             }
@@ -143,7 +144,7 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public PostResponse Update(TEntity entity)
+        public async Task<PostResponse> UpdateAsync(TEntity entity)
         {
             _logger.Info(entity.ToJson());
 
@@ -154,9 +155,9 @@ namespace Plank.Net.Managers
             {
                 try
                 {
-                    if (_repository.Get(entity.Id) != null)
+                    if (await _repository.GetAsync(entity.Id) != null)
                     {
-                        id = _repository.Update(entity);
+                        id = await _repository.UpdateAsync(entity);
                     }
                     else
                     {
@@ -183,7 +184,7 @@ namespace Plank.Net.Managers
             return results;
         }
 
-        public PostResponse Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public async Task<PostResponse> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             _logger.Info(entity.ToJson());
 
@@ -192,9 +193,9 @@ namespace Plank.Net.Managers
 
             try
             {
-                if (_repository.Get(entity.Id) != null)
+                if (await _repository.GetAsync(entity.Id) != null)
                 {
-                    id = _repository.Update(entity, properties);
+                    id = await _repository.UpdateAsync(entity, properties);
                 }
                 else
                 {

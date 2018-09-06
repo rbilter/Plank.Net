@@ -2,6 +2,7 @@
 using Plank.Net.Controllers;
 using Plank.Net.Tests.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Plank.Net.Tests.Controllers
 {
@@ -26,13 +27,13 @@ namespace Plank.Net.Tests.Controllers
         #region TEST METHODS
 
         [TestMethod]
-        public void Create_ValidEntity_Created()
+        public async Task Create_ValidEntity_Created()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
 
             // Act
-            var response = _controller.Create(item);
+            var response = await _controller.CreateAsync(item);
 
             // Assert
             Assert.IsTrue(response.ValidationResults.IsValid);
@@ -41,16 +42,16 @@ namespace Plank.Net.Tests.Controllers
         }
 
         [TestMethod]
-        public void Delete_EntityExists_Deleted()
+        public async Task Delete_EntityExists_Deleted()
         {
             // Arrange
             var entity = TestHelper.GetParentEntity();
 
             // Act
-            var created = _controller.Create(entity);
+            var created = await _controller.CreateAsync(entity);
             Assert.IsTrue(created.ValidationResults.IsValid);
 
-            var deleted = _controller.Delete(created.Id);
+            var deleted = await _controller.DeleteAsync(created.Id);
 
             // Assert
             Assert.IsTrue(deleted.ValidationResults.IsValid);
@@ -58,13 +59,13 @@ namespace Plank.Net.Tests.Controllers
         }
 
         [TestMethod]
-        public void Get_EntityFoundById_EntityReturned()
+        public async Task Get_EntityFoundById_EntityReturned()
         {
             // Arrange
             var id = TestHelper.GetParentId();
 
             // Act
-            var response = _controller.Get(id);
+            var response = await _controller.GetAsync(id);
 
             // Assert
             Assert.IsTrue(response.IsValid);
@@ -73,12 +74,12 @@ namespace Plank.Net.Tests.Controllers
         }
 
         [TestMethod]
-        public void Search_EntitiesExist_PageReturned()
+        public async Task Search_EntitiesExist_PageReturned()
         {
             // Arrange
 
             // Act
-            var response = _controller.Search(null, 1, 10);
+            var response = await _controller.SearchAsync(null, 1, 10);
 
             // Assert
             Assert.IsTrue(response.Items.Count() > 0);
@@ -93,7 +94,7 @@ namespace Plank.Net.Tests.Controllers
         }
 
         [TestMethod]
-        public void Update_EntityValid_Updated()
+        public async Task Update_EntityValid_Updated()
         {
             // Arrange
             var firstName = TestHelper.GetRandomString(10);
@@ -101,14 +102,14 @@ namespace Plank.Net.Tests.Controllers
             var add       = TestHelper.GetParentEntity();
 
             // Act
-            var response = _controller.Create(add);
+            var response = await _controller.CreateAsync(add);
             Assert.IsTrue(response.ValidationResults.IsValid);
 
             add.FirstName = firstName;
             add.LastName  = lastName;
-            response = _controller.Update(add);
+            response = await _controller.UpdateAsync(add);
 
-            var updated = _controller.Get(add.Id);
+            var updated = await _controller.GetAsync(add.Id);
 
             // Assert
             Assert.IsTrue(response.ValidationResults.IsValid);

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Plank.Net.Tests.Managers
 {
@@ -72,26 +73,26 @@ namespace Plank.Net.Tests.Managers
         }
 
         [TestMethod]
-        public void Create_EntityValid_Created()
+        public async Task Create_EntityValid_Created()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Create(item)).Returns(item.Id);
+            repo.Setup(m => m.CreateAsync(item)).Returns(Task.FromResult(item.Id));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Create(item);
+            var result  = await manager.CreateAsync(item);
 
             // Assert
             Assert.IsTrue(result.ValidationResults.IsValid);
             Assert.AreEqual(item.Id, result.Id);
-            repo.Verify(m => m.Create(item), Times.Once());
+            repo.Verify(m => m.CreateAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Create_EntityNotValid_NotCreated()
+        public async Task Create_EntityNotValid_NotCreated()
         {
             // Arrange
             var item       = TestHelper.GetParentEntity();
@@ -102,17 +103,17 @@ namespace Plank.Net.Tests.Managers
             // Act
             //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Create(item);
+            var result  = await  manager.CreateAsync(item);
 
             // Assert
             //
             Assert.IsFalse(result.ValidationResults.IsValid);
-            repo.Verify(m => m.Create(item), Times.Never());
+            repo.Verify(m => m.CreateAsync(item), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Create_ChildEntityNotValid_NotCreated()
+        public async Task Create_ChildEntityNotValid_NotCreated()
         {
             // Arrange
             var invalidChild     = TestHelper.GetChildOne();
@@ -129,16 +130,16 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Create(item);
+            var result  = await manager.CreateAsync(item);
 
             // Assert
             Assert.IsFalse(result.ValidationResults.IsValid);
-            repo.Verify(m => m.Create(item), Times.Never());
+            repo.Verify(m => m.CreateAsync(item), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Create_EntityNull_NotCreated()
+        public async Task Create_EntityNull_NotCreated()
         {
             // Arrange
             var repo = new Mock<IEntityRepository<ParentEntity>>();
@@ -146,18 +147,18 @@ namespace Plank.Net.Tests.Managers
             // Act
             //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Create(null);
+            var result  = await manager.CreateAsync(null);
 
             // Assert
             //
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("ParentEntity cannot be null.", result.ValidationResults.ElementAt(0).Message);
-            repo.Verify(m => m.Create(It.IsAny<ParentEntity>()), Times.Never());
+            repo.Verify(m => m.CreateAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Create_ValidatorHasFailResult_NotCreated()
+        public async Task Create_ValidatorHasFailResult_NotCreated()
         {
             // Arrange
             var entity = TestHelper.GetParentEntity();
@@ -167,27 +168,27 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Create(entity);
+            var result  = await manager.CreateAsync(entity);
 
             // Assert
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("There was a problem", result.ValidationResults.ElementAt(0).Message);
-            repo.Verify(m => m.Create(It.IsAny<ParentEntity>()), Times.Never());
+            repo.Verify(m => m.CreateAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Create_RepositoryThrowException_NotCreated()
+        public async Task Create_RepositoryThrowException_NotCreated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Create(item)).Throws(new DataException("Error"));
+            repo.Setup(m => m.CreateAsync(item)).Throws(new DataException("Error"));
 
             // Act
             //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Create(item);
+            var result  = await manager.CreateAsync(item);
 
             // Assert
             //
@@ -199,119 +200,119 @@ namespace Plank.Net.Tests.Managers
         }
 
         [TestMethod]
-        public void Delete_EntityExists_Deleted()
+        public async Task Delete_EntityExists_Deleted()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
             var id   = 1;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Delete(id)).Returns(id);
-            repo.Setup(m => m.Get(id)).Returns(item);
+            repo.Setup(m => m.DeleteAsync(id)).Returns(Task.FromResult(id));
+            repo.Setup(m => m.GetAsync(id)).Returns(Task.FromResult(item));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var results = manager.Delete(id);
+            var results = await manager.DeleteAsync(id);
 
             // Assert
             Assert.IsTrue(results.ValidationResults.IsValid);
             Assert.AreEqual(id, results.Id);
-            repo.Verify(m => m.Get(id), Times.Once());
-            repo.Verify(m => m.Delete(id), Times.Once());
+            repo.Verify(m => m.GetAsync(id), Times.Once());
+            repo.Verify(m => m.DeleteAsync(id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
-        public void Delete_EntityNotFound_NotDeleted()
+        public async Task Delete_EntityNotFound_NotDeleted()
         {
             // Arrange
             ParentEntity item = null;
             var id   = 1;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Get(id)).Returns(item);
+            repo.Setup(m => m.GetAsync(id)).Returns(Task.FromResult(item));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var results = manager.Delete(id);
+            var results = await manager.DeleteAsync(id);
 
             // Assert
             Assert.IsTrue(results.ValidationResults.IsValid);
-            repo.Verify(m => m.Get(id), Times.Once());
-            repo.Verify(m => m.Delete(id), Times.Never());
+            repo.Verify(m => m.GetAsync(id), Times.Once());
+            repo.Verify(m => m.DeleteAsync(id), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
-        public void Delete_RepositoryThrowsException_NotDeleted()
+        public async Task Delete_RepositoryThrowsException_NotDeleted()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
             var id   = 1;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Get(id)).Returns(item);
-            repo.Setup(m => m.Delete(id)).Throws(new DataException("Error"));
+            repo.Setup(m => m.GetAsync(id)).Returns(Task.FromResult(item));
+            repo.Setup(m => m.DeleteAsync(id)).Throws(new DataException("Error"));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var results = manager.Delete(id);
+            var results = await manager.DeleteAsync(id);
 
             // Assert
             Assert.IsFalse(results.ValidationResults.IsValid);
             Assert.AreEqual("There was an issue processing the request, please try again", results.ValidationResults.ElementAt(0).Message);
             Assert.AreEqual("Error", results.ValidationResults.ElementAt(0).Key);
-            repo.Verify(m => m.Get(id), Times.Once());
-            repo.Verify(m => m.Delete(id), Times.Once());
+            repo.Verify(m => m.GetAsync(id), Times.Once());
+            repo.Verify(m => m.DeleteAsync(id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }
 
         [TestMethod]
-        public void Get_EntityFoundById_ItemReturned()
+        public async Task Get_EntityFoundById_ItemReturned()
         {
             // Arrange
             var id   = 1;
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Get(id)).Returns(item);
+            repo.Setup(m => m.GetAsync(id)).Returns(Task.FromResult(item));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Get(id);
+            var result  = await manager.GetAsync(id);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsValid);
-            repo.Verify(m => m.Get(id), Times.Once());
+            repo.Verify(m => m.GetAsync(id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
-        public void Get_RepositoryThrowsException_IsValidFalse()
+        public async Task Get_RepositoryThrowsException_IsValidFalse()
         {
             // Arrange
             var id = 1;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Get(id)).Throws(new DataException("Error"));
+            repo.Setup(m => m.GetAsync(id)).Throws(new DataException("Error"));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result = manager.Get(id);
+            var result = await manager.GetAsync(id);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual("There was an issue processing the request, please try again", result.Message);
-            repo.Verify(m => m.Get(id), Times.Once());
+            repo.Verify(m => m.GetAsync(id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }
 
         [TestMethod]
-        public void Search_NoCriteria_PageReturned()
+        public async Task Search_NoCriteria_PageReturned()
         {
             // Arrange
             var pageNumber = 1;
@@ -319,11 +320,11 @@ namespace Plank.Net.Tests.Managers
             var item = TestHelper.GetParentEntity();
             var list = new List<ParentEntity>() { item, item }.ToPagedList(1, 10);
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Search(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Returns(list);
+            repo.Setup(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Returns(Task.FromResult(list));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Search(null, pageNumber, pageSize);
+            var result  = await manager.SearchAsync(null, pageNumber, pageSize);
 
             // Assert
             Assert.IsTrue(result.IsValid);
@@ -335,56 +336,56 @@ namespace Plank.Net.Tests.Managers
             Assert.AreEqual(1, result.PageNumber);
             Assert.AreEqual(10, result.PageSize);
             Assert.AreEqual(2, result.TotalItemCount);
-            repo.Verify(m => m.Search(It.IsAny<Expression<Func<ParentEntity, bool>>>(), 1, 10), Times.Once());
+            repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), 1, 10), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Search_RepositoryThrowsException_IsValidFalse()
+        public async Task Search_RepositoryThrowsException_IsValidFalse()
         {
             // Arrange
             var pageNumber = 1;
             var pageSize   = 10;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Search(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Throws(new DataException("Error"));
+            repo.Setup(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Throws(new DataException("Error"));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Search(null, pageNumber, pageSize);
+            var result  = await manager.SearchAsync(null, pageNumber, pageSize);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual("There was an issue processing the request, please try again", result.Message);
-            repo.Verify(m => m.Search(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize), Times.Once());
+            repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
 
         }
 
         [TestMethod]
-        public void Update_EntityValid_Updated()
+        public async Task Update_EntityValid_Updated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Get(item.Id)).Returns(item);
-            repo.Setup(m => m.Update(item)).Returns(item.Id);
+            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(item));
+            repo.Setup(m => m.UpdateAsync(item)).Returns(Task.FromResult(item.Id));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result = manager.Update(item);
+            var result = await manager.UpdateAsync(item);
 
             // Assert
             Assert.IsTrue(result.ValidationResults.IsValid);
             Assert.AreEqual(item.Id, result.Id);
-            repo.Verify(m => m.Get(item.Id), Times.Once());
-            repo.Verify(m => m.Update(item), Times.Once());
+            repo.Verify(m => m.GetAsync(item.Id), Times.Once());
+            repo.Verify(m => m.UpdateAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Update_EntityNotValid_NotUpdated()
+        public async Task Update_EntityNotValid_NotUpdated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
@@ -395,55 +396,55 @@ namespace Plank.Net.Tests.Managers
             // Act
             //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result = manager.Update(item);
+            var result = await manager.UpdateAsync(item);
 
             // Assert
             //
             Assert.IsFalse(result.ValidationResults.IsValid);
-            repo.Verify(m => m.Update(item), Times.Never());
+            repo.Verify(m => m.UpdateAsync(item), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Update_EntityNull_NotUpdated()
+        public async Task Update_EntityNull_NotUpdated()
         {
             // Arrange
             var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result = manager.Update(null);
+            var result = await manager.UpdateAsync(null);
 
             // Assert
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("ParentEntity cannot be null.", result.ValidationResults.ElementAt(0).Message);
-            repo.Verify(m => m.Update(It.IsAny<ParentEntity>()), Times.Never());
+            repo.Verify(m => m.UpdateAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Update_EntityNotFound_NotUpdated()
+        public async Task Update_EntityNotFound_NotUpdated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
             ParentEntity rItem = null;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Get(item.Id)).Returns(rItem);
+            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(rItem));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result = manager.Update(item);
+            var result = await manager.UpdateAsync(item);
 
             // Assert
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("Item could not be found.", result.ValidationResults.ElementAt(0).Message);
             Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
-            repo.Verify(m => m.Get(item.Id), Times.Once());
+            repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Update_ValidatorHasFailResult_NotUpdated()
+        public async Task Update_ValidatorHasFailResult_NotUpdated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
@@ -453,106 +454,106 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result = manager.Update(item);
+            var result = await manager.UpdateAsync(item);
 
             // Assert
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("There was a problem", result.ValidationResults.ElementAt(0).Message);
-            repo.Verify(m => m.Update(It.IsAny<ParentEntity>()), Times.Never());
+            repo.Verify(m => m.UpdateAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Update_RepositoryThrowsException_NotUpdated()
+        public async Task Update_RepositoryThrowsException_NotUpdated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IEntityRepository<ParentEntity>>();
 
-            repo.Setup(m => m.Get(item.Id)).Returns(item);
-            repo.Setup(m => m.Update(item)).Throws(new DataException("Error"));
+            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(item));
+            repo.Setup(m => m.UpdateAsync(item)).Throws(new DataException("Error"));
 
             // Act
             //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result = manager.Update(item);
+            var result = await manager.UpdateAsync(item);
 
             // Assert
             //
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("There was an issue processing the request, please try again", result.ValidationResults.ElementAt(0).Message);
             Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
-            repo.Verify(m => m.Get(item.Id), Times.Once());
-            repo.Verify(m => m.Update(item), Times.Once());
+            repo.Verify(m => m.GetAsync(item.Id), Times.Once());
+            repo.Verify(m => m.UpdateAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }
 
         [TestMethod]
-        public void Update_PartialUpdateEntityValid_Updated()
+        public async Task Update_PartialUpdateEntityValid_Updated()
         {
             // Arrange
             var item = new ParentEntity { Id = 0, IsActive = false };
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Get(item.Id)).Returns(item);
-            repo.Setup(m => m.Update(item, p => p.IsActive)).Returns(item.Id);
+            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(item));
+            repo.Setup(m => m.UpdateAsync(item, p => p.IsActive)).Returns(Task.FromResult(item.Id));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Update(item, p => p.IsActive);
+            var result  = await manager.UpdateAsync(item, p => p.IsActive);
 
             // Assert
             Assert.IsTrue(result.ValidationResults.IsValid);
             Assert.AreEqual(item.Id, result.Id);
-            repo.Verify(m => m.Get(item.Id), Times.Once());
-            repo.Verify(m => m.Update(item, p => p.IsActive), Times.Once());
+            repo.Verify(m => m.GetAsync(item.Id), Times.Once());
+            repo.Verify(m => m.UpdateAsync(item, p => p.IsActive), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
 
         }
 
         [TestMethod]
-        public void Update_PartialUpdateEntityNotFound_NotUpdated()
+        public async Task Update_PartialUpdateEntityNotFound_NotUpdated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
             ParentEntity rItem = null;
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.Get(item.Id)).Returns(rItem);
+            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(rItem));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result = manager.Update(item, p => p.FirstName);
+            var result = await manager.UpdateAsync(item, p => p.FirstName);
 
             // Assert
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("Item could not be found.", result.ValidationResults.ElementAt(0).Message);
             Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
-            repo.Verify(m => m.Get(item.Id), Times.Once());
+            repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Update_PartialUpdateRepositoryThrowsException_NotUpdated()
+        public async Task Update_PartialUpdateRepositoryThrowsException_NotUpdated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IEntityRepository<ParentEntity>>();
 
-            repo.Setup(m => m.Get(item.Id)).Returns(item);
-            repo.Setup(m => m.Update(item, p => p.FirstName)).Throws(new DataException("Error"));
+            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(item));
+            repo.Setup(m => m.UpdateAsync(item, p => p.FirstName)).Throws(new DataException("Error"));
 
             // Act
             //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = manager.Update(item, p => p.FirstName);
+            var result  = await manager.UpdateAsync(item, p => p.FirstName);
 
             // Assert
             //
             Assert.IsFalse(result.ValidationResults.IsValid);
             Assert.AreEqual("There was an issue processing the request, please try again", result.ValidationResults.ElementAt(0).Message);
             Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
-            repo.Verify(m => m.Get(item.Id), Times.Once());
-            repo.Verify(m => m.Update(item, p => p.FirstName), Times.Once());
+            repo.Verify(m => m.GetAsync(item.Id), Times.Once());
+            repo.Verify(m => m.UpdateAsync(item, p => p.FirstName), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }

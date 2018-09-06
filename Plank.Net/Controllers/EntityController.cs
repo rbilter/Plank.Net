@@ -5,6 +5,7 @@ using Plank.Net.Profiles;
 using System;
 using System.Data.Entity;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Plank.Net.Controllers
 {
@@ -30,34 +31,34 @@ namespace Plank.Net.Controllers
 
         #region METHODS
 
-        public ApiPostResponse Create(TEntity entity)
+        public async Task<ApiPostResponse> CreateAsync(TEntity entity)
         {
-            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Create(entity));
+            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(await _manager.CreateAsync(entity));
         }
 
-        public ApiPostResponse Delete(int id)
+        public async Task<ApiPostResponse> DeleteAsync(int id)
         {
-            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Delete(id));
+            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(await _manager.DeleteAsync(id));
         }
 
-        public ApiGetResponse<TEntity> Get(int id)
+        public async Task<ApiGetResponse<TEntity>> GetAsync(int id)
         {
-            return Mapping<TEntity>.Mapper.Map<ApiGetResponse<TEntity>>(_manager.Get(id));
+            return Mapping<TEntity>.Mapper.Map<ApiGetResponse<TEntity>>(await _manager.GetAsync(id));
         }
 
-        public ApiEnumerableResponse<TEntity> Search(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
+        public async Task<ApiEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
-            return Mapping<TEntity>.Mapper.Map<ApiEnumerableResponse<TEntity>>(_manager.Search(expression, pageNumber, pageSize));
+            return Mapping<TEntity>.Mapper.Map<ApiEnumerableResponse<TEntity>>(await _manager.SearchAsync(expression, pageNumber, pageSize));
         }
 
-        public ApiPostResponse Update(TEntity entity)
+        public async Task<ApiPostResponse> UpdateAsync(TEntity entity)
         {
-            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Update(entity));
+            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(await _manager.UpdateAsync(entity));
         }
 
-        public ApiPostResponse Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public async Task<ApiPostResponse> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
-            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(_manager.Update(entity, properties));
+            return Mapping<TEntity>.Mapper.Map<ApiPostResponse>(await _manager.UpdateAsync(entity, properties));
         }
 
         #endregion
