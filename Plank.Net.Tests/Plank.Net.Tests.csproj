@@ -91,10 +91,12 @@
     <Compile Include="Managers\EntityManagerTests.cs" />
     <Compile Include="Models\ChildOne.cs" />
     <Compile Include="Models\ChildTwo.cs" />
+    <Compile Include="Models\GrandParentEntity.cs" />
     <Compile Include="Models\ParentEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDbContext.cs" />
     <Compile Include="TestHelper.cs" />
+    <Compile Include="Validators\FailGrandParentValidator.cs" />
     <Compile Include="Validators\FailValidator.cs" />
     <Compile Include="Validators\PassValidator.cs" />
   </ItemGroup>

@@ -161,6 +161,25 @@ namespace Plank.Net.Tests.Managers
         public async Task Create_ValidatorHasFailResult_NotCreated()
         {
             // Arrange
+            var entity = new GrandParentEntity();
+            var repo   = new Mock<IEntityRepository<GrandParentEntity>>();
+            var logger = new Mock<ILogger<GrandParentEntity>>();
+
+            // Act
+            var manager = new EntityManager<GrandParentEntity>(repo.Object, logger.Object);
+            var result = await manager.CreateAsync(entity);
+
+            // Assert
+            Assert.IsFalse(result.ValidationResults.IsValid);
+            Assert.AreEqual("There was a problem", result.ValidationResults.ElementAt(0).Message);
+            repo.Verify(m => m.CreateAsync(It.IsAny<GrandParentEntity>()), Times.Never());
+            logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [TestMethod]
+        public async Task Create_ValidatorHasFailResultOnChildEntity_NotCreated()
+        {
+            // Arrange
             var entity = TestHelper.GetParentEntity();
             entity.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
             entity.ChildTwo = new List<ChildTwo> { TestHelper.GetChildTwo() };

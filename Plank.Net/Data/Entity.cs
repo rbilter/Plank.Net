@@ -50,6 +50,8 @@ namespace Plank.Net.Data
                 .Where(e => e.IsDefined(typeof(InversePropertyAttribute), false))
                 .ToList();
 
+            ValidateWithCustomValidators(results, this);
+
             foreach (var property in inverseProperties)
             {
                 var collection = property.GetValue(this) as IEnumerable;
