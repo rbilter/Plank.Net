@@ -1,10 +1,10 @@
 ﻿namespace Plank.Net.Contracts
 {
-    public class ApiPostResponse
+    public class PlankPostResponse
     {
         #region CONSTRUCTORS
 
-        public ApiPostResponse()
+        public PlankPostResponse()
         {
 
         }
@@ -15,7 +15,7 @@
 
         public int Id { get; set; }
 
-        public ApiValidationResults ValidationResults { get; set; }
+        public PlankValidationResults ValidationResults { get; set; }
 
         #endregion
     }

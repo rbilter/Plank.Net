@@ -2,11 +2,11 @@
 
 namespace Plank.Net.Contracts
 {
-    public class ApiEnumerableResponse<T>
+    public class PlankEnumerableResponse<T>
     {
         #region CONSTRUCTORS
 
-        public ApiEnumerableResponse()
+        public PlankEnumerableResponse()
         {
 
         }

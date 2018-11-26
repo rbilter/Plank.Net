@@ -2,7 +2,7 @@
 
 namespace Plank.Net.Contracts
 {
-    public class ApiValidationResults : List<ApiValidationResult>
+    public class PlankValidationResults : List<PlankValidationResult>
     {
         #region PROPERTIES
 

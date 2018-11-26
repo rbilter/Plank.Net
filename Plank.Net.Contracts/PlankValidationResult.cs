@@ -2,7 +2,7 @@
 
 namespace Plank.Net.Contracts
 {
-    public class ApiValidationResult
+    public class PlankValidationResult
     {
         #region PROPERTIES
 
@@ -14,7 +14,7 @@ namespace Plank.Net.Contracts
 
         public object Target { get; set; }
 
-        public IEnumerable<ApiValidationResult> NestedValidationResults { get; set; }
+        public IEnumerable<PlankValidationResult> NestedValidationResults { get; set; }
 
         #endregion
     }

@@ -11,11 +11,11 @@ namespace Plank.Net.Profiles
 
         public MappingProfile()
         {
-            CreateMap<PostResponse, ApiPostResponse>();
+            CreateMap<PostResponse, PlankPostResponse>();
 
-            CreateMap<GetResponse<TEntity>, ApiGetResponse<TEntity>>();
+            CreateMap<GetResponse<TEntity>, PlankGetResponse<TEntity>>();
 
-            CreateMap<PostEnumerableResponse<TEntity>, ApiEnumerableResponse<TEntity>>();
+            CreateMap<PostEnumerableResponse<TEntity>, PlankEnumerableResponse<TEntity>>();
 
             CreateMap<IPagedList<TEntity>, PostEnumerableResponse<TEntity>>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
