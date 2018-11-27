@@ -8,17 +8,15 @@ namespace Plank.Net.Search
     {
         #region PROPERTIES
 
-        int PageNumber { get; set; }
+        int PageNumber { get; }
 
-        int PageSize { get; set; }
-
-        Expression<Func<TEntity, bool>> SearchExpression { get; set; }
+        int PageSize { get; }
 
         #endregion
 
         #region METHODS
 
-        void Build();
+        Expression<Func<TEntity, bool>> Build();
 
         #endregion
     }

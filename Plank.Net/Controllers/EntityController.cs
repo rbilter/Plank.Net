@@ -49,8 +49,11 @@ namespace Plank.Net.Controllers
 
         public async Task<PlankEnumerableResponse<TEntity>> SearchAsync(ISearchBuilder<TEntity> builder)
         {
-            builder.Build();
-            return Mapping<TEntity>.Mapper.Map<PlankEnumerableResponse<TEntity>>(await _manager.SearchAsync(builder.SearchExpression, builder.PageNumber, builder.PageSize));
+            var expression = builder.Build();
+            var pageNumber = builder.PageNumber;
+            var pageSize   = builder.PageSize;
+
+            return Mapping<TEntity>.Mapper.Map<PlankEnumerableResponse<TEntity>>(await _manager.SearchAsync(expression, pageNumber, pageSize));
         }
 
         public async Task<PlankPostResponse> UpdateAsync(TEntity entity)
