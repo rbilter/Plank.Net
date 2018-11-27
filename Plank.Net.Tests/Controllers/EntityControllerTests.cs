@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Plank.Net.Controllers;
+using Plank.Net.Search;
 using Plank.Net.Tests.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -77,9 +79,12 @@ namespace Plank.Net.Tests.Controllers
         public async Task Search_EntitiesExist_PageReturned()
         {
             // Arrange
+            var builder = new Mock<ISearchBuilder<ParentEntity>>();
+            builder.Setup(p => p.PageNumber).Returns(1);
+            builder.Setup(p => p.PageSize).Returns(10);
 
             // Act
-            var response = await _controller.SearchAsync(null, 1, 10);
+            var response = await _controller.SearchAsync(builder.Object);
 
             // Assert
             Assert.IsTrue(response.Items.Count() > 0);
@@ -91,6 +96,8 @@ namespace Plank.Net.Tests.Controllers
             Assert.IsTrue(response.TotalItemCount <= response.PageSize ? response.IsLastPage == true : response.IsLastPage == false);
             Assert.IsTrue(response.TotalItemCount <= response.PageSize ? response.HasNextPage == false : response.HasNextPage == true);
             Assert.IsFalse(response.HasPreviousPage);
+
+            builder.Verify(m => m.Build(), Times.Once());
         }
 
         [TestMethod]

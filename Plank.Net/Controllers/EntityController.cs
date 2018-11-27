@@ -2,6 +2,7 @@
 using Plank.Net.Data;
 using Plank.Net.Managers;
 using Plank.Net.Profiles;
+using Plank.Net.Search;
 using System;
 using System.Data.Entity;
 using System.Linq.Expressions;
@@ -46,9 +47,10 @@ namespace Plank.Net.Controllers
             return Mapping<TEntity>.Mapper.Map<PlankGetResponse<TEntity>>(await _manager.GetAsync(id));
         }
 
-        public async Task<PlankEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
+        public async Task<PlankEnumerableResponse<TEntity>> SearchAsync(ISearchBuilder<TEntity> builder)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankEnumerableResponse<TEntity>>(await _manager.SearchAsync(expression, pageNumber, pageSize));
+            builder.Build();
+            return Mapping<TEntity>.Mapper.Map<PlankEnumerableResponse<TEntity>>(await _manager.SearchAsync(builder.SearchExpression, builder.PageNumber, builder.PageSize));
         }
 
         public async Task<PlankPostResponse> UpdateAsync(TEntity entity)
