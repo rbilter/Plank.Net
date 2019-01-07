@@ -21,6 +21,7 @@ namespace Plank.Net.Tests.Data
         public EntityRepositoryTests()
         {
             _repo = new EntityRepository<ParentEntity>(new TestDbContext());
+            _repo.RegisterNext(new EndRepository<ParentEntity>());
         }
 
         #endregion

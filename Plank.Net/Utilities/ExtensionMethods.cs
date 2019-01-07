@@ -1,10 +1,17 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Plank.Net.Utilities
 {
     internal static class ExtensionMethods
     {
         #region METHODS
+
+        public static Dictionary<string, string> ToDictionary(this object item)
+        {
+            var json = ToJson(item);
+            return JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+        }
 
         public static string ToJson(this object item, TypeNameHandling handling = TypeNameHandling.All)
         {
