@@ -27,6 +27,12 @@ namespace Plank.Net.Utilities
             return JsonConvert.SerializeObject(item, settings);
         }
 
+        public static TEntity ToObject<TEntity>(this Dictionary<string, string> dictionary)
+        {
+            var json = ToJson(dictionary);
+            return JsonConvert.DeserializeObject<TEntity>(json);
+        }
+
         #endregion
     }
 }

@@ -37,7 +37,7 @@ namespace Plank.Net.Data
             var id     = await Next.CreateAsync(entity);
             var key    = GetKey(id.ToString());
 
-            await client.AddAsync(key, entity.ToDictionary());
+            await client.HashSetAsync(key, entity.ToDictionary());
 
             return id;
         }
@@ -48,7 +48,7 @@ namespace Plank.Net.Data
             var client = GetClient();
             var key    = GetKey(id.ToString());
 
-            await client.RemoveAsync(key);
+            await client.HashDeleteAsync(key, await client.HashKeysAsync(key));
 
             return id;
         }
@@ -58,15 +58,18 @@ namespace Plank.Net.Data
             var client = GetClient();
             var key    = GetKey(id.ToString());
 
-            var result = await client.GetAsync<TEntity>(key);
-            if(result == null)
+            var cacheResult = await client.HashGetAllAsync<string>(key);
+            if(cacheResult != null)
             {
-                result = await Next.GetAsync(id);
-                if (result != null)
-                {
-                    await client.AddAsync(key, result, TimeSpan.FromSeconds(86400));
-                }
+                return cacheResult.ToObject<TEntity>();
             }
+
+            var result = await Next.GetAsync(id);
+            if (result != null)
+            {
+                await client.HashSetAsync(key, result.ToDictionary());
+            }
+
             return result;
         }
 
@@ -82,7 +85,7 @@ namespace Plank.Net.Data
             var id     = await Next.UpdateAsync(entity);
             var key    = GetKey(id.ToString());
 
-            await client.AddAsync(key, entity);
+            await client.HashSetAsync(key, entity.ToDictionary());
 
             return id;
         }
@@ -93,7 +96,7 @@ namespace Plank.Net.Data
             var id     = await Next.UpdateAsync(entity, properties);
             var key    = GetKey(id.ToString());
 
-            await client.AddAsync(key, entity);
+            await client.HashSetAsync(key, entity.ToDictionary());
 
             return id;
         }
