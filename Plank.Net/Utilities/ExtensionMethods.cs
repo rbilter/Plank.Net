@@ -13,7 +13,7 @@ namespace Plank.Net.Utilities
             return JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
         }
 
-        public static string ToJson(this object item, TypeNameHandling handling = TypeNameHandling.All)
+        public static string ToJson(this object item, TypeNameHandling handling = TypeNameHandling.Auto)
         {
             var settings = new JsonSerializerSettings
             {
