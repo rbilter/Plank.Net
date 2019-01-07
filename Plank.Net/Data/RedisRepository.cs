@@ -35,9 +35,9 @@ namespace Plank.Net.Data
         {
             var client = GetClient();
             var id     = await Next.CreateAsync(entity);
-            var key    = GetKey(id.ToString());
+            var key    = GetKey($"{id}");
 
-            await client.HashSetAsync(key, entity.AsDictionary());
+            await client.AddAsync(key, entity);
 
             return id;
         }
@@ -46,9 +46,9 @@ namespace Plank.Net.Data
         {
             id         = await Next.DeleteAsync(id);
             var client = GetClient();
-            var key    = GetKey(id.ToString());
+            var key    = GetKey($"{id}");
 
-            await client.HashDeleteAsync(key, await client.HashKeysAsync(key));
+            await client.RemoveAsync(key);
 
             return id;
         }
@@ -56,20 +56,17 @@ namespace Plank.Net.Data
         public override async Task<TEntity> GetAsync(int id)
         {
             var client = GetClient();
-            var key    = GetKey(id.ToString());
+            var key    = GetKey($"{id}");
 
-            var cacheResult = await client.HashGetAllAsync<string>(key);
-            if(cacheResult?.Count > 0)
+            var result = await client.GetAsync<TEntity>(key);
+            if(result != null)
             {
-                return cacheResult.ToObject<TEntity>();
+                result = await Next.GetAsync(id);
+                if (result != null)
+                {
+                    await client.AddAsync(key, result);
+                }
             }
-
-            var result = await Next.GetAsync(id);
-            if (result != null)
-            {
-                await client.HashSetAsync(key, result.AsDictionary());
-            }
-
             return result;
         }
 
@@ -83,9 +80,9 @@ namespace Plank.Net.Data
         {
             var client = GetClient();
             var id     = await Next.UpdateAsync(entity);
-            var key    = GetKey(id.ToString());
+            var key    = GetKey($"{id}");
 
-            await client.HashSetAsync(key, entity.AsDictionary());
+            await client.AddAsync(key, entity);
 
             return id;
         }
@@ -94,9 +91,9 @@ namespace Plank.Net.Data
         {
             var client = GetClient();
             var id     = await Next.UpdateAsync(entity, properties);
-            var key    = GetKey(id.ToString());
+            var key    = GetKey($"{id}");
 
-            await client.HashSetAsync(key, entity.AsDictionary());
+            await client.AddAsync(key, entity);
 
             return id;
         }
