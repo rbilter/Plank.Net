@@ -17,11 +17,9 @@ namespace Plank.Net.Utilities
         {
             var settings = new JsonSerializerSettings
             {
-                Formatting                 = Formatting.Indented,
-                MaxDepth                   = 10,
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                ReferenceLoopHandling      = ReferenceLoopHandling.Serialize,
-                TypeNameHandling           = handling
+                Formatting            = Formatting.Indented,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                TypeNameHandling      = handling
             };
 
             return JsonConvert.SerializeObject(item, settings);
