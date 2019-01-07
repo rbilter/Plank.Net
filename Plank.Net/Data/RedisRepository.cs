@@ -59,7 +59,7 @@ namespace Plank.Net.Data
             var key    = GetKey(id.ToString());
 
             var cacheResult = await client.HashGetAllAsync<string>(key);
-            if(cacheResult != null)
+            if(cacheResult?.Count > 0)
             {
                 return cacheResult.ToObject<TEntity>();
             }
