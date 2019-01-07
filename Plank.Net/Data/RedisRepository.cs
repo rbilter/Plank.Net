@@ -59,7 +59,7 @@ namespace Plank.Net.Data
             var key    = GetKey($"{id}");
 
             var result = await client.GetAsync<TEntity>(key);
-            if(result != null)
+            if(result == null)
             {
                 result = await Next.GetAsync(id);
                 if (result != null)
