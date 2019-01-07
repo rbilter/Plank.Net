@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Plank.Net.Utilities
 {
@@ -7,10 +9,11 @@ namespace Plank.Net.Utilities
     {
         #region METHODS
 
-        public static Dictionary<string, string> ToDictionary(this object item)
+        public static Dictionary<string, object> AsDictionary(this object item)
         {
-            var json = ToJson(item);
-            return JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            return item.GetType()
+                       .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                       .ToDictionary(p => p.Name, p => p.GetValue(item, null));
         }
 
         public static string ToJson(this object item, TypeNameHandling handling = TypeNameHandling.Auto)

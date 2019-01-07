@@ -37,7 +37,7 @@ namespace Plank.Net.Data
             var id     = await Next.CreateAsync(entity);
             var key    = GetKey(id.ToString());
 
-            await client.HashSetAsync(key, entity.ToDictionary());
+            await client.HashSetAsync(key, entity.AsDictionary());
 
             return id;
         }
@@ -67,7 +67,7 @@ namespace Plank.Net.Data
             var result = await Next.GetAsync(id);
             if (result != null)
             {
-                await client.HashSetAsync(key, result.ToDictionary());
+                await client.HashSetAsync(key, result.AsDictionary());
             }
 
             return result;
@@ -85,7 +85,7 @@ namespace Plank.Net.Data
             var id     = await Next.UpdateAsync(entity);
             var key    = GetKey(id.ToString());
 
-            await client.HashSetAsync(key, entity.ToDictionary());
+            await client.HashSetAsync(key, entity.AsDictionary());
 
             return id;
         }
@@ -96,7 +96,7 @@ namespace Plank.Net.Data
             var id     = await Next.UpdateAsync(entity, properties);
             var key    = GetKey(id.ToString());
 
-            await client.HashSetAsync(key, entity.ToDictionary());
+            await client.HashSetAsync(key, entity.AsDictionary());
 
             return id;
         }
