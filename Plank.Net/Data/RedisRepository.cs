@@ -1,9 +1,9 @@
 ﻿using PagedList;
-using Plank.Net.Utilities;
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Newtonsoft;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -14,7 +14,9 @@ namespace Plank.Net.Data
     {
         #region MEMBERS
 
+        private static readonly string _connectionString;
         private static readonly object _lock;
+        private static readonly string _prefix;
         private static List<ICacheClient> _clients;
 
         #endregion
@@ -23,8 +25,15 @@ namespace Plank.Net.Data
 
         static RedisRepository()
         {
-            _clients = new List<ICacheClient>();
-            _lock    = new object();
+            _clients          = new List<ICacheClient>();
+            _connectionString = ConfigurationManager.AppSettings["RedisRepository.ConnectionString"];
+            _lock             = new object();
+
+            _prefix = ConfigurationManager.AppSettings["RedisRepository.Prefix"];
+            if(!string.IsNullOrEmpty(_prefix))
+            {
+                _prefix = $"{_prefix}:";
+            }
         }
 
         #endregion
@@ -112,7 +121,7 @@ namespace Plank.Net.Data
                     client = _clients.FirstOrDefault(c => c.Database.Multiplexer.GetCounters().TotalOutstanding <= 5);
                     if (client == null)
                     {
-                        client = new StackExchangeRedisCacheClient(new NewtonsoftSerializer(), "clustercfg.singlecare-qa.ug7kvy.use1.cache.amazonaws.com:6379,ssl=true", "RichTest:");
+                        client = new StackExchangeRedisCacheClient(new NewtonsoftSerializer(), _connectionString, _prefix);
                         _clients.Add(client);
                     }
                 }
