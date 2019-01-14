@@ -81,8 +81,15 @@ namespace Plank.Net.Data
 
         public override async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
-            //TODO: Need to figure out a  way to update the cached search result so for now not going to store
-            return await Next.SearchAsync(expression, pageNumber, pageSize);
+            var client = GetClient();
+
+            //TODO: For now search will always go to next but will store any result from the search into redis
+            var result = await Next.SearchAsync(expression, pageNumber, pageSize);
+            if(result != null)
+            {
+                await client.AddAllAsync(result.Select(e => new Tuple<string, TEntity>(GetKey($"{e.Id}"), e)).ToList());
+            }
+            return result;
         }
 
         public override async Task<int> UpdateAsync(TEntity entity)
