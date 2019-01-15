@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("0285aeb8-31f5-49f5-8260-9363168f65f7")]
 
 // log4net
-[assembly: XmlConfigurator(ConfigFile = "log4net.config")]
+[assembly: XmlConfigurator(ConfigFile = "plank.net.log4net.config")]

@@ -140,7 +140,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="plank.net.log4net.config" />
     <None Include="Plank.Net.nuspec" />
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ namespace Plank.Net.Managers
     {
         #region MEMBERS
 
-        private readonly ILog _logger = LogManager.GetLogger(typeof(EntityLogger<TEntity>));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(TEntity));
 
         #endregion
 
