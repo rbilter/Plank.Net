@@ -88,6 +88,7 @@ namespace Plank.Net.Data
             if(result != null)
             {
                 await client.AddAllAsync(result.Select(e => new Tuple<string, TEntity>(GetKey($"{e.Id}"), e)).ToList());
+                await client.AddAsync(GetKey($"{expression}-{pageNumber}-{pageNumber}".GetHashCode().ToString()), result);
             }
             return result;
         }
