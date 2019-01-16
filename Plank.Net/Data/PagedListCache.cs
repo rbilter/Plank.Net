@@ -10,6 +10,8 @@ namespace Plank.Net.Data
 
         public int PageNumber { get; set; }
 
+        public int PageSize { get; set; }
+
         public int TotalItemCount { get; set; }
 
         #endregion

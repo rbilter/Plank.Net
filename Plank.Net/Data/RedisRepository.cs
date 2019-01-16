@@ -1,6 +1,5 @@
 ﻿using PagedList;
 using Plank.Net.Profiles;
-using Plank.Net.Utilities;
 using Serialize.Linq.Serializers;
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Newtonsoft;
@@ -91,10 +90,9 @@ namespace Plank.Net.Data
             var key        = GetKey($"Search:{($"{serializer.SerializeText(expression)}-{pageNumber}-{pageSize}").GetHashCode()}");
 
             // Search cache
-            var hashed = await client.HashGetAllAsync<object>(key);
-            if (hashed?.Count > 0)
+            var cached = await client.GetAsync<PagedListCache>(key);
+            if (cached != null)
             {
-                var cached = hashed.ToObject<PagedListCache>();
                 var keys   = cached.Ids.Select(i => GetKey($"{i}")).ToList();
                 var items  = await client.GetAllAsync<TEntity>(keys);
 
@@ -106,7 +104,6 @@ namespace Plank.Net.Data
                     tmpresult[index] = item.Value;
                     index++;
                 }
-
                 return tmpresult.ToPagedList(pageNumber, pageSize);
             }
 
@@ -115,7 +112,7 @@ namespace Plank.Net.Data
             if(result != null)
             {
                 await client.AddAllAsync(result.Select(e => new Tuple<string, TEntity>(GetKey($"{e.Id}"), e)).ToList());
-                await client.HashSetAsync(key, Mapping<TEntity>.Mapper.Map<PagedListCache>(result).ToDictionary());
+                await client.AddAsync(key, Mapping<TEntity>.Mapper.Map<PagedListCache>(result));
             }
             return result;
         }
@@ -148,14 +145,10 @@ namespace Plank.Net.Data
 
         private async Task FlushSearchCacheAsync()
         {
-            var client = GetClient();
-            var hashes = await client.SearchKeysAsync(GetKey("Search:*"));
+            var client     = GetClient();
+            var searchKeys = await client.SearchKeysAsync(GetKey("Search:*"));
 
-            foreach (var key in hashes)
-            {
-                var keys = await client.HashKeysAsync(key);
-                await client.HashDeleteAsync(key, keys);
-            }
+            await client.RemoveAllAsync(searchKeys);
         }
 
         private static ICacheClient GetClient()
