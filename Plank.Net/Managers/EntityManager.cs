@@ -123,7 +123,7 @@ namespace Plank.Net.Managers
         public async Task<PostEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
             expression = expression ?? (f => true);
-            _logger.Info(expression.ToString().ToJson());
+            _logger.Info(Expression.Lambda(expression).Compile().DynamicInvoke().ToJson());
 
             PostEnumerableResponse<TEntity> result = null;
             try
