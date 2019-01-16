@@ -1,5 +1,6 @@
 ﻿using PagedList;
 using Plank.Net.Profiles;
+using Plank.Net.Utilities;
 using Serialize.Linq.Serializers;
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Newtonsoft;
@@ -49,7 +50,8 @@ namespace Plank.Net.Data
             var key    = GetKey($"{id}");
 
             await client.AddAsync(key, entity);
-
+            await FlushSearchCacheAsync();
+            
             return id;
         }
 
@@ -60,6 +62,7 @@ namespace Plank.Net.Data
             var key    = GetKey($"{id}");
 
             await client.RemoveAsync(key);
+            await FlushSearchCacheAsync();
 
             return id;
         }
@@ -88,16 +91,17 @@ namespace Plank.Net.Data
             var key        = GetKey($"Search:{($"{serializer.SerializeText(expression)}-{pageNumber}-{pageSize}").GetHashCode()}");
 
             // Search cache
-            var cached = await client.GetAsync<PagedListCache>(key);
-            if(cached != null)
+            var hashed = await client.HashGetAllAsync<object>(key);
+            if (hashed?.Count > 0)
             {
-                var keys  = cached.Ids.Select(i => GetKey($"{i}")).ToList();
-                var items = await client.GetAllAsync<TEntity>(keys);
+                var cached = hashed.ToObject<PagedListCache>();
+                var keys   = cached.Ids.Select(i => GetKey($"{i}")).ToList();
+                var items  = await client.GetAllAsync<TEntity>(keys);
 
                 var tmpresult = new TEntity[cached.TotalItemCount];
-                var index     = (pageNumber - 1) * pageSize;
+                var index = (pageNumber - 1) * pageSize;
 
-                foreach(var item in items)
+                foreach (var item in items)
                 {
                     tmpresult[index] = item.Value;
                     index++;
@@ -111,7 +115,7 @@ namespace Plank.Net.Data
             if(result != null)
             {
                 await client.AddAllAsync(result.Select(e => new Tuple<string, TEntity>(GetKey($"{e.Id}"), e)).ToList());
-                await client.AddAsync(key, Mapping<TEntity>.Mapper.Map<PagedListCache>(result));
+                await client.HashSetAsync(key, Mapping<TEntity>.Mapper.Map<PagedListCache>(result).ToDictionary());
             }
             return result;
         }
@@ -141,6 +145,18 @@ namespace Plank.Net.Data
         #endregion
 
         #region PRIVATE METHODS
+
+        private async Task FlushSearchCacheAsync()
+        {
+            var client = GetClient();
+            var hashes = await client.SearchKeysAsync(GetKey("Search:*"));
+
+            foreach (var key in hashes)
+            {
+                var keys = await client.HashKeysAsync(key);
+                await client.HashDeleteAsync(key, keys);
+            }
+        }
 
         private static ICacheClient GetClient()
         {
