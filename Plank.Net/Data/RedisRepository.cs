@@ -1,5 +1,6 @@
 ﻿using PagedList;
 using Plank.Net.Profiles;
+using Serialize.Linq.Serializers;
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Newtonsoft;
 using System;
@@ -82,8 +83,9 @@ namespace Plank.Net.Data
 
         public override async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber = 1, int pageSize = 10)
         {
-            var client = GetClient();
-            var key    = GetKey($"Search:{($"{((LambdaExpression)expression).Body}-{pageNumber}-{pageSize}").GetHashCode()}");
+            var client     = GetClient();
+            var serializer = new ExpressionSerializer(new JsonSerializer());
+            var key        = GetKey($"Search:{($"{serializer.SerializeText(expression)}-{pageNumber}-{pageSize}").GetHashCode()}");
 
             // Search cache
             var cached = await client.GetAsync<PagedListCache>(key);
