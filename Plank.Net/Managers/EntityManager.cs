@@ -122,11 +122,10 @@ namespace Plank.Net.Managers
 
         public async Task<PostEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
-            _logger.Info(expression.ToJson());
+            expression = expression ?? (f => true);
+            _logger.Info(expression.ToString().ToJson());
 
             PostEnumerableResponse<TEntity> result = null;
-            expression = expression ?? (f => true);
-
             try
             {
                 var pagedList  = await _repository.SearchAsync(expression, pageNumber, pageSize);
