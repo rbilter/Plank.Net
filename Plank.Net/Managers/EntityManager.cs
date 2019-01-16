@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Newtonsoft.Json;
 using Plank.Net.Data;
 using Plank.Net.Profiles;
 using Plank.Net.Utilities;
@@ -121,7 +122,7 @@ namespace Plank.Net.Managers
 
         public async Task<PostEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
-            _logger.Info(expression);
+            _logger.Info(expression.ToJson());
 
             PostEnumerableResponse<TEntity> result = null;
             expression = expression ?? (f => true);
