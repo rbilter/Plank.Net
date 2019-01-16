@@ -80,16 +80,36 @@ namespace Plank.Net.Data
             return result;
         }
 
-        public override async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
+        public override async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber = 1, int pageSize = 10)
         {
             var client = GetClient();
+            var key    = GetKey($"Search:{($"{expression}-{pageNumber}-{pageSize}").GetHashCode()}");
 
-            //TODO: For now search will always go to next but will store any result from the search into redis
+            // Search cache
+            var cached = await client.GetAsync<PagedListCache>(key);
+            if(cached != null)
+            {
+                var keys  = cached.Ids.Select(i => GetKey($"{i}")).ToList();
+                var items = await client.GetAllAsync<TEntity>(keys);
+
+                var tmpresult = new TEntity[cached.TotalItemCount];
+                var index     = (pageNumber - 1) * pageSize;
+
+                foreach(var item in items)
+                {
+                    tmpresult[index] = item.Value;
+                    index++;
+                }
+
+                return tmpresult.ToPagedList(pageNumber, pageSize);
+            }
+
+            // Get from Next
             var result = await Next.SearchAsync(expression, pageNumber, pageSize);
             if(result != null)
             {
                 await client.AddAllAsync(result.Select(e => new Tuple<string, TEntity>(GetKey($"{e.Id}"), e)).ToList());
-                await client.AddAsync(GetKey($"Search:{($"{expression}-{pageNumber}-{pageSize}").GetHashCode()}"), Mapping<TEntity>.Mapper.Map<PagedListCache>(result));
+                await client.AddAsync(key, Mapping<TEntity>.Mapper.Map<PagedListCache>(result));
             }
             return result;
         }
