@@ -120,6 +120,7 @@
     <Compile Include="Data\IEntityRepository.cs" />
     <Compile Include="Data\IEntityValidator.cs" />
     <Compile Include="Data\IEntityValidatorOfTEntity.cs" />
+    <Compile Include="Data\PagedListCache.cs" />
     <Compile Include="Data\RedisRepository.cs" />
     <Compile Include="Data\ValidatorFactory.cs" />
     <Compile Include="Managers\EntityLogger.cs" />

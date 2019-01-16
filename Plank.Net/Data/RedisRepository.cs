@@ -1,4 +1,5 @@
 ﻿using PagedList;
+using Plank.Net.Profiles;
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Newtonsoft;
 using System;
@@ -88,7 +89,7 @@ namespace Plank.Net.Data
             if(result != null)
             {
                 await client.AddAllAsync(result.Select(e => new Tuple<string, TEntity>(GetKey($"{e.Id}"), e)).ToList());
-                await client.AddAsync(GetKey($"Search:{($"{expression}-{pageNumber}-{pageSize}").GetHashCode()}"), result);
+                await client.AddAsync(GetKey($"Search:{($"{expression}-{pageNumber}-{pageSize}").GetHashCode()}"), Mapping<TEntity>.Mapper.Map<PagedListCache>(result));
             }
             return result;
         }

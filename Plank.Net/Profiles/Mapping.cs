@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Plank.Net.Data;
 using System;
 
 namespace Plank.Net.Profiles
 {
-    internal static class Mapping<TEntity>
+    internal static class Mapping<TEntity> where TEntity : IEntity
     {
         #region PROPERTIES
 
