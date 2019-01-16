@@ -1,5 +1,4 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Newtonsoft.Json;
 using Plank.Net.Data;
 using Plank.Net.Profiles;
 using Plank.Net.Utilities;
@@ -8,6 +7,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Serialize.Linq.Serializers;
 
 namespace Plank.Net.Managers
 {
@@ -123,7 +123,9 @@ namespace Plank.Net.Managers
         public async Task<PostEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
             expression = expression ?? (f => true);
-            _logger.Info(Expression.Lambda(expression).Compile().DynamicInvoke().ToJson());
+
+            var serializer = new ExpressionSerializer(new JsonSerializer());
+            _logger.Info(serializer.SerializeText(expression));
 
             PostEnumerableResponse<TEntity> result = null;
             try
