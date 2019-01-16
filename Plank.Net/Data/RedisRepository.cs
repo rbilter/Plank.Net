@@ -83,7 +83,7 @@ namespace Plank.Net.Data
         public override async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber = 1, int pageSize = 10)
         {
             var client = GetClient();
-            var key    = GetKey($"Search:{($"{expression.Body}-{pageNumber}-{pageSize}").GetHashCode()}");
+            var key    = GetKey($"Search:{($"{((LambdaExpression)expression).Body}-{pageNumber}-{pageSize}").GetHashCode()}");
 
             // Search cache
             var cached = await client.GetAsync<PagedListCache>(key);
