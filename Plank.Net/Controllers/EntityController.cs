@@ -1,7 +1,6 @@
 ﻿using Plank.Net.Contracts;
 using Plank.Net.Data;
 using Plank.Net.Managers;
-using Plank.Net.Profiles;
 using Plank.Net.Search;
 using System;
 using System.Data.Entity;
@@ -36,17 +35,17 @@ namespace Plank.Net.Controllers
 
         public async Task<PlankPostResponse<TEntity>> CreateAsync(TEntity entity)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankPostResponse<TEntity>>(await _manager.CreateAsync(entity));
+            return await _manager.CreateAsync(entity);
         }
 
         public async Task<PlankDeleteResponse> DeleteAsync(int id)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankDeleteResponse>(await _manager.DeleteAsync(id));
+            return await _manager.DeleteAsync(id);
         }
 
         public async Task<PlankGetResponse<TEntity>> GetAsync(int id)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankGetResponse<TEntity>>(await _manager.GetAsync(id));
+            return await _manager.GetAsync(id);
         }
 
         public async Task<PlankEnumerableResponse<TEntity>> SearchAsync(ISearchBuilder<TEntity> builder)
@@ -55,17 +54,17 @@ namespace Plank.Net.Controllers
             var pageNumber = builder.PageNumber;
             var pageSize   = builder.PageSize;
 
-            return Mapping<TEntity>.Mapper.Map<PlankEnumerableResponse<TEntity>>(await _manager.SearchAsync(expression, pageNumber, pageSize));
+            return await _manager.SearchAsync(expression, pageNumber, pageSize);
         }
 
         public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankPostResponse<TEntity>>(await _manager.UpdateAsync(entity));
+            return await _manager.UpdateAsync(entity);
         }
 
         public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankPostResponse<TEntity>>(await _manager.UpdateAsync(entity, properties));
+            return await _manager.UpdateAsync(entity, properties);
         }
 
         #endregion

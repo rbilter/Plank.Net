@@ -1,4 +1,5 @@
-﻿using Plank.Net.Data;
+﻿using Plank.Net.Contracts;
+using Plank.Net.Data;
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -9,17 +10,17 @@ namespace Plank.Net.Managers
     {
         #region METHODS
 
-        Task<PostResponse<TEntity>> CreateAsync(TEntity entity);
+        Task<PlankPostResponse<TEntity>> CreateAsync(TEntity entity);
 
-        Task<DeleteResponse> DeleteAsync(int id);
+        Task<PlankDeleteResponse> DeleteAsync(int id);
 
-        Task<GetResponse<TEntity>> GetAsync(int id);
+        Task<PlankGetResponse<TEntity>> GetAsync(int id);
 
-        Task<PostEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
+        Task<PlankEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
 
-        Task<PostResponse<TEntity>> UpdateAsync(TEntity entity);
+        Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity);
 
-        Task<PostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
+        Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
 
         #endregion
     }

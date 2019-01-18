@@ -126,14 +126,11 @@
     <Compile Include="Data\PagedListCache.cs" />
     <Compile Include="Data\RedisRepository.cs" />
     <Compile Include="Data\ValidatorFactory.cs" />
-    <Compile Include="Managers\DeleteResponse.cs" />
     <Compile Include="Managers\EntityLogger.cs" />
     <Compile Include="Managers\EntityManager.cs" />
-    <Compile Include="Managers\GetResponse.cs" />
     <Compile Include="Managers\IEntityLogger.cs" />
     <Compile Include="Managers\IEntityManager.cs" />
-    <Compile Include="Managers\PostEnumerableResponse.cs" />
-    <Compile Include="Managers\PostResponse.cs" />
+    <Compile Include="Managers\ValidateResult.cs" />
     <Compile Include="Profiles\Mapping.cs" />
     <Compile Include="Profiles\MappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

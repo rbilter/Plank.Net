@@ -1,13 +1,14 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Plank.Net.Contracts;
 using Plank.Net.Data;
 using Plank.Net.Profiles;
 using Plank.Net.Utilities;
+using Serialize.Linq.Serializers;
 using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Serialize.Linq.Serializers;
 
 namespace Plank.Net.Managers
 {
@@ -38,7 +39,7 @@ namespace Plank.Net.Managers
 
         #region METHODS
 
-        public async Task<PostResponse<TEntity>> CreateAsync(TEntity entity)
+        public async Task<PlankPostResponse<TEntity>> CreateAsync(TEntity entity)
         {
             _logger.Info(entity.ToJson());
 
@@ -61,13 +62,13 @@ namespace Plank.Net.Managers
                 }
             }
 
-            var results = new PostResponse<TEntity> { Item = entity, ValidationResults = validation };
+            var results = new PlankPostResponse<TEntity> { Item = entity, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
             _logger.Info(results.ToJson());
 
             return results;
         }
 
-        public async Task<DeleteResponse> DeleteAsync(int id)
+        public async Task<PlankDeleteResponse> DeleteAsync(int id)
         {
             _logger.Info(id);
 
@@ -90,27 +91,27 @@ namespace Plank.Net.Managers
                 validation.AddResult(valresult);
             }
 
-            var results = new DeleteResponse { Id = id, ValidationResults = validation };
+            var results = new PlankDeleteResponse { Id = id, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
 
             _logger.Info(results.ToJson());
             return results;
         }
 
-        public async Task<GetResponse<TEntity>> GetAsync(int id)
+        public async Task<PlankGetResponse<TEntity>> GetAsync(int id)
         {
             _logger.Info(id);
-            GetResponse<TEntity> result = null;
+            PlankGetResponse<TEntity> result = null;
 
             try
             {
                 var item = await _repository.GetAsync(id);
-                result = new GetResponse<TEntity>(item);
+                result = new PlankGetResponse<TEntity>(item);
                 result.IsValid = true;
             }
             catch (DataException e)
             {
                 _logger.Error(e);
-                result = new GetResponse<TEntity>();
+                result = new PlankGetResponse<TEntity>();
                 result.IsValid = false;
                 result.Message = "There was an issue processing the request, please try again";
             }
@@ -119,24 +120,24 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public async Task<PostEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
+        public async Task<PlankEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
             expression = expression ?? (f => true);
 
             var serializer = new ExpressionSerializer(new JsonSerializer());
             _logger.Info(serializer.SerializeText(expression));
 
-            PostEnumerableResponse<TEntity> result = null;
+            PlankEnumerableResponse<TEntity> result = null;
             try
             {
                 var pagedList  = await _repository.SearchAsync(expression, pageNumber, pageSize);
-                result         = Mapping<TEntity>.Mapper.Map<PostEnumerableResponse<TEntity>>(pagedList);
+                result         = Mapping<TEntity>.Mapper.Map<PlankEnumerableResponse<TEntity>>(pagedList);
                 result.IsValid = true;
             }
             catch(DataException e)
             {
                 _logger.Error(e);
-                result         = new PostEnumerableResponse<TEntity>();
+                result         = new PlankEnumerableResponse<TEntity>();
                 result.IsValid = false;
                 result.Message = "There was an issue processing the request, please try again";
             }
@@ -145,7 +146,7 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public async Task<PostResponse<TEntity>> UpdateAsync(TEntity entity)
+        public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity)
         {
             _logger.Info(entity.ToJson());
 
@@ -178,13 +179,13 @@ namespace Plank.Net.Managers
                 }
             }
 
-            var results = new PostResponse<TEntity> { Item = entity, ValidationResults = validation };
+            var results = new PlankPostResponse<TEntity> { Item = entity, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
             _logger.Info(results.ToJson());
 
             return results;
         }
 
-        public async Task<PostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             _logger.Info(entity.ToJson());
 
@@ -214,7 +215,7 @@ namespace Plank.Net.Managers
                 validation.AddResult(valresult);
             }
 
-            var results = new PostResponse<TEntity> { Item = entity, ValidationResults = validation };
+            var results = new PlankPostResponse<TEntity> { Item = entity, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
             _logger.Info(results.ToJson());
 
             return results;

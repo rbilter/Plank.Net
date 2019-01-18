@@ -13,8 +13,14 @@ namespace Plank.Net.Contracts
         #region CONSTRUCTORS
 
         public PlankGetResponse()
+            : this((T)Activator.CreateInstance(typeof(T)))
         {
-            _item = (T)Activator.CreateInstance(typeof(T));
+
+        }
+
+        public PlankGetResponse(T item)
+        {
+            _item = item;
         }
 
         #endregion

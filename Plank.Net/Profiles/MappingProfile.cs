@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.Practices.EnterpriseLibrary.Validation;
 using PagedList;
 using Plank.Net.Contracts;
 using Plank.Net.Data;
-using Plank.Net.Managers;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Plank.Net.Profiles
@@ -14,18 +13,12 @@ namespace Plank.Net.Profiles
 
         public MappingProfile()
         {
-            CreateMap<PostResponse<TEntity>, PlankPostResponse<TEntity>>();
-
-            CreateMap<DeleteResponse, PlankDeleteResponse>();
-
-            CreateMap<GetResponse<TEntity>, PlankGetResponse<TEntity>>();
-
-            CreateMap<PostEnumerableResponse<TEntity>, PlankEnumerableResponse<TEntity>>();
+            CreateMap<ValidationResult, PlankValidationResult>();
 
             CreateMap<IPagedList<TEntity>, PagedListCache>()
                 .ForMember(dest => dest.Ids, opt => opt.MapFrom(src => src.Select(i => i.Id)));
 
-            CreateMap<IPagedList<TEntity>, PostEnumerableResponse<TEntity>>()
+            CreateMap<IPagedList<TEntity>, PlankEnumerableResponse<TEntity>>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
         }
 
