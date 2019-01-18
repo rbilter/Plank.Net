@@ -48,10 +48,10 @@ namespace Plank.Net.Data
             var item   = await Next.CreateAsync(entity);
             var key    = GetKey($"{item.Id}");
 
-            await client.AddAsync(key, entity);
+            await client.AddAsync(key, item);
             await FlushSearchCacheAsync();
             
-            return entity;
+            return item;
         }
 
         public override async Task<int> DeleteAsync(int id)
@@ -123,9 +123,9 @@ namespace Plank.Net.Data
             var item   = await Next.UpdateAsync(entity);
             var key    = GetKey($"{item.Id}");
 
-            await client.AddAsync(key, entity);
+            await client.AddAsync(key, item);
 
-            return entity;
+            return item;
         }
 
         public override async Task<TEntity> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
@@ -134,9 +134,9 @@ namespace Plank.Net.Data
             var item   = await Next.UpdateAsync(entity, properties);
             var key    = GetKey($"{item.Id}");
 
-            await client.AddAsync(key, entity);
+            await client.AddAsync(key, item);
 
-            return entity;
+            return item;
         }
 
         #endregion
