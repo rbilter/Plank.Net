@@ -26,17 +26,15 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public override async Task<TEntity> CreateAsync(TEntity entity)
+        public override async Task CreateAsync(TEntity entity)
         {
             await Next.CreateAsync(entity);
 
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync();
-
-            return entity;
         }
 
-        public override async Task<int> DeleteAsync(int id)
+        public override async Task DeleteAsync(int id)
         {
             await Next.DeleteAsync(id);
 
@@ -44,8 +42,6 @@ namespace Plank.Net.Data
             _context.Set<TEntity>().Attach(item);
             _context.Set<TEntity>().Remove(item);
             await _context.SaveChangesAsync();
-
-            return id;
         }
 
         public override async Task<TEntity> GetAsync(int id)
@@ -70,18 +66,16 @@ namespace Plank.Net.Data
             return await Next.SearchAsync(expression, pageNumber, pageSize);
         }
 
-        public override async Task<TEntity> UpdateAsync(TEntity entity)
+        public override async Task UpdateAsync(TEntity entity)
         {
             await Next.UpdateAsync(entity);
 
             var existing = await GetAsync(entity.Id);
             _context.Entry(existing).CurrentValues.SetValues(entity);
             await _context.SaveChangesAsync();
-
-            return entity;
         }
 
-        public override async Task<TEntity> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public override async Task UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             await Next.UpdateAsync(entity, properties);
 
@@ -94,8 +88,6 @@ namespace Plank.Net.Data
             }
 
             await _context.SaveChangesAsync();
-
-            return entity;
         }
 
         #endregion

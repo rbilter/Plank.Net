@@ -42,28 +42,26 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public override async Task<TEntity> CreateAsync(TEntity entity)
+        public override async Task CreateAsync(TEntity entity)
         {
-            var client = GetClient();
-            var item   = await Next.CreateAsync(entity);
-            var key    = GetKey($"{item.Id}");
+            await Next.CreateAsync(entity);
 
-            await client.AddAsync(key, item);
+            var client = GetClient();
+            var key    = GetKey($"{entity.Id}");
+
+            await client.AddAsync(key, entity);
             await FlushSearchCacheAsync();
-            
-            return item;
         }
 
-        public override async Task<int> DeleteAsync(int id)
+        public override async Task DeleteAsync(int id)
         {
-            id         = await Next.DeleteAsync(id);
+            await Next.DeleteAsync(id);
+
             var client = GetClient();
             var key    = GetKey($"{id}");
 
             await client.RemoveAsync(key);
             await FlushSearchCacheAsync();
-
-            return id;
         }
 
         public override async Task<TEntity> GetAsync(int id)
@@ -117,26 +115,24 @@ namespace Plank.Net.Data
             return result;
         }
 
-        public override async Task<TEntity> UpdateAsync(TEntity entity)
+        public override async Task UpdateAsync(TEntity entity)
         {
+            await Next.UpdateAsync(entity);
+
             var client = GetClient();
-            var item   = await Next.UpdateAsync(entity);
-            var key    = GetKey($"{item.Id}");
+            var key    = GetKey($"{entity.Id}");
 
-            await client.AddAsync(key, item);
-
-            return item;
+            await client.AddAsync(key, entity);
         }
 
-        public override async Task<TEntity> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public override async Task UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
+            await Next.UpdateAsync(entity, properties);
+
             var client = GetClient();
-            var item   = await Next.UpdateAsync(entity, properties);
-            var key    = GetKey($"{item.Id}");
+            var key    = GetKey($"{entity.Id}");
 
-            await client.AddAsync(key, item);
-
-            return item;
+            await client.AddAsync(key, entity);
         }
 
         #endregion

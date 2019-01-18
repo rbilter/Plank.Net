@@ -36,11 +36,11 @@ namespace Plank.Net.Tests.Data
             entity.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
 
             // Act
-            var item    = await _repo.CreateAsync(entity);
-            var created = await _repo.GetAsync(item.Id);
+            await _repo.CreateAsync(entity);
+            var created = await _repo.GetAsync(entity.Id);
 
             // Assert
-            Assert.AreEqual(entity.Id, item.Id);
+            Assert.AreEqual(entity.Id, created.Id);
             Assert.AreEqual(entity.ChildOne.First().Id, created.ChildOne.First().Id);
         }
 
@@ -53,12 +53,11 @@ namespace Plank.Net.Tests.Data
             // Act
             await _repo.CreateAsync(expected);
 
-            var id     = await _repo.DeleteAsync(expected.Id);
-            var actual = await _repo.GetAsync(id);
+            await _repo.DeleteAsync(expected.Id);
+            var actual = await _repo.GetAsync(expected.Id);
 
             // Assert
             Assert.IsNull(actual, "Item was not deleted.");
-            Assert.AreEqual(expected.Id, id);
         }
 
         [TestMethod]
@@ -102,11 +101,10 @@ namespace Plank.Net.Tests.Data
             expected.FirstName = firstName;
             expected.LastName  = lastName;
 
-            var item     = await _repo.UpdateAsync(expected);
-            var actual = await _repo.GetAsync(item.Id);
+            await _repo.UpdateAsync(expected);
+            var actual = await _repo.GetAsync(expected.Id);
 
             // Assert
-            Assert.AreEqual(expected.Id, item.Id);
             Assert.AreEqual(expected.Id, actual.Id);
             Assert.AreEqual(firstName, actual.FirstName);
             Assert.AreEqual(lastName, actual.LastName);
@@ -123,8 +121,8 @@ namespace Plank.Net.Tests.Data
             Assert.AreEqual(true, added.IsActive);
 
             var updated = new ParentEntity { Id = added.Id, IsActive = false };
-            var item    = await _repo.UpdateAsync(updated, p => p.IsActive);
-            var actual  = await _repo.GetAsync(item.Id);
+            await _repo.UpdateAsync(updated, p => p.IsActive);
+            var actual  = await _repo.GetAsync(updated.Id);
 
             // Assert
             Assert.AreEqual(added.Id, actual.Id);

@@ -15,9 +15,9 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        Task<TEntity> CreateAsync(TEntity entity);
+        Task CreateAsync(TEntity entity);
 
-        Task<int> DeleteAsync(int id);
+        Task DeleteAsync(int id);
 
         Task<TEntity> GetAsync(int id);
 
@@ -25,9 +25,9 @@ namespace Plank.Net.Data
 
         Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
 
-        Task<TEntity> UpdateAsync(TEntity entity);
+        Task UpdateAsync(TEntity entity);
 
-        Task<TEntity> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
+        Task UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
 
         #endregion
     }
