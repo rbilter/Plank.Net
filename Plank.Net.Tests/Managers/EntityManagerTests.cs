@@ -78,7 +78,7 @@ namespace Plank.Net.Tests.Managers
             // Arrange
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IEntityRepository<ParentEntity>>();
-            repo.Setup(m => m.CreateAsync(item)).Returns(Task.FromResult(item.Id));
+            repo.Setup(m => m.CreateAsync(item)).Returns(Task.FromResult(item));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
@@ -86,7 +86,7 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             Assert.IsTrue(result.ValidationResults.IsValid);
-            Assert.AreEqual(item.Id, result.Id);
+            Assert.AreEqual(item.Id, result.Item.Id);
             repo.Verify(m => m.CreateAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -389,7 +389,7 @@ namespace Plank.Net.Tests.Managers
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(item));
-            repo.Setup(m => m.UpdateAsync(item)).Returns(Task.FromResult(item.Id));
+            repo.Setup(m => m.UpdateAsync(item)).Returns(Task.FromResult(item));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
@@ -397,7 +397,7 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             Assert.IsTrue(result.ValidationResults.IsValid);
-            Assert.AreEqual(item.Id, result.Id);
+            Assert.AreEqual(item.Id, result.Item.Id);
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
@@ -515,7 +515,7 @@ namespace Plank.Net.Tests.Managers
             var item = new ParentEntity { Id = 0, IsActive = false };
             var repo = new Mock<IEntityRepository<ParentEntity>>();
             repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(item));
-            repo.Setup(m => m.UpdateAsync(item, p => p.IsActive)).Returns(Task.FromResult(item.Id));
+            repo.Setup(m => m.UpdateAsync(item, p => p.IsActive)).Returns(Task.FromResult(item));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
@@ -523,7 +523,7 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             Assert.IsTrue(result.ValidationResults.IsValid);
-            Assert.AreEqual(item.Id, result.Id);
+            Assert.AreEqual(item.Id, result.Item.Id);
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item, p => p.IsActive), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));

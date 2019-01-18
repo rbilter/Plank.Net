@@ -36,11 +36,11 @@ namespace Plank.Net.Tests.Data
             entity.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
 
             // Act
-            var id      = await _repo.CreateAsync(entity);
-            var created = await _repo.GetAsync(id);
+            var item    = await _repo.CreateAsync(entity);
+            var created = await _repo.GetAsync(item.Id);
 
             // Assert
-            Assert.AreEqual(entity.Id, id);
+            Assert.AreEqual(entity.Id, item.Id);
             Assert.AreEqual(entity.ChildOne.First().Id, created.ChildOne.First().Id);
         }
 
@@ -102,11 +102,11 @@ namespace Plank.Net.Tests.Data
             expected.FirstName = firstName;
             expected.LastName  = lastName;
 
-            var id     = await _repo.UpdateAsync(expected);
-            var actual = await _repo.GetAsync(id);
+            var item     = await _repo.UpdateAsync(expected);
+            var actual = await _repo.GetAsync(item.Id);
 
             // Assert
-            Assert.AreEqual(expected.Id, id);
+            Assert.AreEqual(expected.Id, item.Id);
             Assert.AreEqual(expected.Id, actual.Id);
             Assert.AreEqual(firstName, actual.FirstName);
             Assert.AreEqual(lastName, actual.LastName);
@@ -123,8 +123,8 @@ namespace Plank.Net.Tests.Data
             Assert.AreEqual(true, added.IsActive);
 
             var updated = new ParentEntity { Id = added.Id, IsActive = false };
-            var id      = await _repo.UpdateAsync(updated, p => p.IsActive);
-            var actual  = await _repo.GetAsync(id);
+            var item    = await _repo.UpdateAsync(updated, p => p.IsActive);
+            var actual  = await _repo.GetAsync(item.Id);
 
             // Assert
             Assert.AreEqual(added.Id, actual.Id);

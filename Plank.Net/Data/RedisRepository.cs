@@ -42,7 +42,7 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public override async Task<int> CreateAsync(TEntity entity)
+        public override async Task<TEntity> CreateAsync(TEntity entity)
         {
             var client = GetClient();
             var id     = await Next.CreateAsync(entity);
@@ -51,7 +51,7 @@ namespace Plank.Net.Data
             await client.AddAsync(key, entity);
             await FlushSearchCacheAsync();
             
-            return id;
+            return entity;
         }
 
         public override async Task<int> DeleteAsync(int id)
@@ -117,7 +117,7 @@ namespace Plank.Net.Data
             return result;
         }
 
-        public override async Task<int> UpdateAsync(TEntity entity)
+        public override async Task<TEntity> UpdateAsync(TEntity entity)
         {
             var client = GetClient();
             var id     = await Next.UpdateAsync(entity);
@@ -125,10 +125,10 @@ namespace Plank.Net.Data
 
             await client.AddAsync(key, entity);
 
-            return id;
+            return entity;
         }
 
-        public override async Task<int> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public override async Task<TEntity> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             var client = GetClient();
             var id     = await Next.UpdateAsync(entity, properties);
@@ -136,7 +136,7 @@ namespace Plank.Net.Data
 
             await client.AddAsync(key, entity);
 
-            return id;
+            return entity;
         }
 
         #endregion

@@ -9,17 +9,17 @@ namespace Plank.Net.Managers
     {
         #region METHODS
 
-        Task<PostResponse> CreateAsync(TEntity entity);
+        Task<PostResponse<TEntity>> CreateAsync(TEntity entity);
 
-        Task<PostResponse> DeleteAsync(int id);
+        Task<DeleteResponse> DeleteAsync(int id);
 
         Task<GetResponse<TEntity>> GetAsync(int id);
 
         Task<PostEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
 
-        Task<PostResponse> UpdateAsync(TEntity entity);
+        Task<PostResponse<TEntity>> UpdateAsync(TEntity entity);
 
-        Task<PostResponse> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
+        Task<PostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
 
         #endregion
     }

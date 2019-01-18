@@ -38,18 +38,18 @@ namespace Plank.Net.Managers
 
         #region METHODS
 
-        public async Task<PostResponse> CreateAsync(TEntity entity)
+        public async Task<PostResponse<TEntity>> CreateAsync(TEntity entity)
         {
             _logger.Info(entity.ToJson());
 
-            var newid      = 0;
+            TEntity item   = null;
             var validation = ValidateEntity(entity);
 
             if (validation.IsValid)
             {
                 try
                 {
-                    newid = await _repository.CreateAsync(entity);
+                    item = await _repository.CreateAsync(entity);
                 }
                 catch (DataException e)
                 {
@@ -62,13 +62,13 @@ namespace Plank.Net.Managers
                 }
             }
 
-            var results = new PostResponse { Id = newid, ValidationResults = validation };
+            var results = new PostResponse<TEntity> { Item = item, ValidationResults = validation };
             _logger.Info(results.ToJson());
 
             return results;
         }
 
-        public async Task<PostResponse> DeleteAsync(int id)
+        public async Task<DeleteResponse> DeleteAsync(int id)
         {
             _logger.Info(id);
 
@@ -91,7 +91,7 @@ namespace Plank.Net.Managers
                 validation.AddResult(valresult);
             }
 
-            var results = new PostResponse { Id = id, ValidationResults = validation };
+            var results = new DeleteResponse { Id = id, ValidationResults = validation };
 
             _logger.Info(results.ToJson());
             return results;
@@ -146,11 +146,11 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public async Task<PostResponse> UpdateAsync(TEntity entity)
+        public async Task<PostResponse<TEntity>> UpdateAsync(TEntity entity)
         {
             _logger.Info(entity.ToJson());
 
-            var id         = 0;
+            TEntity item   = null;
             var validation = ValidateEntity(entity);
 
             if (validation.IsValid)
@@ -159,7 +159,7 @@ namespace Plank.Net.Managers
                 {
                     if (await _repository.GetAsync(entity.Id) != null)
                     {
-                        id = await _repository.UpdateAsync(entity);
+                        item = await _repository.UpdateAsync(entity);
                     }
                     else
                     {
@@ -180,24 +180,24 @@ namespace Plank.Net.Managers
                 }
             }
 
-            var results = new PostResponse { Id = id, ValidationResults = validation };
+            var results = new PostResponse<TEntity> { Item = item, ValidationResults = validation };
             _logger.Info(results.ToJson());
 
             return results;
         }
 
-        public async Task<PostResponse> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public async Task<PostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             _logger.Info(entity.ToJson());
 
-            var id         = 0;
+            TEntity item   = null;
             var validation = new ValidationResults();
 
             try
             {
                 if (await _repository.GetAsync(entity.Id) != null)
                 {
-                    id = await _repository.UpdateAsync(entity, properties);
+                    item = await _repository.UpdateAsync(entity, properties);
                 }
                 else
                 {
@@ -217,7 +217,7 @@ namespace Plank.Net.Managers
                 validation.AddResult(valresult);
             }
 
-            var results = new PostResponse { Id = id, ValidationResults = validation };
+            var results = new PostResponse<TEntity> { Item = item, ValidationResults = validation };
             _logger.Info(results.ToJson());
 
             return results;

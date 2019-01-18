@@ -26,14 +26,14 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public override async Task<int> CreateAsync(TEntity entity)
+        public override async Task<TEntity> CreateAsync(TEntity entity)
         {
             await Next.CreateAsync(entity);
 
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync();
 
-            return entity.Id;
+            return entity;
         }
 
         public override async Task<int> DeleteAsync(int id)
@@ -70,7 +70,7 @@ namespace Plank.Net.Data
             return await Next.SearchAsync(expression, pageNumber, pageSize);
         }
 
-        public override async Task<int> UpdateAsync(TEntity entity)
+        public override async Task<TEntity> UpdateAsync(TEntity entity)
         {
             await Next.UpdateAsync(entity);
 
@@ -78,10 +78,10 @@ namespace Plank.Net.Data
             _context.Entry(existing).CurrentValues.SetValues(entity);
             await _context.SaveChangesAsync();
 
-            return entity.Id;
+            return entity;
         }
 
-        public override async Task<int> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public override async Task<TEntity> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             await Next.UpdateAsync(entity, properties);
 
@@ -95,7 +95,7 @@ namespace Plank.Net.Data
 
             await _context.SaveChangesAsync();
 
-            return entity.Id;
+            return entity;
         }
 
         #endregion

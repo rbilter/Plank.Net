@@ -40,7 +40,7 @@ namespace Plank.Net.Tests.Controllers
             // Assert
             Assert.IsTrue(response.ValidationResults.IsValid);
             Assert.AreEqual(0, response.ValidationResults.Count);
-            Assert.AreEqual(item.Id, response.Id);
+            Assert.AreEqual(item.Id, response.Item.Id);
         }
 
         [TestMethod]
@@ -53,11 +53,11 @@ namespace Plank.Net.Tests.Controllers
             var created = await _controller.CreateAsync(entity);
             Assert.IsTrue(created.ValidationResults.IsValid);
 
-            var deleted = await _controller.DeleteAsync(created.Id);
+            var deleted = await _controller.DeleteAsync(created.Item.Id);
 
             // Assert
             Assert.IsTrue(deleted.ValidationResults.IsValid);
-            Assert.AreEqual(created.Id, deleted.Id);
+            Assert.AreEqual(created.Item.Id, deleted.Id);
         }
 
         [TestMethod]

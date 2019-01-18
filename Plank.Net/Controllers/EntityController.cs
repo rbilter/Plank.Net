@@ -34,14 +34,14 @@ namespace Plank.Net.Controllers
 
         #region METHODS
 
-        public async Task<PlankPostResponse> CreateAsync(TEntity entity)
+        public async Task<PlankPostResponse<TEntity>> CreateAsync(TEntity entity)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankPostResponse>(await _manager.CreateAsync(entity));
+            return Mapping<TEntity>.Mapper.Map<PlankPostResponse<TEntity>>(await _manager.CreateAsync(entity));
         }
 
-        public async Task<PlankPostResponse> DeleteAsync(int id)
+        public async Task<PlankDeleteResponse> DeleteAsync(int id)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankPostResponse>(await _manager.DeleteAsync(id));
+            return Mapping<TEntity>.Mapper.Map<PlankDeleteResponse>(await _manager.DeleteAsync(id));
         }
 
         public async Task<PlankGetResponse<TEntity>> GetAsync(int id)
@@ -58,14 +58,14 @@ namespace Plank.Net.Controllers
             return Mapping<TEntity>.Mapper.Map<PlankEnumerableResponse<TEntity>>(await _manager.SearchAsync(expression, pageNumber, pageSize));
         }
 
-        public async Task<PlankPostResponse> UpdateAsync(TEntity entity)
+        public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankPostResponse>(await _manager.UpdateAsync(entity));
+            return Mapping<TEntity>.Mapper.Map<PlankPostResponse<TEntity>>(await _manager.UpdateAsync(entity));
         }
 
-        public async Task<PlankPostResponse> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
-            return Mapping<TEntity>.Mapper.Map<PlankPostResponse>(await _manager.UpdateAsync(entity, properties));
+            return Mapping<TEntity>.Mapper.Map<PlankPostResponse<TEntity>>(await _manager.UpdateAsync(entity, properties));
         }
 
         #endregion

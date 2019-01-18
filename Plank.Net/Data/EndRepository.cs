@@ -9,9 +9,9 @@ namespace Plank.Net.Data
     {
         #region METHODS
 
-        public override async Task<int> CreateAsync(TEntity entity)
+        public override async Task<TEntity> CreateAsync(TEntity entity)
         {
-            return await Task.Run(() => entity.Id);
+            return await Task.Run(() => entity);
         }
 
         public override async Task<int> DeleteAsync(int id)
@@ -29,14 +29,14 @@ namespace Plank.Net.Data
             return Task.FromResult<IPagedList<TEntity>>(null);
         }
 
-        public override async Task<int> UpdateAsync(TEntity entity)
+        public override async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            return await Task.Run(() => entity.Id);
+            return await Task.Run(() => entity);
         }
 
-        public override async Task<int> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public override async Task<TEntity> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
-            return await Task.Run(() => entity.Id);
+            return await Task.Run(() => entity);
         }
 
         #endregion

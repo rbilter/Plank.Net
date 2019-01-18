@@ -14,7 +14,9 @@ namespace Plank.Net.Profiles
 
         public MappingProfile()
         {
-            CreateMap<PostResponse, PlankPostResponse>();
+            CreateMap<PostResponse<TEntity>, PlankPostResponse<TEntity>>();
+
+            CreateMap<DeleteResponse, PlankDeleteResponse>();
 
             CreateMap<GetResponse<TEntity>, PlankGetResponse<TEntity>>();
 

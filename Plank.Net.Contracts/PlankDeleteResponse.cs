@@ -1,10 +1,10 @@
 ﻿namespace Plank.Net.Contracts
 {
-    public class PlankPostResponse<TEntity>
+    public class PlankDeleteResponse
     {
         #region CONSTRUCTORS
 
-        public PlankPostResponse()
+        public PlankDeleteResponse()
         {
 
         }
@@ -13,7 +13,7 @@
 
         #region PROPERTIES
 
-        public TEntity Item { get; set; }
+        public int Id { get; set; }
 
         public PlankValidationResults ValidationResults { get; set; }
 
