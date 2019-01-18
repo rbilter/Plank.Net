@@ -1,10 +1,8 @@
-﻿using System;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Plank.Net.Data;
+﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 namespace Plank.Net.Managers
 {
-    public sealed class PostResponse<TEntity> where TEntity : IEntity
+    public sealed class PostResponse<T>
     {
         #region CONSTRUCTORS
 
@@ -17,7 +15,7 @@ namespace Plank.Net.Managers
 
         #region PROPERTIES
 
-        public TEntity Item { get; set; }
+        public T Item { get; set; }
 
         public ValidationResults ValidationResults { get; set; }
 
