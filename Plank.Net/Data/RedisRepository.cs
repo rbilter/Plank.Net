@@ -45,8 +45,8 @@ namespace Plank.Net.Data
         public override async Task<TEntity> CreateAsync(TEntity entity)
         {
             var client = GetClient();
-            var id     = await Next.CreateAsync(entity);
-            var key    = GetKey($"{id}");
+            var item   = await Next.CreateAsync(entity);
+            var key    = GetKey($"{item.Id}");
 
             await client.AddAsync(key, entity);
             await FlushSearchCacheAsync();
@@ -120,8 +120,8 @@ namespace Plank.Net.Data
         public override async Task<TEntity> UpdateAsync(TEntity entity)
         {
             var client = GetClient();
-            var id     = await Next.UpdateAsync(entity);
-            var key    = GetKey($"{id}");
+            var item   = await Next.UpdateAsync(entity);
+            var key    = GetKey($"{item.Id}");
 
             await client.AddAsync(key, entity);
 
@@ -131,8 +131,8 @@ namespace Plank.Net.Data
         public override async Task<TEntity> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             var client = GetClient();
-            var id     = await Next.UpdateAsync(entity, properties);
-            var key    = GetKey($"{id}");
+            var item   = await Next.UpdateAsync(entity, properties);
+            var key    = GetKey($"{item.Id}");
 
             await client.AddAsync(key, entity);
 
