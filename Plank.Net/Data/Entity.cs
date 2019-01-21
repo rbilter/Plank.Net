@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace Plank.Net.Data
 {
+    [HasSelfValidation]
     public abstract class Entity : IEntity
     {
         #region CONSTRUCTORS
@@ -24,7 +25,7 @@ namespace Plank.Net.Data
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -32,11 +33,11 @@ namespace Plank.Net.Data
 
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime DateCreated { get; set; }
+        public virtual DateTime DateCreated { get; set; }
 
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime DateLastModified { get; set; }
+        public virtual DateTime DateLastModified { get; set; }
 
         #endregion
 
