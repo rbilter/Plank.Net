@@ -29,7 +29,7 @@ namespace Plank.Net.Data
 
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public Guid GlobalId { get; set; }
+        public virtual Guid GlobalId { get; set; }
 
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -44,7 +44,7 @@ namespace Plank.Net.Data
         #region METHODS
 
         [SelfValidation]
-        public void Validate(ValidationResults results)
+        public virtual void Validate(ValidationResults results)
         {
             var inverseProperties = this.GetType()
                 .GetProperties()
