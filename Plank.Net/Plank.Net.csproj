@@ -111,6 +111,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomConfiguration\PlankConfiguration.cs" />
     <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Data\AbstractRepository.cs" />
     <Compile Include="Data\EndRepository.cs" />
@@ -150,5 +151,6 @@
       <Name>Plank.Net.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
