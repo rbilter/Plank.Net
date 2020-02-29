@@ -1,5 +1,4 @@
 ﻿using Plank.Net.Contracts;
-using Plank.Net.CustomConfiguration;
 using Plank.Net.Data;
 using Plank.Net.Managers;
 using Plank.Net.Search;
@@ -22,21 +21,9 @@ namespace Plank.Net.Controllers
 
         public EntityController(DbContext context)
         {
-            //TODO: Refactor
-            var useRedisCache = PlankConfiguration.GetConfiguration().UseRedisCache;
-
             IEntityRepository<TEntity> repo = null;
-            if (useRedisCache)
-            {
-                repo = new RedisRepository<TEntity>();
-                repo.RegisterNext(new EntityRepository<TEntity>(context))
-                    .RegisterNext(new EndRepository<TEntity>());
-            }
-            else
-            {
-                repo = new EntityRepository<TEntity>(context);
-                repo.RegisterNext(new EndRepository<TEntity>());
-            }
+            repo = new EntityRepository<TEntity>(context);
+            repo.RegisterNext(new EndRepository<TEntity>());
 
             var logger = new EntityLogger<TEntity>();
             _manager = new EntityManager<TEntity>(repo, logger);
