@@ -1,7 +1,7 @@
-﻿using PagedList;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Plank.Net.Data
 {

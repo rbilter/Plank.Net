@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Plank.Net.Controllers;
 using Plank.Net.Search;
@@ -38,9 +39,9 @@ namespace Plank.Net.Tests.Controllers
             var response = await _controller.CreateAsync(item);
 
             // Assert
-            Assert.IsTrue(response.ValidationResults.IsValid);
-            Assert.AreEqual(0, response.ValidationResults.Count);
-            Assert.AreEqual(item.Id, response.Item.Id);
+            response.ValidationResults.IsValid.Should().BeTrue();
+            response.ValidationResults.Should().BeEmpty();
+            response.Item.Id.Should().Be(item.Id);
         }
 
         [TestMethod]
@@ -51,13 +52,13 @@ namespace Plank.Net.Tests.Controllers
 
             // Act
             var created = await _controller.CreateAsync(entity);
-            Assert.IsTrue(created.ValidationResults.IsValid);
+            created.ValidationResults.IsValid.Should().BeTrue();
 
             var deleted = await _controller.DeleteAsync(created.Item.Id);
 
             // Assert
-            Assert.IsTrue(deleted.ValidationResults.IsValid);
-            Assert.AreEqual(created.Item.Id, deleted.Id);
+            deleted.ValidationResults.IsValid.Should().BeTrue();
+            deleted.Id.Should().Be(created.Item.Id);
         }
 
         [TestMethod]
@@ -70,9 +71,9 @@ namespace Plank.Net.Tests.Controllers
             var response = await _controller.GetAsync(id);
 
             // Assert
-            Assert.IsTrue(response.IsValid);
-            Assert.IsNotNull(response.Item);
-            Assert.AreEqual(1, response.Item.ChildOne.Count());
+            response.IsValid.Should().BeTrue();
+            response.Item.Should().NotBeNull();
+            response.Item.ChildOne.Should().HaveCount(1);
         }
 
         [TestMethod]
@@ -87,15 +88,15 @@ namespace Plank.Net.Tests.Controllers
             var response = await _controller.SearchAsync(builder.Object);
 
             // Assert
-            Assert.IsTrue(response.Items.Count() > 0);
-            Assert.AreEqual(1, response.PageNumber);
-            Assert.AreEqual(10, response.PageSize);
-            Assert.IsTrue(response.TotalItemCount >= response.Items.Count());
-            Assert.IsTrue(response.IsValid);
-            Assert.IsTrue(response.IsFirstPage);
-            Assert.IsTrue(response.TotalItemCount <= response.PageSize ? response.IsLastPage == true : response.IsLastPage == false);
-            Assert.IsTrue(response.TotalItemCount <= response.PageSize ? response.HasNextPage == false : response.HasNextPage == true);
-            Assert.IsFalse(response.HasPreviousPage);
+            response.Items.Should().NotBeEmpty();
+            response.PageNumber.Should().Be(1);
+            response.PageSize.Should().Be(10);
+            response.TotalItemCount.Should().BeGreaterOrEqualTo(response.Items.Count());
+            response.IsValid.Should().BeTrue();
+            response.IsFirstPage.Should().BeTrue();
+            response.HasPreviousPage.Should().BeFalse();
+            (response.TotalItemCount <= response.PageSize ? response.IsLastPage == true : response.IsLastPage == false).Should().BeTrue();
+            (response.TotalItemCount <= response.PageSize ? response.HasNextPage == false : response.HasNextPage == true).Should().BeTrue();
 
             builder.Verify(m => m.Build(), Times.Once());
         }
@@ -110,7 +111,7 @@ namespace Plank.Net.Tests.Controllers
 
             // Act
             var response = await _controller.CreateAsync(add);
-            Assert.IsTrue(response.ValidationResults.IsValid);
+            response.ValidationResults.IsValid.Should().BeTrue();
 
             add.FirstName = firstName;
             add.LastName  = lastName;
@@ -119,9 +120,9 @@ namespace Plank.Net.Tests.Controllers
             var updated = await _controller.GetAsync(add.Id);
 
             // Assert
-            Assert.IsTrue(response.ValidationResults.IsValid);
-            Assert.AreEqual(firstName, updated.Item.FirstName);
-            Assert.AreEqual(lastName, updated.Item.LastName);
+            response.ValidationResults.IsValid.Should().BeTrue();
+            updated.Item.FirstName.Should().Be(firstName);
+            updated.Item.LastName.Should().Be(lastName);
         }
 
         #endregion

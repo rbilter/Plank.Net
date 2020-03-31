@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PagedList;
 using Plank.Net.Data;
 using Plank.Net.Managers;
 using Plank.Net.Tests.Models;
@@ -10,6 +10,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Plank.Net.Tests.Managers
 {
@@ -39,16 +40,15 @@ namespace Plank.Net.Tests.Managers
             // Arrange
 
             // Act
-            try
+            Action act = () => CreateManagerNullRepository();
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+               .WithMessage("Value cannot be null.\r\nParameter name: repository");
+
+            void CreateManagerNullRepository()
             {
                 var manager = new EntityManager<ParentEntity>(null, _logger.Object);
-                Assert.Fail("ArgumentNullException should have been thrown for repository.");
-            }
-            // Assert
-            catch (ArgumentNullException e)
-            {
-                var msg = "Value cannot be null.\r\nParameter name: repository";
-                Assert.AreEqual(msg, e.Message);
             }
         }
 
@@ -59,16 +59,15 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
-            try
+            Action act = () => CreateManagerNullLogger();
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+                .WithMessage("Value cannot be null.\r\nParameter name: logger");
+
+            void CreateManagerNullLogger()
             {
                 var manager = new EntityManager<ParentEntity>(repo.Object, null);
-                Assert.Fail("ArgumentNullException should have been thrown for logger.");
-            }
-            // Assert
-            catch (ArgumentNullException e)
-            {
-                var msg = "Value cannot be null.\r\nParameter name: logger";
-                Assert.AreEqual(msg, e.Message);
             }
         }
 
@@ -85,8 +84,8 @@ namespace Plank.Net.Tests.Managers
             var result  = await manager.CreateAsync(item);
 
             // Assert
-            Assert.IsTrue(result.ValidationResults.IsValid);
-            Assert.AreEqual(item.Id, result.Item.Id);
+            result.ValidationResults.IsValid.Should().BeTrue();
+            result.Item.Id.Should().Be(item.Id);
             repo.Verify(m => m.CreateAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -101,13 +100,11 @@ namespace Plank.Net.Tests.Managers
             var repo       = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
-            //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await  manager.CreateAsync(item);
 
             // Assert
-            //
-            Assert.IsFalse(result.ValidationResults.IsValid);
+            result.ValidationResults.IsValid.Should().BeFalse();
             repo.Verify(m => m.CreateAsync(item), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -133,7 +130,7 @@ namespace Plank.Net.Tests.Managers
             var result  = await manager.CreateAsync(item);
 
             // Assert
-            Assert.IsFalse(result.ValidationResults.IsValid);
+            result.ValidationResults.IsValid.Should().BeFalse();
             repo.Verify(m => m.CreateAsync(item), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -145,14 +142,12 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
-            //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.CreateAsync(null);
 
             // Assert
-            //
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("ParentEntity cannot be null.", result.ValidationResults.ElementAt(0).Message);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("ParentEntity cannot be null.");
             repo.Verify(m => m.CreateAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -170,8 +165,8 @@ namespace Plank.Net.Tests.Managers
             var result = await manager.CreateAsync(entity);
 
             // Assert
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("There was a problem", result.ValidationResults.ElementAt(0).Message);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("There was a problem");
             repo.Verify(m => m.CreateAsync(It.IsAny<GrandParentEntity>()), Times.Never());
             logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -190,8 +185,8 @@ namespace Plank.Net.Tests.Managers
             var result  = await manager.CreateAsync(entity);
 
             // Assert
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("There was a problem", result.ValidationResults.ElementAt(0).Message);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("There was a problem");
             repo.Verify(m => m.CreateAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -205,15 +200,13 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.CreateAsync(item)).Throws(new DataException("Error"));
 
             // Act
-            //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.CreateAsync(item);
 
             // Assert
-            //
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("There was an issue processing the request, please try again", result.ValidationResults.ElementAt(0).Message);
-            Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, please try again");
+            result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once);
         }
@@ -233,8 +226,8 @@ namespace Plank.Net.Tests.Managers
             var results = await manager.DeleteAsync(id);
 
             // Assert
-            Assert.IsTrue(results.ValidationResults.IsValid);
-            Assert.AreEqual(id, results.Id);
+            results.ValidationResults.IsValid.Should().BeTrue();
+            results.Id.Should().Be(id);
             repo.Verify(m => m.GetAsync(id), Times.Once());
             repo.Verify(m => m.DeleteAsync(id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
@@ -255,7 +248,7 @@ namespace Plank.Net.Tests.Managers
             var results = await manager.DeleteAsync(id);
 
             // Assert
-            Assert.IsTrue(results.ValidationResults.IsValid);
+            results.ValidationResults.IsValid.Should().BeTrue();
             repo.Verify(m => m.GetAsync(id), Times.Once());
             repo.Verify(m => m.DeleteAsync(id), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
@@ -277,9 +270,9 @@ namespace Plank.Net.Tests.Managers
             var results = await manager.DeleteAsync(id);
 
             // Assert
-            Assert.IsFalse(results.ValidationResults.IsValid);
-            Assert.AreEqual("There was an issue processing the request, please try again", results.ValidationResults.ElementAt(0).Message);
-            Assert.AreEqual("Error", results.ValidationResults.ElementAt(0).Key);
+            results.ValidationResults.IsValid.Should().BeFalse();
+            results.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, please try again");
+            results.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(id), Times.Once());
             repo.Verify(m => m.DeleteAsync(id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
@@ -301,8 +294,8 @@ namespace Plank.Net.Tests.Managers
             var result  = await manager.GetAsync(id);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.IsValid);
+            result.Should().NotBeNull();
+            result.IsValid.Should().BeTrue();
             repo.Verify(m => m.GetAsync(id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
@@ -321,9 +314,9 @@ namespace Plank.Net.Tests.Managers
             var result = await manager.GetAsync(id);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("There was an issue processing the request, please try again", result.Message);
+            result.Should().NotBeNull();
+            result.IsValid.Should().BeFalse();
+            result.Message.Should().Be("There was an issue processing the request, please try again");
             repo.Verify(m => m.GetAsync(id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
@@ -346,15 +339,15 @@ namespace Plank.Net.Tests.Managers
             var result  = await manager.SearchAsync(null, pageNumber, pageSize);
 
             // Assert
-            Assert.IsTrue(result.IsValid);
-            Assert.IsTrue(result.IsFirstPage);
-            Assert.IsTrue(result.IsLastPage);
-            Assert.IsFalse(result.HasNextPage);
-            Assert.IsFalse(result.HasPreviousPage);
-            Assert.AreEqual(2, result.Items.Count());
-            Assert.AreEqual(1, result.PageNumber);
-            Assert.AreEqual(10, result.PageSize);
-            Assert.AreEqual(2, result.TotalItemCount);
+            result.IsValid.Should().BeTrue();
+            result.IsFirstPage.Should().BeTrue();
+            result.IsLastPage.Should().BeTrue();
+            result.HasNextPage.Should().BeFalse();
+            result.HasPreviousPage.Should().BeFalse();
+            result.Items.Should().HaveCount(2);
+            result.PageNumber.Should().Be(1);
+            result.PageSize.Should().Be(10);
+            result.TotalItemCount.Should().Be(2);
             repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), 1, 10), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -373,9 +366,9 @@ namespace Plank.Net.Tests.Managers
             var result  = await manager.SearchAsync(null, pageNumber, pageSize);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("There was an issue processing the request, please try again", result.Message);
+            result.Should().NotBeNull();
+            result.IsValid.Should().BeFalse();
+            result.Message.Should().Be("There was an issue processing the request, please try again");
             repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
@@ -396,8 +389,8 @@ namespace Plank.Net.Tests.Managers
             var result = await manager.UpdateAsync(item);
 
             // Assert
-            Assert.IsTrue(result.ValidationResults.IsValid);
-            Assert.AreEqual(item.Id, result.Item.Id);
+            result.ValidationResults.IsValid.Should().BeTrue();
+            result.Item.Id.Should().Be(item.Id);
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
@@ -413,13 +406,11 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IEntityRepository<ParentEntity>>();
 
             // Act
-            //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.UpdateAsync(item);
 
             // Assert
-            //
-            Assert.IsFalse(result.ValidationResults.IsValid);
+            result.ValidationResults.IsValid.Should().BeFalse();
             repo.Verify(m => m.UpdateAsync(item), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -435,8 +426,8 @@ namespace Plank.Net.Tests.Managers
             var result = await manager.UpdateAsync(null);
 
             // Assert
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("ParentEntity cannot be null.", result.ValidationResults.ElementAt(0).Message);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("ParentEntity cannot be null.");
             repo.Verify(m => m.UpdateAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -455,9 +446,9 @@ namespace Plank.Net.Tests.Managers
             var result = await manager.UpdateAsync(item);
 
             // Assert
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("Item could not be found.", result.ValidationResults.ElementAt(0).Message);
-            Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("Item could not be found.");
+            result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -476,8 +467,8 @@ namespace Plank.Net.Tests.Managers
             var result = await manager.UpdateAsync(item);
 
             // Assert
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("There was a problem", result.ValidationResults.ElementAt(0).Message);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("There was a problem");
             repo.Verify(m => m.UpdateAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -493,15 +484,13 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.UpdateAsync(item)).Throws(new DataException("Error"));
 
             // Act
-            //
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.UpdateAsync(item);
 
             // Assert
-            //
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("There was an issue processing the request, please try again", result.ValidationResults.ElementAt(0).Message);
-            Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, please try again");
+            result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
@@ -522,8 +511,8 @@ namespace Plank.Net.Tests.Managers
             var result  = await manager.UpdateAsync(item, p => p.IsActive);
 
             // Assert
-            Assert.IsTrue(result.ValidationResults.IsValid);
-            Assert.AreEqual(item.Id, result.Item.Id);
+            result.ValidationResults.IsValid.Should().BeTrue();
+            result.Item.Id.Should().Be(item.Id);
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item, p => p.IsActive), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
@@ -544,9 +533,9 @@ namespace Plank.Net.Tests.Managers
             var result = await manager.UpdateAsync(item, p => p.FirstName);
 
             // Assert
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("Item could not be found.", result.ValidationResults.ElementAt(0).Message);
-            Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("Item could not be found.");
+            result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
@@ -568,9 +557,9 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             //
-            Assert.IsFalse(result.ValidationResults.IsValid);
-            Assert.AreEqual("There was an issue processing the request, please try again", result.ValidationResults.ElementAt(0).Message);
-            Assert.AreEqual("Error", result.ValidationResults.ElementAt(0).Key);
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, please try again");
+            result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item, p => p.FirstName), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));

@@ -52,5 +52,10 @@
   <ItemGroup>
     <None Include="Plank.Net.Contracts.nuspec" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="X.PagedList">
+      <Version>8.0.5</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

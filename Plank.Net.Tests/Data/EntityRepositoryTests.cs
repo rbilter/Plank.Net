@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Plank.Net.Data;
 using Plank.Net.Tests.Models;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Tests.Data
 {
-    [TestClass]
     public class EntityRepositoryTests
     {
         #region MEMBERS
@@ -40,8 +40,8 @@ namespace Plank.Net.Tests.Data
             var created = await _repo.GetAsync(entity.Id);
 
             // Assert
-            Assert.AreEqual(entity.Id, created.Id);
-            Assert.AreEqual(entity.ChildOne.First().Id, created.ChildOne.First().Id);
+            created.Id.Should().Be(entity.Id);
+            created.ChildOne.First().Id.Should().Be(entity.ChildOne.First().Id);
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace Plank.Net.Tests.Data
             var actual = await _repo.GetAsync(expected.Id);
 
             // Assert
-            Assert.IsNull(actual, "Item was not deleted.");
+            actual.Should().BeNull();
         }
 
         [TestMethod]
@@ -70,9 +70,9 @@ namespace Plank.Net.Tests.Data
             var entity = await _repo.GetAsync(id);
 
             // Assert
-            Assert.AreEqual(id, entity.Id);
-            Assert.AreEqual("Luke", entity.FirstName);
-            Assert.AreEqual("Skywalker", entity.LastName);
+            entity.Id.Should().Be(id);
+            entity.FirstName.Should().Be("Luke");
+            entity.LastName.Should().Be("Skywalker");
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace Plank.Net.Tests.Data
             var result = await _repo.SearchAsync(i => i.FirstName == "Han" && i.LastName == "Solo");
 
             // Assert
-            Assert.AreEqual(1, result.Count());
+            result.Should().HaveCount(1);
         }
 
         [TestMethod]
@@ -105,9 +105,9 @@ namespace Plank.Net.Tests.Data
             var actual = await _repo.GetAsync(expected.Id);
 
             // Assert
-            Assert.AreEqual(expected.Id, actual.Id);
-            Assert.AreEqual(firstName, actual.FirstName);
-            Assert.AreEqual(lastName, actual.LastName);
+            actual.Id.Should().Be(expected.Id);
+            actual.FirstName.Should().Be(firstName);
+            actual.LastName.Should().Be(lastName);
         }
 
         [TestMethod]
@@ -118,17 +118,17 @@ namespace Plank.Net.Tests.Data
 
             // Act
             await _repo.CreateAsync(added);
-            Assert.AreEqual(true, added.IsActive);
+            added.IsActive.Should().BeTrue();
 
             var updated = new ParentEntity { Id = added.Id, IsActive = false };
             await _repo.UpdateAsync(updated, p => p.IsActive);
             var actual  = await _repo.GetAsync(updated.Id);
 
             // Assert
-            Assert.AreEqual(added.Id, actual.Id);
-            Assert.AreEqual(added.FirstName, actual.FirstName);
-            Assert.AreEqual(added.LastName, actual.LastName);
-            Assert.AreEqual(false, actual.IsActive);
+            actual.Id.Should().Be(added.Id);
+            actual.FirstName.Should().Be(added.FirstName);
+            actual.LastName.Should().Be(added.LastName);
+            actual.IsActive.Should().BeFalse();
         }
 
         #endregion

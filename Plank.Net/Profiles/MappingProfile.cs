@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
-using PagedList;
 using Plank.Net.Contracts;
 using Plank.Net.Data;
 using System.Linq;
+using X.PagedList;
 
 namespace Plank.Net.Profiles
 {
