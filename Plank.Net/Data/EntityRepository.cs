@@ -11,7 +11,7 @@ namespace Plank.Net.Data
     {
         #region MEMBERS
 
-        private DbContext _context;
+        private readonly DbContext _context;
 
         #endregion
 
@@ -20,6 +20,7 @@ namespace Plank.Net.Data
         public EntityRepository(DbContext context)
         {
             _context = context;
+            _context.Configuration.LazyLoadingEnabled = false;
         }
 
         #endregion

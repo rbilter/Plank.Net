@@ -100,20 +100,24 @@ namespace Plank.Net.Managers
         public async Task<PlankGetResponse<TEntity>> GetAsync(int id)
         {
             _logger.Info(id);
-            PlankGetResponse<TEntity> result = null;
+            PlankGetResponse<TEntity> result;
 
             try
             {
                 var item = await _repository.GetAsync(id);
-                result = new PlankGetResponse<TEntity>(item);
-                result.IsValid = true;
+                result = new PlankGetResponse<TEntity>(item)
+                {
+                    IsValid = true
+                };
             }
             catch (DataException e)
             {
                 _logger.Error(e);
-                result = new PlankGetResponse<TEntity>();
-                result.IsValid = false;
-                result.Message = "There was an issue processing the request, please try again";
+                result = new PlankGetResponse<TEntity>()
+                {
+                    IsValid = false,
+                    Message = "There was an issue processing the request, please try again"
+                };
             }
 
             _logger.Info(result.ToJson());
@@ -137,9 +141,11 @@ namespace Plank.Net.Managers
             catch(DataException e)
             {
                 _logger.Error(e);
-                result         = new PlankEnumerableResponse<TEntity>();
-                result.IsValid = false;
-                result.Message = "There was an issue processing the request, please try again";
+                result = new PlankEnumerableResponse<TEntity>()
+                {
+                    IsValid = false,
+                    Message = "There was an issue processing the request, please try again"
+                };
             }
 
             _logger.Info(result.ToJson());
