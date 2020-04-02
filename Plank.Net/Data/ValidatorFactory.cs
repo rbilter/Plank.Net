@@ -47,10 +47,11 @@ namespace Plank.Net.Data
 
         private static void LoadValidators()
         {
-            var asm   = AppDomain.CurrentDomain.GetAssemblies();
-            var types = asm.SelectMany(a => a.GetTypes())
-                            .Where(t => t.IsClass && !t.IsAbstract && t.GetInterface("IEntityValidator`1") != null)
-                            .ToList();
+            var filter = new List<string> { "Microsoft", "System" };
+            var asm   = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && !filter.Any(f => a.FullName.Contains(f)));
+            var types = asm.SelectMany(a => a.GetExportedTypes())
+                           .Where(t => t.IsClass && !t.IsAbstract && t.GetInterface("IEntityValidator`1") != null)
+                           .ToList();
 
             foreach (var type in types)
             {
