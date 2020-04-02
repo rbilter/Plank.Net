@@ -31,8 +31,8 @@ namespace Plank.Net.Managers
 
         public EntityManager(IEntityRepository<TEntity> repository, ILogger<TEntity> logger)
         {
-            _repository = repository ?? throw new ArgumentNullException("repository");
-            _logger     = logger ?? throw new ArgumentNullException("logger");
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _logger     = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion

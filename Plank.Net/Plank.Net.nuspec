@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>0.0.73</version>
+    <version>0.0.74</version>
     <title>$title$</title>	
     <authors>BilterSoftware Developers</authors>
     <owners>BilterSoftware Developers</owners>
@@ -11,4 +11,9 @@
     <releaseNotes>This release contains all updates through $date$</releaseNotes>
     <copyright>Copyright 2018</copyright>
   </metadata>
+  <dependencies>
+    <dependency id="log4net" version="2.0.8" />
+    <dependency id="Serialize.Linq" version="1.8.1" />
+    <dependency id="X.PagedList" version="8.0.5" />
+  </dependencies>
 </package>

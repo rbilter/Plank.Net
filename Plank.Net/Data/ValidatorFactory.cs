@@ -9,7 +9,7 @@ namespace Plank.Net.Data
     {
         #region MEMBERS
 
-        public static List<Tuple<string, object>> _validators;
+        private static readonly List<Tuple<string, object>> _validators = new List<Tuple<string, object>>();
 
         #endregion
 
@@ -17,7 +17,6 @@ namespace Plank.Net.Data
 
         static ValidatorFactory()
         {
-            _validators = new List<Tuple<string, object>>();
             LoadValidators();
         }
 

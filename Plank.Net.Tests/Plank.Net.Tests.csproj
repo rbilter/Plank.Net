@@ -73,10 +73,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Plank.Net\plank.net.log4net.config">
+      <Link>plank.net.log4net.config</Link>
+    </None>
     <None Include="App.config" />
-    <Content Include="plank.net.log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="log4net.xsd">
       <SubType>Designer</SubType>
     </None>
