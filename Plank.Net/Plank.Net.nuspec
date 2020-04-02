@@ -10,10 +10,10 @@
     <description>This package contains a framework for quickly building Api's using .NET</description>
     <releaseNotes>This release contains all updates through $date$</releaseNotes>
     <copyright>Copyright 2018</copyright>
+    <dependencies>
+      <dependency id="log4net" version="2.0.8" />
+      <dependency id="Serialize.Linq" version="1.8.1" />
+      <dependency id="X.PagedList" version="8.0.5" />
+    </dependencies>
   </metadata>
-  <dependencies>
-    <dependency id="log4net" version="2.0.8" />
-    <dependency id="Serialize.Linq" version="1.8.1" />
-    <dependency id="X.PagedList" version="8.0.5" />
-  </dependencies>
 </package>
