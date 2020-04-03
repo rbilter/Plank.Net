@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -47,19 +48,37 @@ namespace Plank.Net.Data
 
         private static void LoadValidators()
         {
-            var filter = new List<string> { "Microsoft", "System" };
-            var asm   = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && !filter.Any(f => a.FullName.Contains(f)));
-            var types = asm.SelectMany(a => a.GetExportedTypes())
-                           .Where(t => t.IsClass && !t.IsAbstract && t.GetInterface("IEntityValidator`1") != null)
-                           .ToList();
+            var filter = new List<string> { "microsoft", "system", "mscorlib", "xunit" };
+            var asm = AppDomain.CurrentDomain.GetAssemblies().Where(a => !filter.Any(f => a.FullName.IndexOf(f, StringComparison.OrdinalIgnoreCase) >= 0) && !a.IsDynamic);
+            var allTypes = asm.SelectMany(a => a.GetExportedTypes()).Where(t => t.IsClass && !t.IsAbstract);
 
+            var types = allTypes.Where(t => t.GetInterface("IEntityValidator`1") != null 
+                                            && !t.Name.Equals("EntityFluentValidator", StringComparison.OrdinalIgnoreCase)).ToList();
             foreach (var type in types)
             {
                 var instance = Activator.CreateInstance(type);
                 var inter = type.GetInterface("IEntityValidator`1");
                 var entity = inter.GetTypeInfo().GenericTypeArguments[0];
-                
+
                 _validators.Add(new Tuple<string, object>(entity.Name, instance));
+            }
+
+            types = allTypes.Where(t => t.BaseType.IsGenericType 
+                    && t.BaseType.GetGenericTypeDefinition() == typeof(AbstractValidator<>)
+                    && !t.ContainsGenericParameters).ToList();
+
+            var fvType = typeof(EntityFluentValidator<>);
+            foreach (var type in types)
+            {
+                var instance = Activator.CreateInstance(type);
+                var abstr = type.BaseType;
+                var entity = abstr.GenericTypeArguments[0];
+
+
+                var constructed = fvType.MakeGenericType(entity);
+                var validator = Activator.CreateInstance(constructed, args: instance);
+
+                _validators.Add(new Tuple<string, object>(entity.Name, validator));
             }
         }
 

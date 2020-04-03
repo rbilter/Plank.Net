@@ -153,6 +153,46 @@ namespace Plank.Net.Tests.Managers
         }
 
         [TestMethod]
+        public async Task Create_FluentValidatorHasPassResult_Created()
+        {
+            // Arrange
+            var entity = new ChildThree
+            {
+                Id = 1
+            };
+            var repo = new Mock<IEntityRepository<ChildThree>>();
+            var logger = new Mock<ILogger<ChildThree>>();
+
+            // Act
+            var manager = new EntityManager<ChildThree>(repo.Object, logger.Object);
+            var result = await manager.CreateAsync(entity);
+
+            // Assert
+            result.ValidationResults.IsValid.Should().BeTrue();
+            repo.Verify(m => m.CreateAsync(It.IsAny<ChildThree>()), Times.Once());
+            logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [TestMethod]
+        public async Task Create_FluentValidatorHasFailResult_NotCreated()
+        {
+            // Arrange
+            var entity = new ChildThree();
+            var repo = new Mock<IEntityRepository<ChildThree>>();
+            var logger = new Mock<ILogger<ChildThree>>();
+
+            // Act
+            var manager = new EntityManager<ChildThree>(repo.Object, logger.Object);
+            var result = await manager.CreateAsync(entity);
+
+            // Assert
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("'Id' must be greater than '0'.");
+            repo.Verify(m => m.CreateAsync(It.IsAny<ChildThree>()), Times.Never);
+            logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [TestMethod]
         public async Task Create_ValidatorHasFailResult_NotCreated()
         {
             // Arrange

@@ -49,8 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EntityController.cs" />
+    <Compile Include="Data\EntityHelper.cs" />
     <Compile Include="Data\AbstractRepository.cs" />
     <Compile Include="Data\EndRepository.cs" />
+    <Compile Include="Data\EntityAdapter.cs" />
+    <Compile Include="Data\EntityFluentValidator.cs" />
     <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\EntitySqlServerMigrationSqlGenerator.cs" />
     <Compile Include="Data\Entity.cs" />
@@ -100,6 +103,9 @@
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="FluentValidation">
+      <Version>8.6.2</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.8</Version>

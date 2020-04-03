@@ -62,21 +62,6 @@ namespace Plank.Net.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task Get_EntityFoundById_EntityReturned()
-        {
-            // Arrange
-            var id = TestHelper.GetParentId();
-
-            // Act
-            var response = await _controller.GetAsync(id);
-
-            // Assert
-            response.IsValid.Should().BeTrue();
-            response.Item.Should().NotBeNull();
-            response.Item.ChildOne.Should().HaveCount(1);
-        }
-
-        [TestMethod]
         public async Task Search_EntitiesExist_PageReturned()
         {
             // Arrange
