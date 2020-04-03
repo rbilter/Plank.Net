@@ -1,5 +1,4 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 using System.Collections;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,7 +9,6 @@ namespace Plank.Net.Data
     {
         #region METHODS
 
-        [SelfValidation]
         public static void Validate(IEntity item, ValidationResults results)
         {
             var inverseProperties = item.GetType()
