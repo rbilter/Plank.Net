@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Plank.Net.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

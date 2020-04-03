@@ -1,4 +1,4 @@
-﻿using Plank.Net.Data;
+﻿using Plank.Net.Models;
 using System;
 using System.Linq.Expressions;
 

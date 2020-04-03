@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Plank.Net.Data
+namespace Plank.Net.Models
 {
     [HasSelfValidation]
     public abstract class Entity : IEntity

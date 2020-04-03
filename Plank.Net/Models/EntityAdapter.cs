@@ -2,7 +2,7 @@
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 using System;
 
-namespace Plank.Net.Data
+namespace Plank.Net.Models
 {
     [HasSelfValidation]
     public abstract class EntityAdapter : IEntity

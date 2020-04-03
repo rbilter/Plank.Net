@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Plank.Net.Models;
 
 namespace Plank.Net.Data
 {

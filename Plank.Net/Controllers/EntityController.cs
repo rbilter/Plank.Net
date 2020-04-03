@@ -1,6 +1,7 @@
 ﻿using Plank.Net.Contracts;
 using Plank.Net.Data;
 using Plank.Net.Managers;
+using Plank.Net.Models;
 using Plank.Net.Search;
 using System;
 using System.Data.Entity;

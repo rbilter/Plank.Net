@@ -2,6 +2,7 @@
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Plank.Net.Contracts;
 using Plank.Net.Data;
+using Plank.Net.Models;
 using System.Linq;
 using X.PagedList;
 

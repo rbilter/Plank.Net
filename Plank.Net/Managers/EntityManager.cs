@@ -1,6 +1,7 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Plank.Net.Contracts;
 using Plank.Net.Data;
+using Plank.Net.Models;
 using Plank.Net.Profiles;
 using Plank.Net.Utilities;
 using Serialize.Linq.Serializers;

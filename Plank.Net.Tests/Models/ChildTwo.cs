@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
+using Plank.Net.Models;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
-using Plank.Net.Data;
 
 namespace Plank.Net.Tests.Models
 {

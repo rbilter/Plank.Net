@@ -3,7 +3,7 @@ using System.Collections;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace Plank.Net.Data
+namespace Plank.Net.Models
 {
     internal static class EntityHelper
     {
@@ -46,7 +46,7 @@ namespace Plank.Net.Data
 
         private static void ValidateWithCustomValidators(ValidationResults results, object entity)
         {
-            var validators = ValidatorFactory.CreateInstance(entity.GetType());
+            var validators = Data.ValidatorFactory.CreateInstance(entity.GetType());
             foreach (var v in validators)
             {
                 results.AddAllResults(v.Validate(entity));

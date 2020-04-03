@@ -49,17 +49,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EntityController.cs" />
-    <Compile Include="Data\EntityHelper.cs" />
+    <Compile Include="Models\EntityHelper.cs" />
     <Compile Include="Data\AbstractRepository.cs" />
     <Compile Include="Data\EndRepository.cs" />
-    <Compile Include="Data\EntityAdapter.cs" />
+    <Compile Include="Models\EntityAdapter.cs" />
     <Compile Include="Data\EntityFluentValidator.cs" />
     <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\EntitySqlServerMigrationSqlGenerator.cs" />
-    <Compile Include="Data\Entity.cs" />
+    <Compile Include="Models\Entity.cs" />
     <Compile Include="Data\EntityConfiguration.cs" />
     <Compile Include="Data\EntityValidator.cs" />
-    <Compile Include="Data\IEntity.cs" />
+    <Compile Include="Models\IEntity.cs" />
     <Compile Include="Data\IEntityRepository.cs" />
     <Compile Include="Data\IEntityValidator.cs" />
     <Compile Include="Data\IEntityValidatorOfTEntity.cs" />
@@ -69,7 +69,6 @@
     <Compile Include="Managers\EntityManager.cs" />
     <Compile Include="Managers\IEntityLogger.cs" />
     <Compile Include="Managers\IEntityManager.cs" />
-    <Compile Include="Managers\ValidateResult.cs" />
     <Compile Include="Profiles\Mapping.cs" />
     <Compile Include="Profiles\MappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
 using System;
 
-namespace Plank.Net.Data
+namespace Plank.Net.Models
 {
     public interface IEntity
     {

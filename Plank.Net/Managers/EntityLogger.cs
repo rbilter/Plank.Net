@@ -1,5 +1,5 @@
 ﻿using log4net;
-using Plank.Net.Data;
+using Plank.Net.Models;
 using System;
 
 namespace Plank.Net.Managers

@@ -1,5 +1,5 @@
 ﻿using Plank.Net.Contracts;
-using Plank.Net.Data;
+using Plank.Net.Models;
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
