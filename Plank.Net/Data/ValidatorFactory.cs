@@ -53,8 +53,8 @@ namespace Plank.Net.Data
             var asm = AppDomain.CurrentDomain.GetAssemblies().Where(a => !filter.Any(f => a.FullName.IndexOf(f, StringComparison.OrdinalIgnoreCase) >= 0) && !a.IsDynamic);
             var allTypes = asm.SelectMany(a => a.GetExportedTypes()).Where(t => t.IsClass && !t.IsAbstract);
 
-            var types = allTypes.Where(t => t.GetInterface("IEntityValidator`1") != null 
-                                            && !t.Name.Equals("EntityFluentValidator", StringComparison.OrdinalIgnoreCase)).ToList();
+            var types = allTypes.Where(t => t.GetInterface("IEntityValidator`1") != null && !t.IsAbstract).ToList();
+
             foreach (var type in types)
             {
                 var instance = Activator.CreateInstance(type);
