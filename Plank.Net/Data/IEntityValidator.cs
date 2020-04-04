@@ -1,18 +1,13 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Plank.Net.Models;
 
 namespace Plank.Net.Data
 {
-    public interface IEntityValidator
+    public interface IEntityValidator<TEntity> : IValidator where TEntity : IEntity
     {
-        #region PROPERTIES
-
-        int Priority { get; set; }
-
-        #endregion
-        
         #region METHODS
 
-        ValidationResults Validate(object entity);
+        ValidationResults Validate(TEntity item);
 
         #endregion
     }

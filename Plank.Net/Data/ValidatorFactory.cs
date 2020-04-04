@@ -26,11 +26,11 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public static IEnumerable<IEntityValidator> CreateInstance(Type type)
+        public static IEnumerable<IValidator> CreateInstance(Type type)
         {
             return _validators
                 .Where(v => v.Item1 == type.Name)
-                .Select(v => (IEntityValidator)v.Item2)
+                .Select(v => (IValidator)v.Item2)
                 .OrderBy(v => v.Priority);
         }
 
