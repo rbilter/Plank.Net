@@ -1,9 +1,8 @@
-﻿using Plank.Net.Models;
-using System;
+﻿using System;
 
 namespace Plank.Net.Managers
 {
-    public interface ILogger<TEntity> where TEntity : IEntity
+    public interface ILogger
     {
         #region METHODS
 

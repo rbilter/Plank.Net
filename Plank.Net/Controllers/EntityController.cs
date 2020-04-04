@@ -22,10 +22,10 @@ namespace Plank.Net.Controllers
 
         public EntityController(DbContext context)
         {
-            IEntityRepository<TEntity> repo = new EntityRepository<TEntity>(context);
+            var repo = new EntityRepository<TEntity>(context);
             repo.RegisterNext(new EndRepository<TEntity>());
 
-            var logger = new EntityLogger<TEntity>();
+            var logger = new Logger<TEntity>();
             _manager = new EntityManager<TEntity>(repo, logger);
         }
 

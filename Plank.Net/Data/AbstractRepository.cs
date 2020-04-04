@@ -1,38 +1,37 @@
-﻿using Plank.Net.Models;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using X.PagedList;
 
 namespace Plank.Net.Data
 {
-    public abstract class AbstractRepository<TEntity> : IEntityRepository<TEntity> where TEntity : class, IEntity
+    public abstract class AbstractRepository<T> : IRepository<T>
     {
         #region PROPERTIES
 
-        public IEntityRepository<TEntity> Next { get; set; }
+        public IRepository<T> Next { get; set; }
 
         #endregion
 
         #region METHODS
 
-        public abstract Task CreateAsync(TEntity entity);
+        public abstract Task CreateAsync(T entity);
 
         public abstract Task DeleteAsync(int id);
 
-        public abstract Task<TEntity> GetAsync(int id);
+        public abstract Task<T> GetAsync(int id);
 
-        public IEntityRepository<TEntity> RegisterNext(IEntityRepository<TEntity> next)
+        public IRepository<T> RegisterNext(IRepository<T> next)
         {
             Next = next;
             return Next;
         }
 
-        public abstract Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize);
+        public abstract Task<IPagedList<T>> SearchAsync(Expression<Func<T, bool>> expression, int pageNumber, int pageSize);
 
-        public abstract Task UpdateAsync(TEntity entity);
+        public abstract Task UpdateAsync(T entity);
 
-        public abstract Task UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
+        public abstract Task UpdateAsync(T entity, params Expression<Func<T, object>>[] properties);
 
         #endregion
     }

@@ -13,24 +13,24 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Managers
 {
-    public sealed class EntityManager<TEntity> : IEntityManager<TEntity> where TEntity : class, IEntity
+    public sealed class EntityManager<TEntity> : IManager<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
 
-        private readonly IEntityRepository<TEntity> _repository;
-        private readonly ILogger<TEntity> _logger;
+        private readonly IRepository<TEntity> _repository;
+        private readonly ILogger _logger;
 
         #endregion
 
         #region CONSTRUCTORS
 
         public EntityManager(DbContext context)
-            : this(new EntityRepository<TEntity>(context), new EntityLogger<TEntity>())
+            : this(new EntityRepository<TEntity>(context), new Logger<TEntity>())
         {
 
         }
 
-        public EntityManager(IEntityRepository<TEntity> repository, ILogger<TEntity> logger)
+        public EntityManager(IRepository<TEntity> repository, ILogger logger)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _logger     = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -40,17 +40,17 @@ namespace Plank.Net.Managers
 
         #region METHODS
 
-        public async Task<PlankPostResponse<TEntity>> CreateAsync(TEntity entity)
+        public async Task<PlankPostResponse<TEntity>> CreateAsync(TEntity item)
         {
-            _logger.Info(entity.ToJson());
+            _logger.Info(item.ToJson());
 
-            var validation = ValidateEntity(entity);
+            var validation = ValidateEntity(item);
 
             if (validation.IsValid)
             {
                 try
                 {
-                    await _repository.CreateAsync(entity);
+                    await _repository.CreateAsync(item);
                 }
                 catch (DataException e)
                 {
@@ -63,7 +63,7 @@ namespace Plank.Net.Managers
                 }
             }
 
-            var results = new PlankPostResponse<TEntity> { Item = entity, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
+            var results = new PlankPostResponse<TEntity> { Item = item, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
             _logger.Info(results.ToJson());
 
             return results;
@@ -153,19 +153,19 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity)
+        public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity item)
         {
-            _logger.Info(entity.ToJson());
+            _logger.Info(item.ToJson());
 
-            var validation = ValidateEntity(entity);
+            var validation = ValidateEntity(item);
 
             if (validation.IsValid)
             {
                 try
                 {
-                    if (await _repository.GetAsync(entity.Id) != null)
+                    if (await _repository.GetAsync(item.Id) != null)
                     {
-                        await _repository.UpdateAsync(entity);
+                        await _repository.UpdateAsync(item);
                     }
                     else
                     {
@@ -186,23 +186,23 @@ namespace Plank.Net.Managers
                 }
             }
 
-            var results = new PlankPostResponse<TEntity> { Item = entity, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
+            var results = new PlankPostResponse<TEntity> { Item = item, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
             _logger.Info(results.ToJson());
 
             return results;
         }
 
-        public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
+        public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity item, params Expression<Func<TEntity, object>>[] properties)
         {
-            _logger.Info(entity.ToJson());
+            _logger.Info(item.ToJson());
 
             var validation = new ValidationResults();
 
             try
             {
-                if (await _repository.GetAsync(entity.Id) != null)
+                if (await _repository.GetAsync(item.Id) != null)
                 {
-                    await _repository.UpdateAsync(entity, properties);
+                    await _repository.UpdateAsync(item, properties);
                 }
                 else
                 {
@@ -222,7 +222,7 @@ namespace Plank.Net.Managers
                 validation.AddResult(valresult);
             }
 
-            var results = new PlankPostResponse<TEntity> { Item = entity, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
+            var results = new PlankPostResponse<TEntity> { Item = item, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
             _logger.Info(results.ToJson());
 
             return results;
@@ -232,10 +232,10 @@ namespace Plank.Net.Managers
 
         #region PRIVATE METHODS
 
-        private ValidationResults ValidateEntity(TEntity entity)
+        private ValidationResults ValidateEntity(TEntity item)
         {
             var validator  = ValidationFactory.CreateValidator<TEntity>();
-            var validation = validator.Validate(entity);
+            var validation = validator.Validate(item);
 
             return validation;
         }

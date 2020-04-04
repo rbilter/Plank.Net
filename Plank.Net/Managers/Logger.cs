@@ -1,14 +1,13 @@
 ﻿using log4net;
-using Plank.Net.Models;
 using System;
 
 namespace Plank.Net.Managers
 {
-    public sealed class EntityLogger<TEntity> : ILogger<TEntity> where TEntity : IEntity
+    public sealed class Logger<T> : ILogger 
     {
         #region MEMBERS
 
-        private readonly ILog _logger = LogManager.GetLogger(typeof(TEntity));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(T));
 
         #endregion
 
