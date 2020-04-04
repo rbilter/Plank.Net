@@ -1,6 +1,6 @@
 ﻿namespace Plank.Net.Contracts
 {
-    public class PlankPostResponse<TEntity>
+    public class PlankPostResponse<T>
     {
         #region CONSTRUCTORS
 
@@ -13,7 +13,7 @@
 
         #region PROPERTIES
 
-        public TEntity Item { get; set; }
+        public T Item { get; set; }
 
         public PlankValidationResults ValidationResults { get; set; }
 

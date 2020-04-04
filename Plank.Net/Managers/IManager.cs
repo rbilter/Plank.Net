@@ -17,9 +17,9 @@ namespace Plank.Net.Managers
 
         Task<PlankEnumerableResponse<T>> SearchAsync(Expression<Func<T, bool>> expression, int pageNumber, int pageSize);
 
-        Task<PlankPostResponse<T>> UpdateAsync(T entity);
+        Task<PlankPostResponse<T>> UpdateAsync(T item);
 
-        Task<PlankPostResponse<T>> UpdateAsync(T entity, params Expression<Func<T, object>>[] properties);
+        Task<PlankPostResponse<T>> UpdateAsync(T item, params Expression<Func<T, object>>[] properties);
 
         #endregion
     }

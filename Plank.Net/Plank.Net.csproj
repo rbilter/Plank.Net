@@ -49,22 +49,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EntityController.cs" />
-    <Compile Include="Data\IValidator.cs" />
+    <Compile Include="Models\IDto.cs" />
+    <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Models\EntityHelper.cs" />
     <Compile Include="Data\AbstractRepository.cs" />
     <Compile Include="Data\EndRepository.cs" />
     <Compile Include="Models\EntityAdapter.cs" />
-    <Compile Include="Data\EntityFluentValidator.cs" />
+    <Compile Include="Validators\EntityFluentValidator.cs" />
     <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\EntitySqlServerMigrationSqlGenerator.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Data\EntityConfiguration.cs" />
-    <Compile Include="Data\EntityValidator.cs" />
+    <Compile Include="Validators\EntityValidator.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Data\IRepository.cs" />
-    <Compile Include="Data\IEntityValidator.cs" />
+    <Compile Include="Validators\IEntityValidator.cs" />
     <Compile Include="Data\PagedListCache.cs" />
-    <Compile Include="Data\ValidatorFactory.cs" />
+    <Compile Include="Validators\ValidatorFactory.cs" />
     <Compile Include="Managers\Logger.cs" />
     <Compile Include="Managers\EntityManager.cs" />
     <Compile Include="Managers\ILogger.cs" />
