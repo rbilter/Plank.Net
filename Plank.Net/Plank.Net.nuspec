@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>0.0.81</version>
+    <version>0.0.82</version>
     <title>$title$</title>	
     <authors>BilterSoftware Developers</authors>
     <owners>BilterSoftware Developers</owners>
@@ -13,8 +13,11 @@
     <dependencies>
       <dependency id="AutoMapper" version="9.0.0" />
       <dependency id="EnterpriseLibrary.Validation" version="6.0.1304" />
+      <dependency id="EnterpriseLibrary.Common" version="6.0.1304" />
       <dependency id="EntityFramework" version="6.4.0" />
+      <dependency id="FluentValidation" version="8.6.2" />
       <dependency id="log4net" version="2.0.8" />
+      <dependency id="Newtonsoft.Json" version="12.0.3" />
       <dependency id="Serialize.Linq" version="1.8.1" />
       <dependency id="X.PagedList" version="8.0.5" />
     </dependencies>
