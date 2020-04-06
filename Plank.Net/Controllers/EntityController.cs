@@ -33,9 +33,9 @@ namespace Plank.Net.Controllers
 
         #region METHODS
 
-        public async Task<PlankPostResponse<TEntity>> CreateAsync(TEntity entity)
+        public async Task<PlankPostResponse<TEntity>> AddAsync(TEntity entity)
         {
-            return await _manager.CreateAsync(entity);
+            return await _manager.AddAsync(entity);
         }
 
         public async Task<PlankDeleteResponse> DeleteAsync(int id)

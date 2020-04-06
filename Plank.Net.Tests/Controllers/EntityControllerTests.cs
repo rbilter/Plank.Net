@@ -36,7 +36,7 @@ namespace Plank.Net.Tests.Controllers
             var item = TestHelper.GetParentEntity();
 
             // Act
-            var response = await _controller.CreateAsync(item);
+            var response = await _controller.AddAsync(item);
 
             // Assert
             response.ValidationResults.IsValid.Should().BeTrue();
@@ -51,7 +51,7 @@ namespace Plank.Net.Tests.Controllers
             var entity = TestHelper.GetParentEntity();
 
             // Act
-            var created = await _controller.CreateAsync(entity);
+            var created = await _controller.AddAsync(entity);
             created.ValidationResults.IsValid.Should().BeTrue();
 
             var deleted = await _controller.DeleteAsync(created.Item.Id);
@@ -95,7 +95,7 @@ namespace Plank.Net.Tests.Controllers
             var add       = TestHelper.GetParentEntity();
 
             // Act
-            var response = await _controller.CreateAsync(add);
+            var response = await _controller.AddAsync(add);
             response.ValidationResults.IsValid.Should().BeTrue();
 
             add.FirstName = firstName;

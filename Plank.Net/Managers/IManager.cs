@@ -9,7 +9,7 @@ namespace Plank.Net.Managers
     {
         #region METHODS
 
-        Task<PlankPostResponse<T>> CreateAsync(T item);
+        Task<PlankPostResponse<T>> AddAsync(T item);
 
         Task<PlankDeleteResponse> DeleteAsync(int id);
 

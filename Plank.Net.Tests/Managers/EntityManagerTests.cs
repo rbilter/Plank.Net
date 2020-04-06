@@ -77,16 +77,16 @@ namespace Plank.Net.Tests.Managers
             // Arrange
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IRepository<ParentEntity>>();
-            repo.Setup(m => m.CreateAsync(item)).Returns(Task.FromResult(item));
+            repo.Setup(m => m.AddAsync(item)).Returns(Task.FromResult(item));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = await manager.CreateAsync(item);
+            var result  = await manager.AddAsync(item);
 
             // Assert
             result.ValidationResults.IsValid.Should().BeTrue();
             result.Item.Id.Should().Be(item.Id);
-            repo.Verify(m => m.CreateAsync(item), Times.Once());
+            repo.Verify(m => m.AddAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -101,11 +101,11 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = await  manager.CreateAsync(item);
+            var result  = await  manager.AddAsync(item);
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
-            repo.Verify(m => m.CreateAsync(item), Times.Never());
+            repo.Verify(m => m.AddAsync(item), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -127,11 +127,11 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = await manager.CreateAsync(item);
+            var result  = await manager.AddAsync(item);
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
-            repo.Verify(m => m.CreateAsync(item), Times.Never());
+            repo.Verify(m => m.AddAsync(item), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -143,12 +143,12 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = await manager.CreateAsync(null);
+            var result  = await manager.AddAsync(null);
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("ParentEntity cannot be null.");
-            repo.Verify(m => m.CreateAsync(It.IsAny<ParentEntity>()), Times.Never());
+            repo.Verify(m => m.AddAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -165,11 +165,11 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<ChildThree>(repo.Object, logger.Object);
-            var result = await manager.CreateAsync(entity);
+            var result = await manager.AddAsync(entity);
 
             // Assert
             result.ValidationResults.IsValid.Should().BeTrue();
-            repo.Verify(m => m.CreateAsync(It.IsAny<ChildThree>()), Times.Once());
+            repo.Verify(m => m.AddAsync(It.IsAny<ChildThree>()), Times.Once());
             logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -183,12 +183,12 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<ChildThree>(repo.Object, logger.Object);
-            var result = await manager.CreateAsync(entity);
+            var result = await manager.AddAsync(entity);
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("'Id' must be greater than '0'.");
-            repo.Verify(m => m.CreateAsync(It.IsAny<ChildThree>()), Times.Never);
+            repo.Verify(m => m.AddAsync(It.IsAny<ChildThree>()), Times.Never);
             logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -202,12 +202,12 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<GrandParentEntity>(repo.Object, logger.Object);
-            var result = await manager.CreateAsync(entity);
+            var result = await manager.AddAsync(entity);
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("There was a problem");
-            repo.Verify(m => m.CreateAsync(It.IsAny<GrandParentEntity>()), Times.Never());
+            repo.Verify(m => m.AddAsync(It.IsAny<GrandParentEntity>()), Times.Never());
             logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -222,12 +222,12 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = await manager.CreateAsync(entity);
+            var result  = await manager.AddAsync(entity);
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("There was a problem");
-            repo.Verify(m => m.CreateAsync(It.IsAny<ParentEntity>()), Times.Never());
+            repo.Verify(m => m.AddAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -237,11 +237,11 @@ namespace Plank.Net.Tests.Managers
             // Arrange
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IRepository<ParentEntity>>();
-            repo.Setup(m => m.CreateAsync(item)).Throws(new DataException("Error"));
+            repo.Setup(m => m.AddAsync(item)).Throws(new DataException("Error"));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = await manager.CreateAsync(item);
+            var result  = await manager.AddAsync(item);
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();

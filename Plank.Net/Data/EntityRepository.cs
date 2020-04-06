@@ -28,9 +28,9 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        public override async Task CreateAsync(TEntity entity)
+        public override async Task AddAsync(TEntity entity)
         {
-            await Next.CreateAsync(entity);
+            await Next.AddAsync(entity);
 
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync();
@@ -59,7 +59,7 @@ namespace Plank.Net.Data
 
         public override async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber = 1, int pageSize = 10)
         {
-            var result = await Task.Run(() => _context.Set<TEntity>().Where(expression).OrderBy(e => e.Id).ToPagedList(pageNumber, pageSize));
+            var result = await _context.Set<TEntity>().Where(expression).OrderBy(e => e.Id).ToPagedListAsync(pageNumber, pageSize);
             if(result != null)
             {
                 return result;

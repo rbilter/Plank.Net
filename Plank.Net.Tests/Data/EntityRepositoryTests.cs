@@ -36,7 +36,7 @@ namespace Plank.Net.Tests.Data
             entity.ChildOne = new List<ChildOne> { TestHelper.GetChildOne() };
 
             // Act
-            await _repo.CreateAsync(entity);
+            await _repo.AddAsync(entity);
             var created = await _repo.GetAsync(entity.Id);
 
             // Assert
@@ -51,7 +51,7 @@ namespace Plank.Net.Tests.Data
             var expected = TestHelper.GetParentEntity();
 
             // Act
-            await _repo.CreateAsync(expected);
+            await _repo.AddAsync(expected);
 
             await _repo.DeleteAsync(expected.Id);
             var actual = await _repo.GetAsync(expected.Id);
@@ -94,7 +94,7 @@ namespace Plank.Net.Tests.Data
             var expected = TestHelper.GetParentEntity();
 
             // Act
-            await _repo.CreateAsync(expected);
+            await _repo.AddAsync(expected);
 
             var firstName      = TestHelper.GetRandomString(10);
             var lastName       = TestHelper.GetRandomString(20);
@@ -117,7 +117,7 @@ namespace Plank.Net.Tests.Data
             var added = TestHelper.GetParentEntity();
 
             // Act
-            await _repo.CreateAsync(added);
+            await _repo.AddAsync(added);
             added.IsActive.Should().BeTrue();
 
             var updated = new ParentEntity { Id = added.Id, IsActive = false };

@@ -10,7 +10,7 @@ namespace Plank.Net.Data
     {
         #region METHODS
 
-        public override async Task CreateAsync(TEntity entity)
+        public override async Task AddAsync(TEntity entity)
         {
             await Task.Yield();
         }

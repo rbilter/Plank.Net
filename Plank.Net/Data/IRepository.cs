@@ -15,7 +15,7 @@ namespace Plank.Net.Data
 
         #region METHODS
 
-        Task CreateAsync(T entity);
+        Task AddAsync(T entity);
 
         Task DeleteAsync(int id);
 

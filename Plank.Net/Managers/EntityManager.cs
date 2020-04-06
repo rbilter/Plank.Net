@@ -40,7 +40,7 @@ namespace Plank.Net.Managers
 
         #region METHODS
 
-        public async Task<PlankPostResponse<TEntity>> CreateAsync(TEntity item)
+        public async Task<PlankPostResponse<TEntity>> AddAsync(TEntity item)
         {
             _logger.Info(item.ToJson());
 
@@ -50,7 +50,7 @@ namespace Plank.Net.Managers
             {
                 try
                 {
-                    await _repository.CreateAsync(item);
+                    await _repository.AddAsync(item);
                 }
                 catch (DataException e)
                 {
