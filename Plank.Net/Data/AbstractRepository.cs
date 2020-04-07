@@ -31,8 +31,6 @@ namespace Plank.Net.Data
 
         public abstract Task UpdateAsync(T entity);
 
-        public abstract Task UpdateAsync(T entity, params Expression<Func<T, object>>[] properties);
-
         #endregion
     }
 }

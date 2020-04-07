@@ -110,27 +110,6 @@ namespace Plank.Net.Tests.Data
             actual.LastName.Should().Be(lastName);
         }
 
-        [TestMethod]
-        public async Task Update_PartialUpdate_PropertiesInExpressionUpdated()
-        {
-            // Arrange
-            var added = TestHelper.GetParentEntity();
-
-            // Act
-            await _repo.AddAsync(added);
-            added.IsActive.Should().BeTrue();
-
-            var updated = new ParentEntity { Id = added.Id, IsActive = false };
-            await _repo.UpdateAsync(updated, p => p.IsActive);
-            var actual  = await _repo.GetAsync(updated.Id);
-
-            // Assert
-            actual.Id.Should().Be(added.Id);
-            actual.FirstName.Should().Be(added.FirstName);
-            actual.LastName.Should().Be(added.LastName);
-            actual.IsActive.Should().BeFalse();
-        }
-
         #endregion
     }
 }

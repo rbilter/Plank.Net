@@ -419,10 +419,11 @@ namespace Plank.Net.Tests.Managers
         public async Task Update_EntityValid_Updated()
         {
             // Arrange
+            var existing = TestHelper.GetParentEntity();
             var item = TestHelper.GetParentEntity();
             var repo = new Mock<IRepository<ParentEntity>>();
-            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(item));
-            repo.Setup(m => m.UpdateAsync(item)).Returns(Task.FromResult(item));
+            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(existing));
+            repo.Setup(m => m.UpdateAsync(existing)).Returns(Task.FromResult(existing));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
@@ -432,7 +433,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeTrue();
             result.Item.Id.Should().Be(item.Id);
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
-            repo.Verify(m => m.UpdateAsync(item), Times.Once());
+            repo.Verify(m => m.UpdateAsync(existing), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -451,7 +452,7 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
-            repo.Verify(m => m.UpdateAsync(item), Times.Never());
+            repo.Verify(m => m.UpdateAsync(It.IsAny<ParentEntity>()), Times.Never());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -541,10 +542,11 @@ namespace Plank.Net.Tests.Managers
         public async Task Update_PartialUpdateEntityValid_Updated()
         {
             // Arrange
+            var existing = TestHelper.GetParentEntity();
             var item = new ParentEntity { Id = 0, IsActive = false };
             var repo = new Mock<IRepository<ParentEntity>>();
-            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(item));
-            repo.Setup(m => m.UpdateAsync(item, p => p.IsActive)).Returns(Task.FromResult(item));
+            repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(existing));
+            repo.Setup(m => m.UpdateAsync(existing)).Returns(Task.FromResult(existing));
 
             // Act
             var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
@@ -554,7 +556,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeTrue();
             result.Item.Id.Should().Be(item.Id);
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
-            repo.Verify(m => m.UpdateAsync(item, p => p.IsActive), Times.Once());
+            repo.Verify(m => m.UpdateAsync(existing), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
 
         }
@@ -588,7 +590,7 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
 
             repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(item));
-            repo.Setup(m => m.UpdateAsync(item, p => p.FirstName)).Throws(new DataException("Error"));
+            repo.Setup(m => m.UpdateAsync(item)).Throws(new DataException("Error"));
 
             // Act
             //
@@ -601,7 +603,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, please try again");
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
-            repo.Verify(m => m.UpdateAsync(item, p => p.FirstName), Times.Once());
+            repo.Verify(m => m.UpdateAsync(item), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }

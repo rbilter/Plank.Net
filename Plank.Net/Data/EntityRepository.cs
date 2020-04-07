@@ -72,23 +72,7 @@ namespace Plank.Net.Data
         {
             await Next.UpdateAsync(entity);
 
-            var existing = await GetAsync(entity.Id);
-            _context.Entry(existing).CurrentValues.SetValues(entity);
-            await _context.SaveChangesAsync();
-        }
-
-        public override async Task UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
-        {
-            await Next.UpdateAsync(entity, properties);
-
-            var existing = await GetAsync(entity.Id);
-
-            foreach (var p in properties)
-            {
-                var property = _context.Entry(existing).Property(p);
-                property.CurrentValue = entity.GetType().GetProperty(property.Name).GetValue(entity);
-            }
-
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 

@@ -35,11 +35,6 @@ namespace Plank.Net.Data
             await Task.Yield();
         }
 
-        public override async Task UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
-        {
-            await Task.Yield();
-        }
-
         #endregion
     }
 }
