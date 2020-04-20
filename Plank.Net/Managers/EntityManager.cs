@@ -48,7 +48,7 @@ namespace Plank.Net.Managers
         {
             _logger.Info(item.ToJson());
 
-            var validation = ValidateEntity(item);
+            var validation = item.Validate();
 
             if (validation.IsValid)
             {
@@ -162,7 +162,7 @@ namespace Plank.Net.Managers
             _logger.Info(item.ToJson());
 
             TEntity existing = null;
-            var validation = ValidateEntity(item);
+            var validation = item.Validate();
 
             if (validation.IsValid)
             {
@@ -171,7 +171,7 @@ namespace Plank.Net.Managers
                     existing = await _repository.GetAsync(item.Id);
                     if (existing != null)
                     {
-                        foreach (var p in GetProperties(item))
+                        foreach (var p in item.GetProperties())
                         {
                             p.SetValue(existing, p.GetValue(item));
                         };
@@ -223,12 +223,12 @@ namespace Plank.Net.Managers
                     }
 
                     // Assign values from existing back to item for validation
-                    foreach (var p in GetProperties(item))
+                    foreach (var p in item.GetProperties())
                     {
                         item.GetType().GetProperty(p.Name).SetValue(item, existing.GetType().GetProperty(p.Name).GetValue(existing));
                     }
 
-                    validation = ValidateEntity(item);
+                    validation = item.Validate();
                     if(validation.IsValid)
                     {
                         await _repository.UpdateAsync(existing);
@@ -256,26 +256,6 @@ namespace Plank.Net.Managers
             _logger.Info(results.ToJson());
 
             return results;
-        }
-
-        #endregion
-
-        #region PRIVATE METHODS
-
-        private List<PropertyInfo> GetProperties(TEntity item)
-        {
-            return item.GetType()
-                       .GetProperties()
-                       .Where(p => p.DeclaringType == item.GetType() && !p.IsDefined(typeof(InversePropertyAttribute), false))
-                       .ToList();
-        }
-
-        private ValidationResults ValidateEntity(TEntity item)
-        {
-            var validator  = ValidationFactory.CreateValidator<TEntity>();
-            var validation = validator.Validate(item);
-
-            return validation;
         }
 
         #endregion

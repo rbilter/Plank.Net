@@ -25,17 +25,27 @@ namespace Plank.Net.Models
                     foreach (var entity in collection)
                     {
                         var validator = ValidationFactory.CreateValidator(entity.GetType());
-                        results.AddAllResults(validator.Validate(entity));
 
-                        ValidateWithCustomValidators(results, entity);
+                        var result = validator.Validate(entity);
+                        results.AddAllResults(result);
+
+                        if(result.IsValid)
+                        {
+                            ValidateWithCustomValidators(results, entity);
+                        }
                     }
                 }
                 else
                 {
                     var validator = ValidationFactory.CreateValidator(property.GetType());
-                    results.AddAllResults(validator.Validate(property));
 
-                    ValidateWithCustomValidators(results, property);
+                    var result = validator.Validate(property);
+                    results.AddAllResults(result);
+
+                    if(result.IsValid)
+                    {
+                        ValidateWithCustomValidators(results, property);
+                    }
                 }
             }
         }
@@ -49,7 +59,13 @@ namespace Plank.Net.Models
             var validators = Data.ValidatorFactory.CreateInstance(entity.GetType());
             foreach (var v in validators)
             {
-                results.AddAllResults(v.Validate(entity));
+                var result = v.Validate(entity);
+                results.AddAllResults(result);
+
+                if(!result.IsValid)
+                {
+                    break;
+                }
             }
         }
 
