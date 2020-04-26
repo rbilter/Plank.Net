@@ -54,7 +54,7 @@
     <Compile Include="Data\AbstractRepository.cs" />
     <Compile Include="Data\EndRepository.cs" />
     <Compile Include="Models\EntityAdapter.cs" />
-    <Compile Include="Validators\EntityFluentValidator.cs" />
+    <Compile Include="Validators\FluentValidatorAdapter.cs" />
     <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\EntitySqlServerMigrationSqlGenerator.cs" />
     <Compile Include="Models\Entity.cs" />
@@ -113,7 +113,7 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Pipelines.Sockets.Unofficial">
-      <Version>2.1.1</Version>
+      <Version>2.1.11</Version>
     </PackageReference>
     <PackageReference Include="Serialize.Linq">
       <Version>1.8.1</Version>
@@ -131,7 +131,7 @@
       <Version>4.5.4</Version>
     </PackageReference>
     <PackageReference Include="X.PagedList">
-      <Version>8.0.5</Version>
+      <Version>8.0.7</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

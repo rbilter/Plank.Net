@@ -68,7 +68,7 @@ namespace Plank.Net.Data
                     && t.BaseType.GetGenericTypeDefinition() == typeof(AbstractValidator<>)
                     && !t.ContainsGenericParameters).ToList();
 
-            var fvType = typeof(EntityFluentValidator<>);
+            var fvType = typeof(FluentValidatorAdapter<>);
             foreach (var type in types)
             {
                 var instance = Activator.CreateInstance(type);

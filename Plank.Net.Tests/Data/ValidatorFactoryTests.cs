@@ -35,7 +35,7 @@ namespace Plank.Net.Tests.Data
 
             // Assert
             validators.Should().HaveCount(1);
-            validators.First().GetType().Name.Should().Be("EntityFluentValidator`1");
+            validators.First().GetType().Name.Should().Be("FluentValidatorAdapter`1");
         }
 
         #endregion

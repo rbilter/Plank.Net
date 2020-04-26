@@ -4,7 +4,7 @@ using Plank.Net.Models;
 
 namespace Plank.Net.Data
 {
-    internal class EntityFluentValidator<TEntity> : EntityValidator<TEntity> where TEntity : class, IEntity
+    internal sealed class FluentValidatorAdapter<TEntity> : EntityValidator<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
 
@@ -14,7 +14,7 @@ namespace Plank.Net.Data
 
         #region CONSTRUCTORS
 
-        public EntityFluentValidator(AbstractValidator<TEntity> fluentValidator)
+        public FluentValidatorAdapter(AbstractValidator<TEntity> fluentValidator)
         {
             _fluentValidator = fluentValidator;
         }
