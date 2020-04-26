@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
-using Plank.Net.Data;
 using Plank.Net.Tests.Models;
 using Plank.Net.Tests.Validators;
+using Plank.Net.Validators;
 using System.Linq;
 using Xunit;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Plank.Net.Data;
 using Plank.Net.Tests.Models;
+using Plank.Net.Validators;
 
 namespace Plank.Net.Tests.Validators
 {

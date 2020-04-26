@@ -1,6 +1,6 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
 
-namespace Plank.Net.Data
+namespace Plank.Net.Validators
 {
     public interface IValidator
     {

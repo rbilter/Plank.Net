@@ -56,7 +56,7 @@ namespace Plank.Net.Models
 
         private static void ValidateWithCustomValidators(ValidationResults results, object entity)
         {
-            var validators = Data.ValidatorFactory.CreateInstance(entity.GetType());
+            var validators = Validators.ValidatorFactory.CreateInstance(entity.GetType());
             foreach (var v in validators)
             {
                 var result = v.Validate(entity);

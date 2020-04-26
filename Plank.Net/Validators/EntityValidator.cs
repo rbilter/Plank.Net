@@ -1,7 +1,7 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Plank.Net.Models;
 
-namespace Plank.Net.Data
+namespace Plank.Net.Validators
 {
     public abstract class EntityValidator<TEntity> : IEntityValidator<TEntity> where TEntity : class, IEntity
     {

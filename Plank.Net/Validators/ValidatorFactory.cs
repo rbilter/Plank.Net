@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Plank.Net.Data
+namespace Plank.Net.Validators
 {
     public static class ValidatorFactory
     {

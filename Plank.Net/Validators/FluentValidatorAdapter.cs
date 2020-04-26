@@ -2,7 +2,7 @@
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Plank.Net.Models;
 
-namespace Plank.Net.Data
+namespace Plank.Net.Validators
 {
     internal sealed class FluentValidatorAdapter<TEntity> : EntityValidator<TEntity> where TEntity : class, IEntity
     {
