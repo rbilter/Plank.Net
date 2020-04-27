@@ -63,7 +63,6 @@
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Validators\IEntityValidator.cs" />
-    <Compile Include="Data\PagedListCache.cs" />
     <Compile Include="Validators\ValidatorFactory.cs" />
     <Compile Include="Managers\Logger.cs" />
     <Compile Include="Managers\EntityManager.cs" />
