@@ -5,7 +5,7 @@ using System;
 namespace Plank.Net.Models
 {
     [HasSelfValidation]
-    public abstract class EntityAdapter : IEntity
+    public abstract class EntityAdapter : IEntity, IPopulateTimeStamps
     {
         #region PROPERTIES
 
@@ -20,6 +20,11 @@ namespace Plank.Net.Models
         #endregion
 
         #region METHODS
+
+        public void PopulateTimeStamps()
+        {
+            EntityHelper.PopulateTimeStamps(this);
+        }
 
         [SelfValidation]
         public void Validate(ValidationResults results)

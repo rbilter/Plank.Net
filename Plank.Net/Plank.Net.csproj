@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EntityController.cs" />
+    <Compile Include="Data\AbstractDbContext.cs" />
+    <Compile Include="Models\IPopulateTimeStamps.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Models\EntityHelper.cs" />
     <Compile Include="Data\AbstractRepository.cs" />

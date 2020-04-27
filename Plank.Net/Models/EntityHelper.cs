@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
+using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -8,6 +9,14 @@ namespace Plank.Net.Models
     internal static class EntityHelper
     {
         #region METHODS
+
+        public static void PopulateTimeStamps(IEntity item)
+        {
+            item.DateCreated = item.DateCreated == DateTime.MinValue
+                ? DateTime.UtcNow
+                : item.DateCreated;
+            item.DateLastModified = DateTime.UtcNow;
+        }
 
         public static void Validate(IEntity item, ValidationResults results)
         {

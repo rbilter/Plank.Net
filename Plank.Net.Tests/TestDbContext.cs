@@ -1,9 +1,10 @@
-﻿using Plank.Net.Tests.Models;
+﻿using Plank.Net.Data;
+using Plank.Net.Tests.Models;
 using System.Data.Entity;
 
 namespace Plank.Net.Tests
 {
-    public class TestDbContext : DbContext
+    public class TestDbContext : AbstractDbContext
     {
         #region CONSTRUCTORS
 

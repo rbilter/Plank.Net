@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Plank.Net.Models
 {
     [HasSelfValidation]
-    public abstract class Entity : IEntity
+    public abstract class Entity : IEntity, IPopulateTimeStamps
     {
         #region PROPERTIES
 
@@ -31,6 +31,11 @@ namespace Plank.Net.Models
         #endregion
 
         #region METHODS
+
+        public void PopulateTimeStamps()
+        {
+            EntityHelper.PopulateTimeStamps(this);
+        }
 
         [SelfValidation]
         public void Validate(ValidationResults results)
