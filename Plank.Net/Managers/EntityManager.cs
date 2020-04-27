@@ -3,16 +3,11 @@ using Plank.Net.Contracts;
 using Plank.Net.Data;
 using Plank.Net.Models;
 using Plank.Net.Profiles;
-using Plank.Net.Utilities;
 using Serialize.Linq.Serializers;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.Entity;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Plank.Net.Managers

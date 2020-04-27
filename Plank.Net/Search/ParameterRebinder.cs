@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Plank.Net.Utilities
+namespace Plank.Net.Search
 { 
     internal class ParameterRebinder : ExpressionVisitor
     {

@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Plank.Net.Utilities
+namespace Plank.Net.Search
 {
     public static class SearchExtensionMethods
     {

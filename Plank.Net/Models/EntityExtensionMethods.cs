@@ -1,12 +1,11 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Newtonsoft.Json;
-using Plank.Net.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 
-namespace Plank.Net.Utilities
+namespace Plank.Net.Models
 {
     internal static class EntityExtensionMethods
     {
