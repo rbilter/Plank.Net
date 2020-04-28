@@ -9,7 +9,7 @@ namespace Plank.Net.Data
     {
         #region PROPERTIES
 
-        IRepository<T> Next { get; set; }
+        IRepository<T> NextRepository { get; set; }
 
         #endregion
 
@@ -21,7 +21,7 @@ namespace Plank.Net.Data
 
         Task<T> GetAsync(int id);
 
-        IRepository<T> RegisterNext(IRepository<T> next);
+        IRepository<T> RegisterNext(IRepository<T> nextRepository);
 
         Task<IPagedList<T>> SearchAsync(Expression<Func<T, bool>> expression, int pageNumber, int pageSize);
 

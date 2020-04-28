@@ -20,7 +20,7 @@ namespace Plank.Net.Data
 
         public PlankRepository(DbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
             _context.Configuration.LazyLoadingEnabled = false;
         }
 
@@ -30,7 +30,7 @@ namespace Plank.Net.Data
 
         public override async Task AddAsync(TEntity entity)
         {
-            await Next.AddAsync(entity).ConfigureAwait(false);
+            await NextRepository.AddAsync(entity).ConfigureAwait(false);
 
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -38,7 +38,7 @@ namespace Plank.Net.Data
 
         public override async Task DeleteAsync(int id)
         {
-            await Next.DeleteAsync(id).ConfigureAwait(false);
+            await NextRepository.DeleteAsync(id).ConfigureAwait(false);
 
             var item = await _context.Set<TEntity>().SingleOrDefaultAsync(i => i.Id == id).ConfigureAwait(false);
             _context.Set<TEntity>().Attach(item);
@@ -54,7 +54,7 @@ namespace Plank.Net.Data
                 return result;
             }
 
-            return await Next.GetAsync(id).ConfigureAwait(false);
+            return await NextRepository.GetAsync(id).ConfigureAwait(false);
         }
 
         public override async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber = 1, int pageSize = 10)
@@ -65,12 +65,12 @@ namespace Plank.Net.Data
                 return result;
             }
 
-            return await Next.SearchAsync(expression, pageNumber, pageSize).ConfigureAwait(false);
+            return await NextRepository.SearchAsync(expression, pageNumber, pageSize).ConfigureAwait(false);
         }
 
         public override async Task UpdateAsync(TEntity entity)
         {
-            await Next.UpdateAsync(entity).ConfigureAwait(false);
+            await NextRepository.UpdateAsync(entity).ConfigureAwait(false);
 
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync().ConfigureAwait(false);

@@ -50,6 +50,8 @@ namespace Plank.Net.Controllers
 
         public async Task<PlankEnumerableResponse<TEntity>> SearchAsync(ISearchBuilder<TEntity> builder)
         {
+            _ = builder ?? throw new ArgumentNullException(nameof(builder));
+
             var expression = builder.Build();
             var pageNumber = builder.PageNumber;
             var pageSize   = builder.PageSize;

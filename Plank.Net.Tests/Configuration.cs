@@ -1,11 +1,11 @@
-﻿using Plank.Net.Data;
-using Plank.Net.Tests.Models;
+﻿using Plank.Net.Tests.Models;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 
 namespace Plank.Net.Tests
 {
-    public sealed class Configuration : PlankConfiguration<TestDbContext>
+    public sealed class Configuration : DbMigrationsConfiguration<TestDbContext>
     {
         #region  CONSTRUCTORS
 

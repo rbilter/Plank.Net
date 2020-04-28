@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Plank.Net.Data;
 using Plank.Net.Managers;
@@ -11,10 +10,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using X.PagedList;
+using Xunit;
 
 namespace Plank.Net.Tests.Managers
 {
-    [TestClass]
     public class PlankManagerTests
     {
         #region MEMBERS
@@ -34,7 +33,7 @@ namespace Plank.Net.Tests.Managers
 
         #region METHODS
 
-        [TestMethod]
+        [Fact]
         public void Constructor_RepositoryNull_ArgumentNullException()
         {
             // Arrange
@@ -52,7 +51,7 @@ namespace Plank.Net.Tests.Managers
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Constructor_LoggerNull_ArgumentNullException()
         {
             // Arrange
@@ -71,7 +70,7 @@ namespace Plank.Net.Tests.Managers
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Create_EntityValid_Created()
         {
             // Arrange
@@ -90,7 +89,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Create_EntityNotValid_NotCreated()
         {
             // Arrange
@@ -109,7 +108,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Create_ChildEntityNotValid_NotCreated()
         {
             // Arrange
@@ -135,7 +134,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Create_EntityNull_NotCreated()
         {
             // Arrange
@@ -152,7 +151,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Create_FluentValidatorHasPassResult_Created()
         {
             // Arrange
@@ -173,7 +172,7 @@ namespace Plank.Net.Tests.Managers
             logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Create_FluentValidatorHasFailResult_NotCreated()
         {
             // Arrange
@@ -192,7 +191,7 @@ namespace Plank.Net.Tests.Managers
             logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Create_ValidatorHasFailResult_NotCreated()
         {
             // Arrange
@@ -211,7 +210,7 @@ namespace Plank.Net.Tests.Managers
             logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Create_ValidatorHasFailResultOnChildEntity_NotCreated()
         {
             // Arrange
@@ -231,7 +230,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Create_RepositoryThrowException_NotCreated()
         {
             // Arrange
@@ -251,7 +250,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Delete_EntityExists_Deleted()
         {
             // Arrange
@@ -274,7 +273,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Delete_EntityNotFound_NotDeleted()
         {
             // Arrange
@@ -295,7 +294,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Delete_RepositoryThrowsException_NotDeleted()
         {
             // Arrange
@@ -320,7 +319,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Get_EntityFoundById_ItemReturned()
         {
             // Arrange
@@ -341,7 +340,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Get_RepositoryThrowsException_IsValidFalse()
         {
             // Arrange
@@ -363,7 +362,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Search_NoCriteria_PageReturned()
         {
             // Arrange
@@ -392,7 +391,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Search_RepositoryThrowsException_IsValidFalse()
         {
             // Arrange
@@ -415,7 +414,7 @@ namespace Plank.Net.Tests.Managers
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_EntityValid_Updated()
         {
             // Arrange
@@ -437,7 +436,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_EntityNotValid_NotUpdated()
         {
             // Arrange
@@ -456,7 +455,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_EntityNull_NotUpdated()
         {
             // Arrange
@@ -473,7 +472,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_EntityNotFound_NotUpdated()
         {
             // Arrange
@@ -494,7 +493,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_ValidatorHasFailResult_NotUpdated()
         {
             // Arrange
@@ -514,7 +513,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_RepositoryThrowsException_NotUpdated()
         {
             // Arrange
@@ -538,7 +537,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_PartialUpdateEntityValid_Updated()
         {
             // Arrange
@@ -561,7 +560,7 @@ namespace Plank.Net.Tests.Managers
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_PartialUpdateEntityNotFound_NotUpdated()
         {
             // Arrange
@@ -582,7 +581,7 @@ namespace Plank.Net.Tests.Managers
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_PartialUpdateRepositoryThrowsException_NotUpdated()
         {
             // Arrange

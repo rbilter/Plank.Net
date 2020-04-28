@@ -1,10 +1,11 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Plank.Net.Data;
 using Plank.Net.Tests.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Plank.Net.Tests.Data
 {
@@ -28,7 +29,23 @@ namespace Plank.Net.Tests.Data
 
         #region TEST METHODS
 
-        [TestMethod]
+        [Fact]
+        public void Constructor_DbContextNull_ArgumentNullException()
+        {
+            // Arrange
+
+            // Act
+            try
+            {
+                _ = new PlankRepository<ChildOne>(null);
+            }
+            catch(ArgumentNullException ex)
+            {
+                ex.Message.Should().Be("Value cannot be null.\r\nParameter name: context");
+            }
+        }
+
+        [Fact]
         public async Task Create_EntityValid_EntityCreated()
         {
             // Arrange
@@ -44,7 +61,7 @@ namespace Plank.Net.Tests.Data
             created.ChildOne.First().Id.Should().Be(entity.ChildOne.First().Id);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Delete_EntityExists_EntityDeleted()
         {
             // Arrange
@@ -60,7 +77,7 @@ namespace Plank.Net.Tests.Data
             actual.Should().BeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Get_EntityExists_EntityReturned()
         {
             // Arrange
@@ -75,7 +92,7 @@ namespace Plank.Net.Tests.Data
             entity.LastName.Should().Be("Skywalker");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Search_EntitiesFound_ListReturned()
         {
             // Arrange
@@ -87,7 +104,7 @@ namespace Plank.Net.Tests.Data
             result.Should().HaveCount(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_EntityExists_EntityUpdated()
         {
             // Arrange

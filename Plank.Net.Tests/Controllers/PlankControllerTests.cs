@@ -1,15 +1,15 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Plank.Net.Controllers;
 using Plank.Net.Search;
 using Plank.Net.Tests.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Plank.Net.Tests.Controllers
 {
-    [TestClass]
     public class PlankControllerTests
     {
         #region MEMBERS
@@ -29,7 +29,7 @@ namespace Plank.Net.Tests.Controllers
 
         #region TEST METHODS
 
-        [TestMethod]
+        [Fact]
         public async Task Create_ValidEntity_Created()
         {
             // Arrange
@@ -44,7 +44,7 @@ namespace Plank.Net.Tests.Controllers
             response.Item.Id.Should().Be(item.Id);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Delete_EntityExists_Deleted()
         {
             // Arrange
@@ -61,7 +61,23 @@ namespace Plank.Net.Tests.Controllers
             deleted.Id.Should().Be(created.Item.Id);
         }
 
-        [TestMethod]
+        [Fact]
+        public async Task Search_BuilderNull_ArgumentNullException()
+        {
+            // Arrange
+
+            // Act
+            try
+            {
+                _ = await _controller.SearchAsync(null);
+            }
+            catch(ArgumentNullException ex)
+            {
+                ex.Message.Should().Be("Value cannot be null.\r\nParameter name: builder");
+            }
+        }
+
+        [Fact]
         public async Task Search_EntitiesExist_PageReturned()
         {
             // Arrange
@@ -86,7 +102,7 @@ namespace Plank.Net.Tests.Controllers
             builder.Verify(m => m.Build(), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Update_EntityValid_Updated()
         {
             // Arrange

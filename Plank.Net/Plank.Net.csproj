@@ -58,9 +58,7 @@
     <Compile Include="Models\PlankEntityAdapter.cs" />
     <Compile Include="Validators\FluentValidatorAdapter.cs" />
     <Compile Include="Data\PlankRepository.cs" />
-    <Compile Include="Data\PlankSqlServerMigrationSqlGenerator.cs" />
     <Compile Include="Models\PlankEntity.cs" />
-    <Compile Include="Data\PlankConfiguration.cs" />
     <Compile Include="Validators\PlankValidator.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Data\IRepository.cs" />

@@ -5,7 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle("Plank.Net")]
+[assembly: AssemblyDescription("A framework for quickly building Api's using .NET")]
+[assembly: AssemblyCompany("BiterSoftware")]
+[assembly: AssemblyProduct("Plank.Net")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -17,3 +21,6 @@ using System.Runtime.InteropServices;
 
 // log4net
 [assembly: XmlConfigurator(ConfigFile = "plank.net.log4net.config")]
+
+// Version
+[assembly: AssemblyVersion("0.0.*")]
