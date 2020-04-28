@@ -8,7 +8,7 @@ using X.PagedList;
 
 namespace Plank.Net.Data
 {
-    public sealed class EntityRepository<TEntity> : AbstractRepository<TEntity> where TEntity : class, IEntity
+    public sealed class PlankRepository<TEntity> : AbstractRepository<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
 
@@ -18,7 +18,7 @@ namespace Plank.Net.Data
 
         #region CONSTRUCTORS
 
-        public EntityRepository(DbContext context)
+        public PlankRepository(DbContext context)
         {
             _context = context;
             _context.Configuration.LazyLoadingEnabled = false;

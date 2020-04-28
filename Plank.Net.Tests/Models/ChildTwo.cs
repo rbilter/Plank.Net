@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Plank.Net.Tests.Models
 {
     [HasSelfValidation]
-    public class ChildTwo : Entity
+    public class ChildTwo : PlankEntity
     {
         #region PROPERTIES
 

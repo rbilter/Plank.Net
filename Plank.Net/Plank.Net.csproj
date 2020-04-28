@@ -48,35 +48,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\EntityController.cs" />
-    <Compile Include="Data\AbstractDbContext.cs" />
+    <Compile Include="Controllers\PlankController.cs" />
+    <Compile Include="Data\PlankDbContext.cs" />
     <Compile Include="Models\IPopulateTimeStamps.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Models\EntityHelper.cs" />
     <Compile Include="Data\AbstractRepository.cs" />
     <Compile Include="Data\EndRepository.cs" />
-    <Compile Include="Models\EntityAdapter.cs" />
+    <Compile Include="Models\PlankEntityAdapter.cs" />
     <Compile Include="Validators\FluentValidatorAdapter.cs" />
-    <Compile Include="Data\EntityRepository.cs" />
-    <Compile Include="Data\EntitySqlServerMigrationSqlGenerator.cs" />
-    <Compile Include="Models\Entity.cs" />
-    <Compile Include="Data\EntityConfiguration.cs" />
-    <Compile Include="Validators\EntityValidator.cs" />
+    <Compile Include="Data\PlankRepository.cs" />
+    <Compile Include="Data\PlankSqlServerMigrationSqlGenerator.cs" />
+    <Compile Include="Models\PlankEntity.cs" />
+    <Compile Include="Data\PlankConfiguration.cs" />
+    <Compile Include="Validators\PlankValidator.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Validators\IEntityValidator.cs" />
     <Compile Include="Validators\ValidatorFactory.cs" />
-    <Compile Include="Managers\Logger.cs" />
-    <Compile Include="Managers\EntityManager.cs" />
+    <Compile Include="Managers\PlankLogger.cs" />
+    <Compile Include="Managers\PlankManager.cs" />
     <Compile Include="Managers\ILogger.cs" />
     <Compile Include="Managers\IManager.cs" />
     <Compile Include="Profiles\Mapping.cs" />
     <Compile Include="Profiles\MappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Search\ISearchBuilder.cs" />
-    <Compile Include="Models\EntityExtensionMethods.cs" />
+    <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Search\ParameterRebinder.cs" />
-    <Compile Include="Search\SearchExtensionMethods.cs" />
+    <Compile Include="Search\ExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

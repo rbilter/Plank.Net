@@ -10,23 +10,23 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Controllers
 {
-    public sealed class EntityController<TEntity> where TEntity : class, IEntity
+    public sealed class PlankController<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
 
-        private readonly EntityManager<TEntity> _manager;
+        private readonly PlankManager<TEntity> _manager;
 
         #endregion
 
         #region  CONSTRUCTORS
 
-        public EntityController(DbContext context)
+        public PlankController(DbContext context)
         {
-            var repo = new EntityRepository<TEntity>(context);
+            var repo = new PlankRepository<TEntity>(context);
             repo.RegisterNext(new EndRepository<TEntity>());
 
-            var logger = new Logger<TEntity>();
-            _manager = new EntityManager<TEntity>(repo, logger);
+            var logger = new PlankLogger<TEntity>();
+            _manager = new PlankManager<TEntity>(repo, logger);
         }
 
         #endregion

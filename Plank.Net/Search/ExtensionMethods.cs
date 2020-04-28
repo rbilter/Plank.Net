@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Plank.Net.Search
 {
-    public static class SearchExtensionMethods
+    public static class ExtensionMethods
     {
         #region METHODS
 

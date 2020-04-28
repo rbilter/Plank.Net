@@ -15,7 +15,7 @@ using X.PagedList;
 namespace Plank.Net.Tests.Managers
 {
     [TestClass]
-    public class EntityManagerTests
+    public class PlankManagerTests
     {
         #region MEMBERS
 
@@ -25,7 +25,7 @@ namespace Plank.Net.Tests.Managers
 
         #region CONSTRUCTORS
 
-        public EntityManagerTests()
+        public PlankManagerTests()
         {
             _logger = new Mock<ILogger>();
         }
@@ -48,7 +48,7 @@ namespace Plank.Net.Tests.Managers
 
             void CreateManagerNullRepository()
             {
-                var manager = new EntityManager<ParentEntity>(null, _logger.Object);
+                var manager = new PlankManager<ParentEntity>(null, _logger.Object);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Plank.Net.Tests.Managers
 
             void CreateManagerNullLogger()
             {
-                var manager = new EntityManager<ParentEntity>(repo.Object, null);
+                var manager = new PlankManager<ParentEntity>(repo.Object, null);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.AddAsync(item)).Returns(Task.FromResult(item));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.AddAsync(item);
 
             // Assert
@@ -100,7 +100,7 @@ namespace Plank.Net.Tests.Managers
             var repo       = new Mock<IRepository<ParentEntity>>();
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await  manager.AddAsync(item);
 
             // Assert
@@ -126,7 +126,7 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.AddAsync(item);
 
             // Assert
@@ -142,7 +142,7 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.AddAsync(null);
 
             // Assert
@@ -164,7 +164,7 @@ namespace Plank.Net.Tests.Managers
             var logger = new Mock<ILogger>();
 
             // Act
-            var manager = new EntityManager<ChildThree>(repo.Object, logger.Object);
+            var manager = new PlankManager<ChildThree>(repo.Object, logger.Object);
             var result = await manager.AddAsync(entity);
 
             // Assert
@@ -182,7 +182,7 @@ namespace Plank.Net.Tests.Managers
             var logger = new Mock<ILogger>();
 
             // Act
-            var manager = new EntityManager<ChildThree>(repo.Object, logger.Object);
+            var manager = new PlankManager<ChildThree>(repo.Object, logger.Object);
             var result = await manager.AddAsync(entity);
 
             // Assert
@@ -201,7 +201,7 @@ namespace Plank.Net.Tests.Managers
             var logger = new Mock<ILogger>();
 
             // Act
-            var manager = new EntityManager<GrandParentEntity>(repo.Object, logger.Object);
+            var manager = new PlankManager<GrandParentEntity>(repo.Object, logger.Object);
             var result = await manager.AddAsync(entity);
 
             // Assert
@@ -221,7 +221,7 @@ namespace Plank.Net.Tests.Managers
             var repo   = new Mock<IRepository<ParentEntity>>();
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.AddAsync(entity);
 
             // Assert
@@ -240,7 +240,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.AddAsync(item)).Throws(new DataException("Error"));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.AddAsync(item);
 
             // Assert
@@ -262,7 +262,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.GetAsync(id)).Returns(Task.FromResult(item));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var results = await manager.DeleteAsync(id);
 
             // Assert
@@ -284,7 +284,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.GetAsync(id)).Returns(Task.FromResult(item));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var results = await manager.DeleteAsync(id);
 
             // Assert
@@ -306,7 +306,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.DeleteAsync(id)).Throws(new DataException("Error"));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var results = await manager.DeleteAsync(id);
 
             // Assert
@@ -330,7 +330,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.GetAsync(id)).Returns(Task.FromResult(item));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.GetAsync(id);
 
             // Assert
@@ -350,7 +350,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.GetAsync(id)).Throws(new DataException("Error"));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.GetAsync(id);
 
             // Assert
@@ -375,7 +375,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Returns(Task.FromResult(list));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.SearchAsync(null, pageNumber, pageSize);
 
             // Assert
@@ -402,7 +402,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Throws(new DataException("Error"));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.SearchAsync(null, pageNumber, pageSize);
 
             // Assert
@@ -426,7 +426,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.UpdateAsync(existing)).Returns(Task.FromResult(existing));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.UpdateAsync(item);
 
             // Assert
@@ -447,7 +447,7 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.UpdateAsync(item);
 
             // Assert
@@ -463,7 +463,7 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.UpdateAsync(null);
 
             // Assert
@@ -483,7 +483,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(rItem));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.UpdateAsync(item);
 
             // Assert
@@ -504,7 +504,7 @@ namespace Plank.Net.Tests.Managers
             var repo = new Mock<IRepository<ParentEntity>>();
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.UpdateAsync(item);
 
             // Assert
@@ -525,7 +525,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.UpdateAsync(item)).Throws(new DataException("Error"));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.UpdateAsync(item);
 
             // Assert
@@ -549,7 +549,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.UpdateAsync(existing)).Returns(Task.FromResult(existing));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.UpdateAsync(item, p => p.IsActive);
 
             // Assert
@@ -571,7 +571,7 @@ namespace Plank.Net.Tests.Managers
             repo.Setup(m => m.GetAsync(item.Id)).Returns(Task.FromResult(rItem));
 
             // Act
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result = await manager.UpdateAsync(item, p => p.FirstName);
 
             // Assert
@@ -594,7 +594,7 @@ namespace Plank.Net.Tests.Managers
 
             // Act
             //
-            var manager = new EntityManager<ParentEntity>(repo.Object, _logger.Object);
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
             var result  = await manager.UpdateAsync(item, p => p.FirstName);
 
             // Assert

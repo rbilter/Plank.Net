@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Managers
 {
-    public sealed class EntityManager<TEntity> : IManager<TEntity> where TEntity : class, IEntity
+    public sealed class PlankManager<TEntity> : IManager<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
 
@@ -23,13 +23,13 @@ namespace Plank.Net.Managers
 
         #region CONSTRUCTORS
 
-        public EntityManager(DbContext context)
-            : this(new EntityRepository<TEntity>(context), new Logger<TEntity>())
+        public PlankManager(DbContext context)
+            : this(new PlankRepository<TEntity>(context), new PlankLogger<TEntity>())
         {
 
         }
 
-        public EntityManager(IRepository<TEntity> repository, ILogger logger)
+        public PlankManager(IRepository<TEntity> repository, ILogger logger)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _logger     = logger ?? throw new ArgumentNullException(nameof(logger));

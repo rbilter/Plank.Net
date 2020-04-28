@@ -48,10 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
-    <Compile Include="Controllers\EntityControllerTests.cs" />
-    <Compile Include="Data\EntityRepositoryTests.cs" />
+    <Compile Include="Controllers\PlankControllerTests.cs" />
+    <Compile Include="Data\PlankRepositoryTests.cs" />
     <Compile Include="Data\ValidatorFactoryTests.cs" />
-    <Compile Include="Managers\EntityManagerTests.cs" />
+    <Compile Include="Managers\PlankManagerTests.cs" />
     <Compile Include="Models\ChildOne.cs" />
     <Compile Include="Models\ChildThree.cs" />
     <Compile Include="Models\ChildTwo.cs" />

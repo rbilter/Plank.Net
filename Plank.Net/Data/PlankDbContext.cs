@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Data
 {
-    public abstract class AbstractDbContext : DbContext
+    public abstract class PlankDbContext : DbContext
     {
         #region CONSTRUCTORS
 
-        protected AbstractDbContext(string connectionString)
+        protected PlankDbContext(string connectionString)
             : base(connectionString)
         {
 

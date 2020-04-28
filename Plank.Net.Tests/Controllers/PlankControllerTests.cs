@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 namespace Plank.Net.Tests.Controllers
 {
     [TestClass]
-    public class EntityControllerTests
+    public class PlankControllerTests
     {
         #region MEMBERS
 
-        private readonly EntityController<ParentEntity> _controller;
+        private readonly PlankController<ParentEntity> _controller;
 
         #endregion
 
         #region CONSTRUCTORS
 
-        public EntityControllerTests()
+        public PlankControllerTests()
         {
-            _controller = new EntityController<ParentEntity>(new TestDbContext());
+            _controller = new PlankController<ParentEntity>(new TestDbContext());
         }
 
         #endregion

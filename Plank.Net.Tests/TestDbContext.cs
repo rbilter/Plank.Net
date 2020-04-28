@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace Plank.Net.Tests
 {
-    public class TestDbContext : AbstractDbContext
+    public class TestDbContext : PlankDbContext
     {
         #region CONSTRUCTORS
 

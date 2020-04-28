@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Plank.Net.Data
 {
-    internal sealed class EntitySqlServerMigrationSqlGenerator : SqlServerMigrationSqlGenerator
+    internal sealed class PlankSqlServerMigrationSqlGenerator : SqlServerMigrationSqlGenerator
     {
         #region METHODS
 

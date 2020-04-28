@@ -3,7 +3,7 @@ using System;
 
 namespace Plank.Net.Managers
 {
-    public sealed class Logger<T> : ILogger 
+    public sealed class PlankLogger<T> : ILogger 
     {
         #region MEMBERS
 

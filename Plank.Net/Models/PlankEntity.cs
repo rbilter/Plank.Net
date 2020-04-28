@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Plank.Net.Models
 {
     [HasSelfValidation]
-    public abstract class Entity : IEntity, IPopulateTimeStamps
+    public abstract class PlankEntity : IEntity, IPopulateTimeStamps
     {
         #region PROPERTIES
 

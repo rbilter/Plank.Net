@@ -3,7 +3,7 @@ using Plank.Net.Models;
 
 namespace Plank.Net.Validators
 {
-    public abstract class EntityValidator<TEntity> : IEntityValidator<TEntity> where TEntity : class, IEntity
+    public abstract class PlankValidator<TEntity> : IEntityValidator<TEntity> where TEntity : class, IEntity
     {
         #region PROPERTIES
 

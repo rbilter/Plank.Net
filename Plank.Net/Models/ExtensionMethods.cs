@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Plank.Net.Models
 {
-    internal static class EntityExtensionMethods
+    internal static class ExtensionMethods
     {
         #region METHODS
 

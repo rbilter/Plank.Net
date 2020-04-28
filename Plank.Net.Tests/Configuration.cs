@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Plank.Net.Tests
 {
-    public sealed class Configuration : EntityConfiguration<TestDbContext>
+    public sealed class Configuration : PlankConfiguration<TestDbContext>
     {
         #region  CONSTRUCTORS
 

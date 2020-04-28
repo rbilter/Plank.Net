@@ -4,7 +4,7 @@ using Plank.Net.Validators;
 
 namespace Plank.Net.Tests.Validators
 {
-    public class FailValidator : EntityValidator<ChildTwo>
+    public class FailValidator : PlankValidator<ChildTwo>
     {
         #region METHODS
 

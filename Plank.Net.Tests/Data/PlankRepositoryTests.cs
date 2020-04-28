@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace Plank.Net.Tests.Data
 {
-    public class EntityRepositoryTests
+    public class PlankRepositoryTests
     {
         #region MEMBERS
 
-        private readonly EntityRepository<ParentEntity> _repo;
+        private readonly PlankRepository<ParentEntity> _repo;
 
         #endregion
 
         #region CONSTRUCTORS
 
-        public EntityRepositoryTests()
+        public PlankRepositoryTests()
         {
-            _repo = new EntityRepository<ParentEntity>(new TestDbContext());
+            _repo = new PlankRepository<ParentEntity>(new TestDbContext());
             _repo.RegisterNext(new EndRepository<ParentEntity>());
         }
 

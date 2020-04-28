@@ -4,7 +4,7 @@ using Plank.Net.Models;
 namespace Plank.Net.Tests.Models
 {
     [HasSelfValidation]
-    public class GrandParentEntity : Entity
+    public class GrandParentEntity : PlankEntity
     {
     }
 }
