@@ -5,8 +5,14 @@
         #region CONSTRUCTORS
 
         public PlankPostResponse()
+            : this(new PlankValidationResultCollection())
         {
+        }
 
+        public PlankPostResponse(PlankValidationResultCollection validationResults)
+        {
+            ValidationResults = new PlankValidationResultCollection();
+            ValidationResults.AddRange(validationResults);
         }
 
         #endregion
@@ -15,7 +21,7 @@
 
         public T Item { get; set; }
 
-        public PlankValidationResults ValidationResults { get; set; }
+        public PlankValidationResultCollection ValidationResults { get; }
 
         #endregion
     }

@@ -12,7 +12,7 @@ namespace Plank.Net.Tests.Data
         #region FACTS
 
         [Fact]
-        public void CreateInstanceEntityTypeValidators()
+        public void CreateInstancePlankTypeValidators()
         {
             // Arrange
 
@@ -26,7 +26,7 @@ namespace Plank.Net.Tests.Data
         }
 
         [Fact]
-        public void CreateInstanceAbstractValidators()
+        public void CreateInstanceFluentValidators()
         {
             // Arrange
 

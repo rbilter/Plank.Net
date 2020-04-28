@@ -19,6 +19,9 @@ namespace Plank.Net.Managers
         private readonly IRepository<TEntity> _repository;
         private readonly ILogger _logger;
 
+        private readonly string _defaultErrorMessage;
+        private readonly string _defaultItemNotFoundMessage;
+
         #endregion
 
         #region CONSTRUCTORS
@@ -33,6 +36,9 @@ namespace Plank.Net.Managers
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _logger     = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            _defaultErrorMessage = "There was an issue processing the request, see the plank logs for details";
+            _defaultItemNotFoundMessage = "Item could not be found";
         }
 
         #endregion
@@ -49,20 +55,21 @@ namespace Plank.Net.Managers
             {
                 try
                 {
-                    await _repository.AddAsync(item);
+                    await _repository.AddAsync(item).ConfigureAwait(false);
                 }
                 catch (DataException e)
                 {
                     _logger.Error(e);
 
-                    var msg = "There was an issue processing the request, please try again";
-                    var valresult = new ValidationResult(msg, this, "Error", null, null);
-
-                    validation.AddResult(valresult);
+                    validation.AddResult(new ValidationResult(_defaultErrorMessage, this, "Error", null, null));
                 }
             }
 
-            var results = new PlankPostResponse<TEntity> { Item = item, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
+            var results = new PlankPostResponse<TEntity>(Mapping<TEntity>.Mapper.Map<PlankValidationResultCollection>(validation)) 
+            { 
+                Item = item 
+            };
+            
             _logger.Info(results.ToJson());
 
             return results;
@@ -76,22 +83,22 @@ namespace Plank.Net.Managers
 
             try
             {
-                if (await _repository.GetAsync(id) != null)
+                if (await _repository.GetAsync(id).ConfigureAwait(false) != null)
                 {
-                    await _repository.DeleteAsync(id);
+                    await _repository.DeleteAsync(id).ConfigureAwait(false);
                 }
             }
             catch (DataException e)
             {
                 _logger.Error(e);
 
-                var msg = "There was an issue processing the request, please try again";
-                var valresult = new ValidationResult(msg, this, "Error", null, null);
-
-                validation.AddResult(valresult);
+                validation.AddResult(new ValidationResult(_defaultErrorMessage, this, "Error", null, null));
             }
 
-            var results = new PlankDeleteResponse { Id = id, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
+            var results = new PlankDeleteResponse(Mapping<TEntity>.Mapper.Map<PlankValidationResultCollection>(validation)) 
+            { 
+                Id = id 
+            };
 
             _logger.Info(results.ToJson());
             return results;
@@ -104,7 +111,7 @@ namespace Plank.Net.Managers
 
             try
             {
-                var item = await _repository.GetAsync(id);
+                var item = await _repository.GetAsync(id).ConfigureAwait(false);
                 result = new PlankGetResponse<TEntity>(item)
                 {
                     IsValid = true
@@ -116,7 +123,7 @@ namespace Plank.Net.Managers
                 result = new PlankGetResponse<TEntity>()
                 {
                     IsValid = false,
-                    Message = "There was an issue processing the request, please try again"
+                    Message = _defaultErrorMessage
                 };
             }
 
@@ -134,7 +141,7 @@ namespace Plank.Net.Managers
             PlankEnumerableResponse<TEntity> result = null;
             try
             {
-                var pagedList  = await _repository.SearchAsync(expression, pageNumber, pageSize);
+                var pagedList  = await _repository.SearchAsync(expression, pageNumber, pageSize).ConfigureAwait(false);
                 result         = Mapping<TEntity>.Mapper.Map<PlankEnumerableResponse<TEntity>>(pagedList);
                 result.IsValid = true;
             }
@@ -144,7 +151,7 @@ namespace Plank.Net.Managers
                 result = new PlankEnumerableResponse<TEntity>()
                 {
                     IsValid = false,
-                    Message = "There was an issue processing the request, please try again"
+                    Message = _defaultErrorMessage
                 };
             }
 
@@ -163,7 +170,7 @@ namespace Plank.Net.Managers
             {
                 try
                 {
-                    existing = await _repository.GetAsync(item.Id);
+                    existing = await _repository.GetAsync(item.Id).ConfigureAwait(false);
                     if (existing != null)
                     {
                         foreach (var p in item.GetProperties())
@@ -171,28 +178,26 @@ namespace Plank.Net.Managers
                             p.SetValue(existing, p.GetValue(item));
                         };
 
-                        await _repository.UpdateAsync(existing);
+                        await _repository.UpdateAsync(existing).ConfigureAwait(false);
                     }
                     else
                     {
-                        var msg = "Item could not be found.";
-                        var valresult = new ValidationResult(msg, this, "Error", null, null);
-
-                        validation.AddResult(valresult);
+                        validation.AddResult(new ValidationResult(_defaultItemNotFoundMessage, this, "Error", null, null));
                     }
                 }
                 catch (DataException e)
                 {
                     _logger.Error(e);
 
-                    var msg = "There was an issue processing the request, please try again";
-                    var valresult = new ValidationResult(msg, this, "Error", null, null);
-
-                    validation.AddResult(valresult);
+                    validation.AddResult(new ValidationResult(_defaultErrorMessage, this, "Error", null, null));
                 }
             }
 
-            var results = new PlankPostResponse<TEntity> { Item = existing, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
+            var results = new PlankPostResponse<TEntity>(Mapping<TEntity>.Mapper.Map<PlankValidationResultCollection>(validation)) 
+            { 
+                Item = existing 
+            };
+
             _logger.Info(results.ToJson());
 
             return results;
@@ -207,7 +212,7 @@ namespace Plank.Net.Managers
 
             try
             {
-                existing = item != null ? await _repository.GetAsync(item.Id) : null;
+                existing = item != null ? await _repository.GetAsync(item.Id).ConfigureAwait(false) : null;
                 if (existing != null)
                 {
                     // Assign values from item to the existing entity
@@ -226,28 +231,26 @@ namespace Plank.Net.Managers
                     validation = item.Validate();
                     if(validation.IsValid)
                     {
-                        await _repository.UpdateAsync(existing);
+                        await _repository.UpdateAsync(existing).ConfigureAwait(false);
                     }
                 }
                 else
                 {
-                    var msg = "Item could not be found.";
-                    var valresult = new ValidationResult(msg, this, "Error", null, null);
-
-                    validation.AddResult(valresult);
+                    validation.AddResult(new ValidationResult(_defaultItemNotFoundMessage, this, "Error", null, null));
                 }
             }
             catch (DataException e)
             {
                 _logger.Error(e);
 
-                var msg = "There was an issue processing the request, please try again";
-                var valresult = new ValidationResult(msg, this, "Error", null, null);
-
-                validation.AddResult(valresult);
+                validation.AddResult(new ValidationResult(_defaultErrorMessage, this, "Error", null, null));
             }
 
-            var results = new PlankPostResponse<TEntity> { Item = existing, ValidationResults = Mapping<TEntity>.Mapper.Map<PlankValidationResults>(validation) };
+            var results = new PlankPostResponse<TEntity>(Mapping<TEntity>.Mapper.Map<PlankValidationResultCollection>(validation)) 
+            { 
+                Item = existing 
+            };
+
             _logger.Info(results.ToJson());
 
             return results;

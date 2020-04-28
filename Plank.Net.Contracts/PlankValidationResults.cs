@@ -2,11 +2,11 @@
 
 namespace Plank.Net.Contracts
 {
-    public class PlankValidationResults : List<PlankValidationResult>
+    public class PlankValidationResultCollection : List<PlankValidationResult>
     {
         #region PROPERTIES
 
-        public bool IsValid { get { return this.Count == 0; } }
+        public bool IsValid { get { return Count == 0; } }
 
         #endregion
     }

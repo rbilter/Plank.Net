@@ -245,7 +245,7 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
-            result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, please try again");
+            result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, see the plank logs for details");
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once);
@@ -311,7 +311,7 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             results.ValidationResults.IsValid.Should().BeFalse();
-            results.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, please try again");
+            results.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, see the plank logs for details");
             results.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(id), Times.Once());
             repo.Verify(m => m.DeleteAsync(id), Times.Once());
@@ -356,7 +356,7 @@ namespace Plank.Net.Tests.Managers
             // Assert
             result.Should().NotBeNull();
             result.IsValid.Should().BeFalse();
-            result.Message.Should().Be("There was an issue processing the request, please try again");
+            result.Message.Should().Be("There was an issue processing the request, see the plank logs for details");
             repo.Verify(m => m.GetAsync(id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
@@ -408,7 +408,7 @@ namespace Plank.Net.Tests.Managers
             // Assert
             result.Should().NotBeNull();
             result.IsValid.Should().BeFalse();
-            result.Message.Should().Be("There was an issue processing the request, please try again");
+            result.Message.Should().Be("There was an issue processing the request, see the plank logs for details");
             repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
@@ -488,7 +488,7 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
-            result.ValidationResults.ElementAt(0).Message.Should().Be("Item could not be found.");
+            result.ValidationResults.ElementAt(0).Message.Should().Be("Item could not be found");
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
@@ -530,7 +530,7 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
-            result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, please try again");
+            result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, see the plank logs for details");
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item), Times.Once());
@@ -576,7 +576,7 @@ namespace Plank.Net.Tests.Managers
 
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
-            result.ValidationResults.ElementAt(0).Message.Should().Be("Item could not be found.");
+            result.ValidationResults.ElementAt(0).Message.Should().Be("Item could not be found");
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
@@ -600,7 +600,7 @@ namespace Plank.Net.Tests.Managers
             // Assert
             //
             result.ValidationResults.IsValid.Should().BeFalse();
-            result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, please try again");
+            result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, see the plank logs for details");
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item), Times.Once());

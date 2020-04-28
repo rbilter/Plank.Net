@@ -5,8 +5,15 @@
         #region CONSTRUCTORS
 
         public PlankDeleteResponse()
+            : this(new PlankValidationResultCollection())
         {
 
+        }
+
+        public PlankDeleteResponse(PlankValidationResultCollection validationResults)
+        {
+            ValidationResults = new PlankValidationResultCollection();
+            ValidationResults.AddRange(validationResults);
         }
 
         #endregion
@@ -15,7 +22,7 @@
 
         public int Id { get; set; }
 
-        public PlankValidationResults ValidationResults { get; set; }
+        public PlankValidationResultCollection ValidationResults { get; } = new PlankValidationResultCollection();
 
         #endregion
     }

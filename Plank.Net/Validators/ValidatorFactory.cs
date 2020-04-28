@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using log4net;
 using Plank.Net.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Plank.Net.Validators
     {
         #region MEMBERS
 
+        private static readonly ILog _logger = LogManager.GetLogger(nameof(ValidatorFactory));
         private static readonly List<Tuple<string, object>> _validators = new List<Tuple<string, object>>();
 
         #endregion
@@ -57,11 +59,19 @@ namespace Plank.Net.Validators
 
             foreach (var type in types)
             {
-                var instance = Activator.CreateInstance(type);
-                var inter = type.GetInterface("IEntityValidator`1");
-                var entity = inter.GetTypeInfo().GenericTypeArguments[0];
+                try
+                {
+                    var instance = Activator.CreateInstance(type);
+                    var inter = type.GetInterface("IEntityValidator`1");
+                    var entity = inter.GetTypeInfo().GenericTypeArguments[0];
 
-                _validators.Add(new Tuple<string, object>(entity.Name, instance));
+                    _validators.Add(new Tuple<string, object>(entity.Name, instance));
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex);
+                    throw;
+                }
             }
 
             types = allTypes.Where(t => t.BaseType.IsGenericType 

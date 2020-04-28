@@ -35,17 +35,17 @@ namespace Plank.Net.Controllers
 
         public async Task<PlankPostResponse<TEntity>> AddAsync(TEntity entity)
         {
-            return await _manager.AddAsync(entity);
+            return await _manager.AddAsync(entity).ConfigureAwait(false);
         }
 
         public async Task<PlankDeleteResponse> DeleteAsync(int id)
         {
-            return await _manager.DeleteAsync(id);
+            return await _manager.DeleteAsync(id).ConfigureAwait(false);
         }
 
         public async Task<PlankGetResponse<TEntity>> GetAsync(int id)
         {
-            return await _manager.GetAsync(id);
+            return await _manager.GetAsync(id).ConfigureAwait(false);
         }
 
         public async Task<PlankEnumerableResponse<TEntity>> SearchAsync(ISearchBuilder<TEntity> builder)
@@ -54,17 +54,17 @@ namespace Plank.Net.Controllers
             var pageNumber = builder.PageNumber;
             var pageSize   = builder.PageSize;
 
-            return await _manager.SearchAsync(expression, pageNumber, pageSize);
+            return await _manager.SearchAsync(expression, pageNumber, pageSize).ConfigureAwait(false);
         }
 
         public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity)
         {
-            return await _manager.UpdateAsync(entity);
+            return await _manager.UpdateAsync(entity).ConfigureAwait(false);
         }
 
         public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
-            return await _manager.UpdateAsync(entity, properties);
+            return await _manager.UpdateAsync(entity, properties).ConfigureAwait(false);
         }
 
         #endregion
