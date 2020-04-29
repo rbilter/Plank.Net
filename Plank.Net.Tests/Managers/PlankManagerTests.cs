@@ -86,7 +86,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeTrue();
             result.Item.Id.Should().Be(item.Id);
             repo.Verify(m => m.AddAsync(item), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -105,7 +105,7 @@ namespace Plank.Net.Tests.Managers
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
             repo.Verify(m => m.AddAsync(item), Times.Never());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace Plank.Net.Tests.Managers
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
             repo.Verify(m => m.AddAsync(item), Times.Never());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -148,7 +148,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("ParentEntity cannot be null.");
             repo.Verify(m => m.AddAsync(It.IsAny<ParentEntity>()), Times.Never());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -169,7 +169,7 @@ namespace Plank.Net.Tests.Managers
             // Assert
             result.ValidationResults.IsValid.Should().BeTrue();
             repo.Verify(m => m.AddAsync(It.IsAny<ChildThree>()), Times.Once());
-            logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -188,7 +188,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("'Id' must be greater than '0'.");
             repo.Verify(m => m.AddAsync(It.IsAny<ChildThree>()), Times.Never);
-            logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -207,7 +207,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("There was a problem");
             repo.Verify(m => m.AddAsync(It.IsAny<GrandParentEntity>()), Times.Never());
-            logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -227,7 +227,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("There was a problem");
             repo.Verify(m => m.AddAsync(It.IsAny<ParentEntity>()), Times.Never());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -246,8 +246,8 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("There was an issue processing the request, see the plank logs for details");
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
-            _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once);
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.ErrorMessage(It.IsAny<DataException>()), Times.Once);
         }
 
         [Fact]
@@ -269,8 +269,8 @@ namespace Plank.Net.Tests.Managers
             results.Id.Should().Be(id);
             repo.Verify(m => m.GetAsync(id), Times.Once());
             repo.Verify(m => m.DeleteAsync(id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<int>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Once());
         }
 
         [Fact]
@@ -290,8 +290,8 @@ namespace Plank.Net.Tests.Managers
             results.ValidationResults.IsValid.Should().BeTrue();
             repo.Verify(m => m.GetAsync(id), Times.Once());
             repo.Verify(m => m.DeleteAsync(id), Times.Never());
-            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<int>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Once());
         }
 
         [Fact]
@@ -314,9 +314,9 @@ namespace Plank.Net.Tests.Managers
             results.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(id), Times.Once());
             repo.Verify(m => m.DeleteAsync(id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
-            _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<int>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Once());
+            _logger.Verify(m => m.ErrorMessage(It.IsAny<DataException>()), Times.Once());
         }
 
         [Fact]
@@ -336,8 +336,8 @@ namespace Plank.Net.Tests.Managers
             result.Should().NotBeNull();
             result.IsValid.Should().BeTrue();
             repo.Verify(m => m.GetAsync(id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<int>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Once());
         }
 
         [Fact]
@@ -357,9 +357,9 @@ namespace Plank.Net.Tests.Managers
             result.IsValid.Should().BeFalse();
             result.Message.Should().Be("There was an issue processing the request, see the plank logs for details");
             repo.Verify(m => m.GetAsync(id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<int>()), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Once());
-            _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<int>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Once());
+            _logger.Verify(m => m.ErrorMessage(It.IsAny<DataException>()), Times.Once());
         }
 
         [Fact]
@@ -388,7 +388,7 @@ namespace Plank.Net.Tests.Managers
             result.PageSize.Should().Be(10);
             result.TotalItemCount.Should().Be(2);
             repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), 1, 10), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -409,8 +409,8 @@ namespace Plank.Net.Tests.Managers
             result.IsValid.Should().BeFalse();
             result.Message.Should().Be("There was an issue processing the request, see the plank logs for details");
             repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
-            _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.ErrorMessage(It.IsAny<DataException>()), Times.Once());
 
         }
 
@@ -433,7 +433,7 @@ namespace Plank.Net.Tests.Managers
             result.Item.Id.Should().Be(item.Id);
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(existing), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -452,7 +452,7 @@ namespace Plank.Net.Tests.Managers
             // Assert
             result.ValidationResults.IsValid.Should().BeFalse();
             repo.Verify(m => m.UpdateAsync(It.IsAny<ParentEntity>()), Times.Never());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -469,7 +469,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("ParentEntity cannot be null.");
             repo.Verify(m => m.UpdateAsync(It.IsAny<ParentEntity>()), Times.Never());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -490,7 +490,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.ElementAt(0).Message.Should().Be("Item could not be found");
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -510,7 +510,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.IsValid.Should().BeFalse();
             result.ValidationResults.ElementAt(0).Message.Should().Be("There was a problem");
             repo.Verify(m => m.UpdateAsync(It.IsAny<ParentEntity>()), Times.Never());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -533,8 +533,8 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
-            _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.ErrorMessage(It.IsAny<DataException>()), Times.Once());
         }
 
         [Fact]
@@ -556,8 +556,63 @@ namespace Plank.Net.Tests.Managers
             result.Item.Id.Should().Be(item.Id);
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(existing), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
 
+        }
+
+        [Fact]
+        public async Task Update_PartialUpdateEntityNull_NotUpdated()
+        {
+            // Arrange
+            var repo = new Mock<IRepository<ParentEntity>>();
+
+            // Act
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
+            var result = await manager.UpdateAsync(null, p => p.FirstName);
+
+            // Assert
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("Value cannot be null or empty.\r\nParameter name: item");
+            result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [Fact]
+        public async Task Update_PartialUpdatePropertiesNull_NotUpdated()
+        {
+            // Arrange
+            var existing = TestHelper.GetParentEntity();
+            var item = new ParentEntity { Id = 0, IsActive = false };
+            var repo = new Mock<IRepository<ParentEntity>>();
+
+            // Act
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
+            var result = await manager.UpdateAsync(item, null);
+
+            // Assert
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("Value cannot be null or empty.\r\nParameter name: properties");
+            result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [Fact]
+        public async Task Update_PartialUpdateInvalidProperty_NotUpdated()
+        {
+            // Arrange
+            var existing = TestHelper.GetParentEntity();
+            var item = new ParentEntity { Id = 0, IsActive = false };
+            var repo = new Mock<IRepository<ParentEntity>>();
+
+            // Act
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
+            var result = await manager.UpdateAsync(item, p => p, p => p.IsActive);
+
+            // Assert
+            result.ValidationResults.IsValid.Should().BeFalse();
+            result.ValidationResults.ElementAt(0).Message.Should().Be("Value cannot be null or empty.\r\nParameter name: properties");
+            result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -578,7 +633,7 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.ElementAt(0).Message.Should().Be("Item could not be found");
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -603,8 +658,8 @@ namespace Plank.Net.Tests.Managers
             result.ValidationResults.ElementAt(0).Key.Should().Be("Error");
             repo.Verify(m => m.GetAsync(item.Id), Times.Once());
             repo.Verify(m => m.UpdateAsync(item), Times.Once());
-            _logger.Verify(m => m.Info(It.IsAny<string>()), Times.Exactly(2));
-            _logger.Verify(m => m.Error(It.IsAny<DataException>()), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.ErrorMessage(It.IsAny<DataException>()), Times.Once());
         }
 
         #endregion

@@ -6,13 +6,13 @@ namespace Plank.Net.Managers
     {
         #region METHODS
 
-        void Error(object message);
+        void ErrorMessage(object message);
 
-        void Error(object message, Exception exception);
+        void ErrorMessage(object message, Exception exception);
 
-        void Info(object message);
+        void InfoMessage(object message);
 
-        void Info(object message, Exception exception);
+        void InfoMessage(object message, Exception exception);
 
         #endregion
     }

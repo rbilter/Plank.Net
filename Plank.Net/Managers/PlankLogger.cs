@@ -13,22 +13,22 @@ namespace Plank.Net.Managers
 
         #region METHODS
 
-        public void Error(object message)
+        public void ErrorMessage(object message)
         {
             _logger.Error(message);
         }
 
-        public void Error(object message, Exception exception)
+        public void ErrorMessage(object message, Exception exception)
         {
             _logger.Error(message, exception);
         }
 
-        public void Info(object message)
+        public void InfoMessage(object message)
         {
             _logger.Info(message);
         }
 
-        public void Info(object message, Exception exception)
+        public void InfoMessage(object message, Exception exception)
         {
             _logger.Info(message, exception);
         }

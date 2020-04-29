@@ -70,6 +70,8 @@ namespace Plank.Net.Tests.Controllers
             try
             {
                 _ = await _controller.SearchAsync(null);
+
+                Assert.True(false, "Exception should have been thrown");
             }
             catch(ArgumentNullException ex)
             {

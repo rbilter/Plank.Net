@@ -8,7 +8,7 @@ namespace Plank.Net.Tests
     {
         #region MEMBERS
 
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
 
         #endregion
 

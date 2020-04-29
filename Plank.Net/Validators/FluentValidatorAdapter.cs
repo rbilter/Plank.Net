@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Plank.Net.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Plank.Net.Validators
 {
+    [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "The class is created through late-bound reflection method")]
     internal sealed class FluentValidatorAdapter<TEntity> : PlankValidator<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
