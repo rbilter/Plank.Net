@@ -1,5 +1,5 @@
 ﻿using Plank.Net.Data;
-using Plank.Net.Tests.Models;
+using Plank.Net.Tests.TestHelpers;
 using System.Data.Entity;
 
 namespace Plank.Net.Tests

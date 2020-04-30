@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Plank.Net.Tests.Models
+namespace Plank.Net.Tests.TestHelpers
 {
     [HasSelfValidation]
     [NotNullValidator(MessageTemplate = "ParentEntity cannot be null.")]

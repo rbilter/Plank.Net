@@ -2,7 +2,7 @@
 using Moq;
 using Plank.Net.Data;
 using Plank.Net.Managers;
-using Plank.Net.Tests.Models;
+using Plank.Net.Tests.TestHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,7 +31,7 @@ namespace Plank.Net.Tests.Managers
 
         #endregion
 
-        #region METHODS
+        #region TEST METHODS
 
         [Fact]
         public void Constructor_RepositoryNull_ArgumentNullException()

@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Plank.Net.Data;
-using Plank.Net.Tests.Models;
+using Plank.Net.Tests.TestHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,13 +35,16 @@ namespace Plank.Net.Tests.Data
             // Arrange
 
             // Act
-            try
+            Action act = () => CreateRespoistoryWithNullContext();
+
+            // Assert
+            act.Should()
+               .Throw<ArgumentNullException>()
+               .WithMessage("Value cannot be null.\r\nParameter name: context");
+
+            void CreateRespoistoryWithNullContext()
             {
                 _ = new PlankRepository<ChildOne>(null);
-            }
-            catch(ArgumentNullException ex)
-            {
-                ex.Message.Should().Be("Value cannot be null.\r\nParameter name: context");
             }
         }
 

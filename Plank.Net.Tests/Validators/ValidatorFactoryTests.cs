@@ -1,15 +1,14 @@
 ﻿using FluentAssertions;
-using Plank.Net.Tests.Models;
-using Plank.Net.Tests.Validators;
+using Plank.Net.Tests.TestHelpers;
 using Plank.Net.Validators;
 using System.Linq;
 using Xunit;
 
-namespace Plank.Net.Tests.Data
+namespace Plank.Net.Tests.Validators
 {
     public class ValidatorFactoryTests
     {
-        #region FACTS
+        #region TEST METHODS
 
         [Fact]
         public void CreateInstancePlankTypeValidators()

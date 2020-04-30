@@ -2,7 +2,7 @@
 using Moq;
 using Plank.Net.Controllers;
 using Plank.Net.Search;
-using Plank.Net.Tests.Models;
+using Plank.Net.Tests.TestHelpers;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,20 +62,21 @@ namespace Plank.Net.Tests.Controllers
         }
 
         [Fact]
-        public async Task Search_BuilderNull_ArgumentNullException()
+        public void Search_BuilderNull_ArgumentNullException()
         {
             // Arrange
 
             // Act
-            try
-            {
-                _ = await _controller.SearchAsync(null);
+            Func<Task> act = async () => await SearchWithNullBuilder();
 
-                Assert.True(false, "Exception should have been thrown");
-            }
-            catch(ArgumentNullException ex)
+            // Assert
+            act.Should()
+               .Throw<ArgumentNullException>()
+               .WithMessage("Value cannot be null.\r\nParameter name: builder");
+
+            Task SearchWithNullBuilder()
             {
-                ex.Message.Should().Be("Value cannot be null.\r\nParameter name: builder");
+                return _controller.SearchAsync(null);
             }
         }
 

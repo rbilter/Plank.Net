@@ -50,20 +50,25 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Controllers\PlankControllerTests.cs" />
     <Compile Include="Data\PlankRepositoryTests.cs" />
-    <Compile Include="Data\ValidatorFactoryTests.cs" />
+    <Compile Include="Models\PlankEntityAdapterTests.cs" />
+    <Compile Include="Models\PlankEntityTests.cs" />
+    <Compile Include="Search\ExtensionMethodsTests.cs" />
+    <Compile Include="TestHelpers\PlankEntityAdapterHelper.cs" />
+    <Compile Include="TestHelpers\PlankEntityHelper.cs" />
+    <Compile Include="Validators\ValidatorFactoryTests.cs" />
     <Compile Include="Managers\PlankManagerTests.cs" />
-    <Compile Include="Models\ChildOne.cs" />
-    <Compile Include="Models\ChildThree.cs" />
-    <Compile Include="Models\ChildTwo.cs" />
-    <Compile Include="Models\GrandParentEntity.cs" />
-    <Compile Include="Models\ParentEntity.cs" />
+    <Compile Include="TestHelpers\ChildOne.cs" />
+    <Compile Include="TestHelpers\ChildThree.cs" />
+    <Compile Include="TestHelpers\ChildTwo.cs" />
+    <Compile Include="TestHelpers\GrandParentEntity.cs" />
+    <Compile Include="TestHelpers\ParentEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDbContext.cs" />
     <Compile Include="TestHelper.cs" />
-    <Compile Include="Validators\FailGrandParentValidator.cs" />
-    <Compile Include="Validators\FailValidator.cs" />
-    <Compile Include="Validators\ChildThreeFluentValidator.cs" />
-    <Compile Include="Validators\PassValidator.cs" />
+    <Compile Include="TestHelpers\FailGrandParentValidator.cs" />
+    <Compile Include="TestHelpers\FailValidator.cs" />
+    <Compile Include="TestHelpers\ChildThreeFluentValidator.cs" />
+    <Compile Include="TestHelpers\PassValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plank.Net.Contracts\Plank.Net.Contracts.csproj">
@@ -144,6 +149,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Plank.Net.Tests.Models;
+using Plank.Net.Tests.TestHelpers;
 
-namespace Plank.Net.Tests.Validators
+namespace Plank.Net.Tests.TestHelpers
 {
     public class ChildThreeFluentValidator : AbstractValidator<ChildThree>
     {

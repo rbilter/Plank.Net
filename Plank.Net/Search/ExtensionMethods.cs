@@ -11,11 +11,17 @@ namespace Plank.Net.Search
 
         public static Expression<Func<TEntity, bool>> And<TEntity>(this Expression<Func<TEntity, bool>> first, Expression<Func<TEntity, bool>> second) where TEntity : IEntity
         {
+            _ = first ?? throw new ArgumentNullException(nameof(first));
+            _ = second ?? throw new ArgumentNullException(nameof(second));
+
             return first.Compose(second, Expression.And);
         }
 
         public static Expression<Func<TEntity, bool>> Or<TEntity>(this Expression<Func<TEntity, bool>> first, Expression<Func<TEntity, bool>> second) where TEntity : IEntity
         {
+            _ = first ?? throw new ArgumentNullException(nameof(first));
+            _ = second ?? throw new ArgumentNullException(nameof(second));
+
             return first.Compose(second, Expression.Or);
         }
 

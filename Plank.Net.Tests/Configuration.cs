@@ -1,4 +1,4 @@
-﻿using Plank.Net.Tests.Models;
+﻿using Plank.Net.Tests.TestHelpers;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;

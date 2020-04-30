@@ -1,8 +1,8 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Plank.Net.Tests.Models;
+using Plank.Net.Tests.TestHelpers;
 using Plank.Net.Validators;
 
-namespace Plank.Net.Tests.Validators
+namespace Plank.Net.Tests.TestHelpers
 {
     public class PassValidator : PlankValidator<ChildTwo>
     {
