@@ -4,10 +4,10 @@
     <id>$id$</id>
     <version>0.0.14</version>
     <title>$title$</title>	
-    <authors>BilterSoftware Developers</authors>
-    <owners>BilterSoftware Developers</owners>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This package contains a framework for quickly building Api's using .NET</description>
+    <description>$description$</description>
     <releaseNotes>This release contains all updates through $date$</releaseNotes>
     <copyright>Copyright 2018</copyright>
   </metadata>
