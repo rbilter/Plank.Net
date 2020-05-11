@@ -71,7 +71,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
-        public async Task Create_EntityValid_Created()
+        public async Task Add_EntityValid_Created()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
@@ -90,7 +90,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
-        public async Task Create_EntityNotValid_NotCreated()
+        public async Task Add_EntityNotValid_NotCreated()
         {
             // Arrange
             var item       = TestHelper.GetParentEntity();
@@ -109,7 +109,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
-        public async Task Create_ChildEntityNotValid_NotCreated()
+        public async Task Add_ChildEntityNotValid_NotCreated()
         {
             // Arrange
             var invalidChild     = TestHelper.GetChildOne();
@@ -135,7 +135,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
-        public async Task Create_EntityNull_NotCreated()
+        public async Task Add_EntityNull_NotCreated()
         {
             // Arrange
             var repo = new Mock<IRepository<ParentEntity>>();
@@ -152,7 +152,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
-        public async Task Create_FluentValidatorHasPassResult_Created()
+        public async Task Add_FluentValidatorHasPassResult_Created()
         {
             // Arrange
             var entity = new ChildThree
@@ -173,7 +173,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
-        public async Task Create_FluentValidatorHasFailResult_NotCreated()
+        public async Task Add_FluentValidatorHasFailResult_NotCreated()
         {
             // Arrange
             var entity = new ChildThree();
@@ -192,7 +192,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
-        public async Task Create_ValidatorHasFailResult_NotCreated()
+        public async Task Add_ValidatorHasFailResult_NotCreated()
         {
             // Arrange
             var entity = new GrandParentEntity();
@@ -211,7 +211,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
-        public async Task Create_ValidatorHasFailResultOnChildEntity_NotCreated()
+        public async Task Add_ValidatorHasFailResultOnChildEntity_NotCreated()
         {
             // Arrange
             var entity = TestHelper.GetParentEntity();
@@ -231,7 +231,7 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
-        public async Task Create_RepositoryThrowException_NotCreated()
+        public async Task Add_RepositoryThrowException_NotCreated()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();

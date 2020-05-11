@@ -8,7 +8,7 @@ using X.PagedList;
 
 namespace Plank.Net.Data
 {
-    public sealed class PlankRepository<TEntity> : AbstractRepository<TEntity> where TEntity : class, IEntity
+    public sealed class PlankRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
         #region MEMBERS
 
@@ -26,9 +26,15 @@ namespace Plank.Net.Data
 
         #endregion
 
+        #region PROPERTIES
+
+        public IRepository<TEntity> NextRepository { get; private set; }
+
+        #endregion
+
         #region METHODS
 
-        public override async Task AddAsync(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
             await NextRepository.AddAsync(entity).ConfigureAwait(false);
 
@@ -36,7 +42,7 @@ namespace Plank.Net.Data
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public override async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             await NextRepository.DeleteAsync(id).ConfigureAwait(false);
 
@@ -46,7 +52,7 @@ namespace Plank.Net.Data
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public override async Task<TEntity> GetAsync(int id)
+        public async Task<TEntity> GetAsync(int id)
         {
             var result = await _context.Set<TEntity>().SingleOrDefaultAsync(i => i.Id == id).ConfigureAwait(false);
             if(result != null)
@@ -57,7 +63,13 @@ namespace Plank.Net.Data
             return await NextRepository.GetAsync(id).ConfigureAwait(false);
         }
 
-        public override async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber = 1, int pageSize = 10)
+        public IRepository<TEntity> RegisterNext(IRepository<TEntity> repository)
+        {
+            NextRepository = repository;
+            return NextRepository;
+        }
+
+        public async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber = 1, int pageSize = 10)
         {
             var result = await _context.Set<TEntity>().Where(expression).OrderBy(e => e.Id).ToPagedListAsync(pageNumber, pageSize).ConfigureAwait(false);
             if(result != null)
@@ -68,7 +80,7 @@ namespace Plank.Net.Data
             return await NextRepository.SearchAsync(expression, pageNumber, pageSize).ConfigureAwait(false);
         }
 
-        public override async Task UpdateAsync(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
             await NextRepository.UpdateAsync(entity).ConfigureAwait(false);
 

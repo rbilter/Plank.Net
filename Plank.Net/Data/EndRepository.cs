@@ -6,31 +6,42 @@ using X.PagedList;
 
 namespace Plank.Net.Data
 {
-    public sealed class EndRepository<TEntity> : AbstractRepository<TEntity> where TEntity : class, IEntity
+    public sealed class EndRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
+        #region PROPERTIES
+
+        public IRepository<TEntity> NextRepository { get; }
+
+        #endregion
+
         #region METHODS
 
-        public override async Task AddAsync(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
             await Task.Yield();
         }
 
-        public override async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             await Task.Yield();
         }
 
-        public override Task<TEntity> GetAsync(int id)
+        public Task<TEntity> GetAsync(int id)
         {
             return Task.FromResult<TEntity>(null);
         }
 
-        public override Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
+        public IRepository<TEntity> RegisterNext(IRepository<TEntity> repository)
+        {
+            return null;
+        }
+
+        public Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
         {
             return Task.FromResult<IPagedList<TEntity>>(null);
         }
 
-        public override async Task UpdateAsync(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
             await Task.Yield();
         }

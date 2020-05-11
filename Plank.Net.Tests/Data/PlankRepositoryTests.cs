@@ -49,7 +49,7 @@ namespace Plank.Net.Tests.Data
         }
 
         [Fact]
-        public async Task Create_EntityValid_EntityCreated()
+        public async Task Add_EntityValid_EntityCreated()
         {
             // Arrange
             var entity      = TestHelper.GetParentEntity();
