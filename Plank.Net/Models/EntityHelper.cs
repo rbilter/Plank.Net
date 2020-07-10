@@ -10,12 +10,16 @@ namespace Plank.Net.Models
     {
         #region METHODS
 
-        public static void PopulateTimeStamps(IEntity item)
+        public static void PopulateComputedColumns(IEntity item)
         {
             item.DateCreated = item.DateCreated == DateTime.MinValue
                 ? DateTime.UtcNow
                 : item.DateCreated;
             item.DateLastModified = DateTime.UtcNow;
+
+            item.GlobalId = item.GlobalId == Guid.Empty
+                ? Guid.NewGuid()
+                : item.GlobalId;
         }
 
         public static void Validate(IEntity item, ValidationResults results)

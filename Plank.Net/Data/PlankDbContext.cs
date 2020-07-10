@@ -26,9 +26,9 @@ namespace Plank.Net.Data
                 .ToList()
                 .ForEach(a =>
                 {
-                    if (a.Entity is IPopulateTimeStamps timeStamps)
+                    if (a.Entity is IPopulateComputedColumns timeStamps)
                     {
-                        timeStamps.PopulateTimeStamps();
+                        timeStamps.PopulateComputedColumns();
                     }
                 });
 

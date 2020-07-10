@@ -5,7 +5,7 @@ using System;
 namespace Plank.Net.Models
 {
     [HasSelfValidation]
-    public abstract class PlankEntityAdapter : IEntity, IPopulateTimeStamps
+    public abstract class PlankEntityAdapter : IEntity, IPopulateComputedColumns
     {
         #region PROPERTIES
 
@@ -21,9 +21,9 @@ namespace Plank.Net.Models
 
         #region METHODS
 
-        public void PopulateTimeStamps()
+        public void PopulateComputedColumns()
         {
-            EntityHelper.PopulateTimeStamps(this);
+            EntityHelper.PopulateComputedColumns(this);
         }
 
         [SelfValidation]

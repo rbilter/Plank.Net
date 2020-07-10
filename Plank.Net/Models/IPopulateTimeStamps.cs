@@ -1,10 +1,10 @@
 ﻿namespace Plank.Net.Models
 {
-    internal interface IPopulateTimeStamps
+    internal interface IPopulateComputedColumns
     {
         #region METHODS
 
-        void PopulateTimeStamps();
+        void PopulateComputedColumns();
 
         #endregion
     }

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Plank.Net.Models
 {
     [HasSelfValidation]
-    public abstract class PlankEntity : IEntity, IPopulateTimeStamps
+    public abstract class PlankEntity : IEntity, IPopulateComputedColumns
     {
         #region PROPERTIES
 
@@ -17,24 +17,21 @@ namespace Plank.Net.Models
         public int Id { get; set; }
 
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public Guid GlobalId { get; set; }
 
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
 
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateLastModified { get; set; }
 
         #endregion
 
         #region METHODS
 
-        public void PopulateTimeStamps()
+        public void PopulateComputedColumns()
         {
-            EntityHelper.PopulateTimeStamps(this);
+            EntityHelper.PopulateComputedColumns(this);
         }
 
         [SelfValidation]
