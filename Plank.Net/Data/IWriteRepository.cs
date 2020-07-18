@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Plank.Net.Data
 {
@@ -7,6 +8,8 @@ namespace Plank.Net.Data
         #region METHODS
 
         Task AddAsync(T entity);
+
+        Task BulkAddAsync(IEnumerable<T> entities);
 
         Task DeleteAsync(int id);
 

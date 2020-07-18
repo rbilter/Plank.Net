@@ -21,7 +21,7 @@
 
         public T Item { get; set; }
 
-        public PlankValidationResultCollection ValidationResults { get; }
+        public PlankValidationResultCollection ValidationResults { get; } = new PlankValidationResultCollection();
 
         #endregion
     }

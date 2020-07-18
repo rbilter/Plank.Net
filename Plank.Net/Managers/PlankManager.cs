@@ -1,10 +1,12 @@
-﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
+﻿using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
+using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Plank.Net.Contracts;
 using Plank.Net.Data;
 using Plank.Net.Models;
 using Plank.Net.Profiles;
 using Serialize.Linq.Serializers;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Diagnostics.CodeAnalysis;
@@ -66,11 +68,16 @@ namespace Plank.Net.Managers
                 {
                     _logger.ErrorMessage(e);
 
-                    validation.AddResult(new ValidationResult(_defaultErrorMessage, this, "Error", null, null));
+                    validation.Add(new PlankValidationResult
+                    {
+                        Key = "Error",
+                        Message = _defaultErrorMessage,
+                        Target = this
+                    });
                 }
             }
 
-            var results = new PlankPostResponse<TEntity>(Mapping<TEntity>.Mapper.Map<PlankValidationResultCollection>(validation)) 
+            var results = new PlankPostResponse<TEntity>(validation) 
             { 
                 Item = item 
             };
@@ -78,6 +85,37 @@ namespace Plank.Net.Managers
             _logger.InfoMessage(results.ToJson());
 
             return results;
+        }
+
+        public async Task<PlankBulkPostResponse<TEntity>> BulkAddAsync(IEnumerable<TEntity> items)
+        {
+            _logger.InfoMessage(items.ToJson());
+
+            var validation = items.Validate();
+
+            if (validation.Any(l => l.Item2.IsValid))
+            {
+                try
+                {
+                    var itemsToSave = validation.Where(l => l.Item2.IsValid).Select(l => l.Item1);
+                    await _repository.BulkAddAsync(itemsToSave).ConfigureAwait(false);
+                }
+                catch (DataException e)
+                {
+                    _logger.ErrorMessage(e);
+
+                    validation.ForEach(v => v.Item2.Add(new PlankValidationResult 
+                    { 
+                        Key = "Error", 
+                        Message = _defaultErrorMessage,
+                        Target = this
+                    }));
+                }
+            }
+
+            _logger.InfoMessage(validation.ToJson());
+
+            return new PlankBulkPostResponse<TEntity>(validation);
         }
 
         public async Task<PlankDeleteResponse> DeleteAsync(int id)
@@ -188,18 +226,28 @@ namespace Plank.Net.Managers
                     }
                     else
                     {
-                        validation.AddResult(new ValidationResult(_defaultItemNotFoundMessage, this, "Error", null, null));
+                        validation.Add(new PlankValidationResult
+                        {
+                            Key = "Error",
+                            Message = _defaultItemNotFoundMessage,
+                            Target = this
+                        });
                     }
                 }
                 catch (DataException e)
                 {
                     _logger.ErrorMessage(e);
 
-                    validation.AddResult(new ValidationResult(_defaultErrorMessage, this, "Error", null, null));
+                    validation.Add(new PlankValidationResult
+                    {
+                        Key = "Error",
+                        Message = _defaultErrorMessage,
+                        Target = this
+                    });
                 }
             }
 
-            var results = new PlankPostResponse<TEntity>(Mapping<TEntity>.Mapper.Map<PlankValidationResultCollection>(validation)) 
+            var results = new PlankPostResponse<TEntity>(validation) 
             { 
                 Item = existing 
             };
@@ -216,18 +264,28 @@ namespace Plank.Net.Managers
             _logger.InfoMessage(item.ToJson());
 
             TEntity existing = null;
-            var validation = new ValidationResults();
+            var validation = new PlankValidationResultCollection();
 
             if (item == null)
             {
                 var msg = string.Format(CultureInfo.InvariantCulture, _defaultNullParameterMessage, nameof(item));
-                validation.AddResult(new ValidationResult(msg, this, "Error", null, null));
+                validation.Add(new PlankValidationResult
+                {
+                    Key = "Error",
+                    Message = msg,
+                    Target = this
+                });
             }
 
             if (properties == null || properties.Any(p => (p.Body as MemberExpression ?? (p.Body as UnaryExpression)?.Operand as MemberExpression) == null))
             {
                 var msg = string.Format(CultureInfo.InvariantCulture, _defaultNullParameterMessage, nameof(properties));
-                validation.AddResult(new ValidationResult(msg, this, "Error", null, null));
+                validation.Add(new PlankValidationResult
+                {
+                    Key = "Error",
+                    Message = msg,
+                    Target = this
+                });
             }
 
             if(validation.IsValid)
@@ -258,18 +316,28 @@ namespace Plank.Net.Managers
                     }
                     else
                     {
-                        validation.AddResult(new ValidationResult(_defaultItemNotFoundMessage, this, "Error", null, null));
+                        validation.Add(new PlankValidationResult
+                        {
+                            Key = "Error",
+                            Message = _defaultItemNotFoundMessage,
+                            Target = this
+                        });
                     }
                 }
                 catch (DataException e)
                 {
                     _logger.ErrorMessage(e);
 
-                    validation.AddResult(new ValidationResult(_defaultErrorMessage, this, "Error", null, null));
+                    validation.Add(new PlankValidationResult
+                    {
+                        Key = "Error",
+                        Message = _defaultErrorMessage,
+                        Target = this
+                    });
                 }
             }
 
-            var results = new PlankPostResponse<TEntity>(Mapping<TEntity>.Mapper.Map<PlankValidationResultCollection>(validation)) 
+            var results = new PlankPostResponse<TEntity>(validation) 
             { 
                 Item = existing 
             };

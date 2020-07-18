@@ -251,6 +251,87 @@ namespace Plank.Net.Tests.Managers
         }
 
         [Fact]
+        public async Task BulkAdd_EntitiesValid_Created()
+        {
+            // Arrange
+            var entities = new List<ParentEntity>
+            {
+                TestHelper.GetParentEntity(1),
+                TestHelper.GetParentEntity(2)
+            };
+            var repo = new Mock<IRepository<ParentEntity>>();
+            repo.Setup(m => m.BulkAddAsync(entities)).Returns(Task.FromResult(entities));
+
+            // Act
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
+            var result = await manager.BulkAddAsync(entities);
+
+            // Assert
+            result.Items.Should().HaveCount(2);
+            foreach(var item in result.Items)
+            {
+                item.ValidationResults.IsValid.Should().BeTrue();
+                entities.Where(i => i.Id == item.Item.Id).Should().HaveCount(1);
+            }
+
+            repo.Verify(m => m.BulkAddAsync(entities), Times.Once());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [Fact]
+        public async Task BulkAdd_OneEntityNotValid_PartialCreate()
+        {
+            // Arrange
+            var entities = new List<ParentEntity>
+            {
+                TestHelper.GetParentEntity(1),
+                TestHelper.GetParentEntity(2)
+            };
+            entities[1].FirstName = string.Empty;
+
+            var repo = new Mock<IRepository<ParentEntity>>();
+            repo.Setup(m => m.BulkAddAsync(entities)).Returns(Task.FromResult(entities[0]));
+
+            // Act
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
+            var result = await manager.BulkAddAsync(entities);
+
+            // Assert
+            result.Items.Should().HaveCount(2);
+            result.Items.Where(i => i.ValidationResults.IsValid).Should().HaveCount(1);
+            result.Items.Where(i => i.ValidationResults.IsValid == false).Should().HaveCount(1);
+
+            repo.Verify(m => m.BulkAddAsync(It.IsAny<IEnumerable<ParentEntity>>()), Times.Once());
+            repo.Verify(m => m.BulkAddAsync(entities), Times.Never());
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [Fact]
+        public async Task BulkAdd_RepositoryThrowException_NotCreated()
+        {
+            // Arrange
+            var entities = new List<ParentEntity>
+            {
+                TestHelper.GetParentEntity(),
+                TestHelper.GetParentEntity()
+            };
+            var repo = new Mock<IRepository<ParentEntity>>();
+            repo.Setup(m => m.BulkAddAsync(entities)).Throws(new DataException("Error"));
+
+            // Act
+            var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
+            var result = await manager.BulkAddAsync(entities);
+
+            // Assert
+            result.Items.Should().HaveCount(2);
+            result.Items.Where(i => i.ValidationResults.IsValid == false).Should().HaveCount(2);
+            result.Items.Where(i => i.ValidationResults.ElementAt(0).Message == "There was an issue processing the request, see the plank logs for details").Should().HaveCount(2);
+            result.Items.Where(i => i.ValidationResults.ElementAt(0).Key == "Error").Should().HaveCount(2);
+            _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
+            _logger.Verify(m => m.ErrorMessage(It.IsAny<DataException>()), Times.Once);
+        }
+
+        [Fact]
         public async Task Delete_EntityExists_Deleted()
         {
             // Arrange

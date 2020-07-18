@@ -1,9 +1,13 @@
-﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
+﻿using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
+using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Newtonsoft.Json;
+using Plank.Net.Contracts;
+using Plank.Net.Profiles;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace Plank.Net.Models
 {
@@ -45,12 +49,20 @@ namespace Plank.Net.Models
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public static ValidationResults Validate<TEntity>(this TEntity item) where TEntity : IEntity
+        public static PlankValidationResultCollection Validate<TEntity>(this TEntity item) where TEntity : IEntity
         {
             var validator = ValidationFactory.CreateValidator<TEntity>();
-            var validation = validator.Validate(item);
+            var result = validator.Validate(item);
 
-            return validation;
+            return Mapping<TEntity>.Mapper.Map<PlankValidationResultCollection>(result);
+        }
+
+        public static IEnumerable<(TEntity, PlankValidationResultCollection)> Validate<TEntity>(this IEnumerable<TEntity> items) where TEntity : IEntity
+        {
+            var results = new List<(TEntity, PlankValidationResultCollection)>();
+            items.ForEach(i => results.Add((i, i.Validate())));
+
+            return results;
         }
 
         #endregion

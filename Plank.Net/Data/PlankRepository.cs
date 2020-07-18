@@ -1,5 +1,6 @@
 ﻿using Plank.Net.Models;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -39,6 +40,14 @@ namespace Plank.Net.Data
             await NextRepository.AddAsync(entity).ConfigureAwait(false);
 
             _context.Set<TEntity>().Add(entity);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        public async Task BulkAddAsync(IEnumerable<TEntity> entities)
+        {
+            await NextRepository.BulkAddAsync(entities).ConfigureAwait(false);
+
+            _context.Set<TEntity>().AddRange(entities);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 

@@ -44,6 +44,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="PlankBulkPostResponse.cs" />
     <Compile Include="PlankDeleteResponse.cs" />
     <Compile Include="PlankGetResponse.cs" />
     <Compile Include="PlankEnumerableResponse.cs" />

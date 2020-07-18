@@ -65,6 +65,27 @@ namespace Plank.Net.Tests.Data
         }
 
         [Fact]
+        public async Task BulkAdd_EntitiesValid_EntitiesCreated()
+        {
+            // Arrange
+            var entities = new List<ParentEntity>
+            {
+                TestHelper.GetParentEntity(),
+                TestHelper.GetParentEntity()
+            };
+
+            // Act
+            await _repo.BulkAddAsync(entities);
+            var ids = entities.Select(e => e.Id).ToList();
+            var created = (await _repo.SearchAsync(e => ids.Contains(e.Id))).ToList();
+
+            // Assert
+            created.Should().HaveCount(2);
+            entities.Select(e => e.Id == created[0].Id).Should().NotBeEmpty();
+            entities.Select(e => e.Id == created[1].Id).Should().NotBeEmpty();
+        }
+
+        [Fact]
         public async Task Delete_EntityExists_EntityDeleted()
         {
             // Arrange

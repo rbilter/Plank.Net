@@ -29,10 +29,11 @@ namespace Plank.Net.Tests
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        public static ParentEntity GetParentEntity()
+        public static ParentEntity GetParentEntity(int id = 0)
         {
             return new ParentEntity()
             {
+                Id = id,
                 FirstName = GetRandomString(10),
                 LastName  = GetRandomString(20)
             };
