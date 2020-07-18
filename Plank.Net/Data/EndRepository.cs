@@ -42,7 +42,7 @@ namespace Plank.Net.Data
             return null;
         }
 
-        public Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> _, int pageNumber, int pageSize)
+        public Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> _, List<Expression<Func<TEntity, object>>> includes, int pageNumber, int pageSize)
         {
             return Task.FromResult<IPagedList<TEntity>>(null);
         }

@@ -27,10 +27,10 @@ namespace Plank.Net.Tests.TestHelpers
         #region NAVIGATION PROPERTIES
 
         [InverseProperty("ParentEntity")]
-        public virtual IEnumerable<ChildOne> ChildOne { get; set; }
+        public virtual ICollection<ChildOne> ChildOne { get; set; }
 
         [InverseProperty("ParentEntity")]
-        public virtual IEnumerable<ChildTwo> ChildTwo { get; set; }
+        public virtual ICollection<ChildTwo> ChildTwo { get; set; }
 
         #endregion
     }

@@ -174,7 +174,7 @@ namespace Plank.Net.Managers
             return result;
         }
 
-        public async Task<PlankEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber, int pageSize)
+        public async Task<PlankEnumerableResponse<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, List<Expression<Func<TEntity, object>>> includes, int pageNumber, int pageSize)
         {
             expression = expression ?? (f => true);
 
@@ -184,7 +184,7 @@ namespace Plank.Net.Managers
             PlankEnumerableResponse<TEntity> result = null;
             try
             {
-                var pagedList  = await _repository.SearchAsync(expression, pageNumber, pageSize).ConfigureAwait(false);
+                var pagedList  = await _repository.SearchAsync(expression, includes, pageNumber, pageSize).ConfigureAwait(false);
                 result         = Mapping<TEntity>.Mapper.Map<PlankEnumerableResponse<TEntity>>(pagedList);
                 result.IsValid = true;
             }

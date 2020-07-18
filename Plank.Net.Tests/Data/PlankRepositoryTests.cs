@@ -1,9 +1,11 @@
-﻿using FluentAssertions;
+﻿using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using FluentAssertions;
 using Plank.Net.Data;
 using Plank.Net.Tests.TestHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -126,6 +128,24 @@ namespace Plank.Net.Tests.Data
 
             // Assert
             result.Should().HaveCount(1);
+            result[0].ChildOne.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task Search_IncludesProvided_ListReturned()
+        {
+            // Arrange
+            var includes = new List<Expression<Func<ParentEntity, object>>>
+            {
+                i => i.ChildOne
+            };
+
+            // Act
+            var result = await _repo.SearchAsync(i => i.FirstName == "Han" && i.LastName == "Solo", includes);
+
+            // Assert
+            result.Should().HaveCount(1);
+            result[0].ChildOne.Should().NotBeNull();
         }
 
         [Fact]

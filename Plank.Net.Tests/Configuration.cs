@@ -1,4 +1,5 @@
 ﻿using Plank.Net.Tests.TestHelpers;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -37,12 +38,16 @@ namespace Plank.Net.Tests
                 {
                     FirstName = "Luke",
                     LastName  = "Skywalker",
+                    DateCreated = DateTime.UtcNow,
+                    DateLastModified = DateTime.UtcNow,
                     ChildOne  = new List<ChildOne>
                     {
                         new ChildOne
                         {
                             Address = "Luke Skywalker Address",
-                            City    = "Skywalker City"
+                            City    = "Skywalker City",
+                            DateCreated = DateTime.UtcNow,
+                            DateLastModified = DateTime.UtcNow
                         }
                     }
                 };
@@ -51,12 +56,16 @@ namespace Plank.Net.Tests
                 {
                     FirstName = "Han",
                     LastName  = "Solo",
+                    DateCreated = DateTime.UtcNow,
+                    DateLastModified = DateTime.UtcNow,
                     ChildOne  = new List<ChildOne>
                     {
                         new ChildOne
                         {
                             Address = "Han Solo Address",
-                            City    = "Solo City"
+                            City    = "Solo City",
+                            DateCreated = DateTime.UtcNow,
+                            DateLastModified = DateTime.UtcNow
                         }
                     }
                 };

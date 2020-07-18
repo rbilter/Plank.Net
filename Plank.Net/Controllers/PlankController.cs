@@ -59,10 +59,11 @@ namespace Plank.Net.Controllers
             _ = builder ?? throw new ArgumentNullException(nameof(builder));
 
             var expression = builder.Build();
+            var includes   = builder.Includes ?? new List<Expression<Func<TEntity, object>>>();
             var pageNumber = builder.PageNumber;
             var pageSize   = builder.PageSize;
 
-            return await _manager.SearchAsync(expression, pageNumber, pageSize).ConfigureAwait(false);
+            return await _manager.SearchAsync(expression, includes, pageNumber, pageSize).ConfigureAwait(false);
         }
 
         public async Task<PlankPostResponse<TEntity>> UpdateAsync(TEntity entity)

@@ -452,11 +452,11 @@ namespace Plank.Net.Tests.Managers
             var item = TestHelper.GetParentEntity();
             var list = new List<ParentEntity>() { item, item }.ToPagedList(1, 10);
             var repo = new Mock<IRepository<ParentEntity>>();
-            repo.Setup(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Returns(Task.FromResult(list));
+            repo.Setup(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), null, pageNumber, pageSize)).Returns(Task.FromResult(list));
 
             // Act
             var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = await manager.SearchAsync(null, pageNumber, pageSize);
+            var result  = await manager.SearchAsync(null, null, pageNumber, pageSize);
 
             // Assert
             result.IsValid.Should().BeTrue();
@@ -468,7 +468,7 @@ namespace Plank.Net.Tests.Managers
             result.PageNumber.Should().Be(1);
             result.PageSize.Should().Be(10);
             result.TotalItemCount.Should().Be(2);
-            repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), 1, 10), Times.Once());
+            repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), null, pageNumber, pageSize), Times.Once());
             _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
         }
 
@@ -479,17 +479,17 @@ namespace Plank.Net.Tests.Managers
             var pageNumber = 1;
             var pageSize   = 10;
             var repo = new Mock<IRepository<ParentEntity>>();
-            repo.Setup(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize)).Throws(new DataException("Error"));
+            repo.Setup(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), null, pageNumber, pageSize)).Throws(new DataException("Error"));
 
             // Act
             var manager = new PlankManager<ParentEntity>(repo.Object, _logger.Object);
-            var result  = await manager.SearchAsync(null, pageNumber, pageSize);
+            var result  = await manager.SearchAsync(null, null, pageNumber, pageSize);
 
             // Assert
             result.Should().NotBeNull();
             result.IsValid.Should().BeFalse();
             result.Message.Should().Be("There was an issue processing the request, see the plank logs for details");
-            repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), pageNumber, pageSize), Times.Once());
+            repo.Verify(m => m.SearchAsync(It.IsAny<Expression<Func<ParentEntity, bool>>>(), null, pageNumber, pageSize), Times.Once());
             _logger.Verify(m => m.InfoMessage(It.IsAny<string>()), Times.Exactly(2));
             _logger.Verify(m => m.ErrorMessage(It.IsAny<DataException>()), Times.Once());
 

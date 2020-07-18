@@ -78,15 +78,25 @@ namespace Plank.Net.Data
             return NextRepository;
         }
 
-        public async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, int pageNumber = 1, int pageSize = 10)
+        public async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, List<Expression<Func<TEntity, object>>> includes = null, int pageNumber = 1, int pageSize = 10)
         {
-            var result = await _context.Set<TEntity>().Where(expression).OrderBy(e => e.Id).ToPagedListAsync(pageNumber, pageSize).ConfigureAwait(false);
+            var query = _context.Set<TEntity>().Where(expression);
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            var result = await query.OrderBy(e => e.Id).ToPagedListAsync(pageNumber, pageSize).ConfigureAwait(false);
             if(result != null)
             {
                 return result;
             }
 
-            return await NextRepository.SearchAsync(expression, pageNumber, pageSize).ConfigureAwait(false);
+            return await NextRepository.SearchAsync(expression, includes, pageNumber, pageSize).ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(TEntity entity)

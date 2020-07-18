@@ -24,7 +24,6 @@ namespace Plank.Net.Tests.TestHelpers
 
         #region NAVIGATION PROPERTIES
 
-
         [ForeignKey("ParentEntityId")]
         public virtual ParentEntity ParentEntity { get; set; }
 
