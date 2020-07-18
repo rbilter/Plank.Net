@@ -57,7 +57,7 @@ namespace Plank.Net.Models
             return Mapping<TEntity>.Mapper.Map<PlankValidationResultCollection>(result);
         }
 
-        public static IEnumerable<(TEntity, PlankValidationResultCollection)> Validate<TEntity>(this IEnumerable<TEntity> items) where TEntity : IEntity
+        public static IEnumerable<(TEntity Item, PlankValidationResultCollection ValidationResults)> Validate<TEntity>(this IEnumerable<TEntity> items) where TEntity : IEntity
         {
             var results = new List<(TEntity, PlankValidationResultCollection)>();
             items.ForEach(i => results.Add((i, i.Validate())));

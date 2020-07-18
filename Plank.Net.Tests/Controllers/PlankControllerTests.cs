@@ -4,6 +4,7 @@ using Plank.Net.Controllers;
 using Plank.Net.Search;
 using Plank.Net.Tests.TestHelpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -30,7 +31,7 @@ namespace Plank.Net.Tests.Controllers
         #region TEST METHODS
 
         [Fact]
-        public async Task Create_ValidEntity_Created()
+        public async Task Add_ValidEntity_Created()
         {
             // Arrange
             var item = TestHelper.GetParentEntity();
@@ -42,6 +43,26 @@ namespace Plank.Net.Tests.Controllers
             response.ValidationResults.IsValid.Should().BeTrue();
             response.ValidationResults.Should().BeEmpty();
             response.Item.Id.Should().Be(item.Id);
+        }
+
+        [Fact]
+        public async Task BulkAdd_ValidEntities_Created()
+        {
+            // Arrange
+            var items = new List<ParentEntity>
+            {
+                TestHelper.GetParentEntity(),
+                TestHelper.GetParentEntity()
+            };
+
+            // Act
+            var response = await _controller.BulkAddAsync(items);
+
+            // Assert
+            response.Items.Should().HaveCount(2);
+            response.Items.Where(i => i.ValidationResults.IsValid).Should().HaveCount(2);
+            response.Items.Where(i => i.Item.Id == items[0].Id).Should().HaveCount(1);
+            response.Items.Where(i => i.Item.Id == items[1].Id).Should().HaveCount(1);
         }
 
         [Fact]

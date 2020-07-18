@@ -93,18 +93,18 @@ namespace Plank.Net.Managers
 
             var validation = items.Validate();
 
-            if (validation.Any(l => l.Item2.IsValid))
+            if (validation.Any(l => l.ValidationResults.IsValid))
             {
                 try
                 {
-                    var itemsToSave = validation.Where(l => l.Item2.IsValid).Select(l => l.Item1);
+                    var itemsToSave = validation.Where(l => l.ValidationResults.IsValid).Select(l => l.Item);
                     await _repository.BulkAddAsync(itemsToSave).ConfigureAwait(false);
                 }
                 catch (DataException e)
                 {
                     _logger.ErrorMessage(e);
 
-                    validation.ForEach(v => v.Item2.Add(new PlankValidationResult 
+                    validation.ForEach(v => v.ValidationResults.Add(new PlankValidationResult 
                     { 
                         Key = "Error", 
                         Message = _defaultErrorMessage,

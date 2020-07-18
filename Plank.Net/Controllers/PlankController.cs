@@ -4,6 +4,7 @@ using Plank.Net.Managers;
 using Plank.Net.Models;
 using Plank.Net.Search;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -36,6 +37,11 @@ namespace Plank.Net.Controllers
         public async Task<PlankPostResponse<TEntity>> AddAsync(TEntity entity)
         {
             return await _manager.AddAsync(entity).ConfigureAwait(false);
+        }
+
+        public async Task<PlankBulkPostResponse<TEntity>> BulkAddAsync(IEnumerable<TEntity> entities)
+        {
+            return await _manager.BulkAddAsync(entities).ConfigureAwait(false);
         }
 
         public async Task<PlankDeleteResponse> DeleteAsync(int id)
