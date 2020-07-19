@@ -3,11 +3,11 @@
   <metadata>
     <id>$id$</id>
     <version>0.2.0</version>
-    <title>$title$</title>	
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <title>$title$</title>
+    <authors>BilterSoftware</authors>
+    <owners>BilterSoftware</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>A framework for quickly building Api's using .NET</description>
     <releaseNotes>This release contains all updates through $date$</releaseNotes>
     <copyright>Copyright 2018</copyright>
   </metadata>
