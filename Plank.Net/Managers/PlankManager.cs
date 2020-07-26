@@ -32,7 +32,7 @@ namespace Plank.Net.Managers
 
         #region CONSTRUCTORS
 
-        public PlankManager(DbContext context)
+        public PlankManager(PlankDbContext context)
             : this(new PlankRepository<TEntity>(context), new PlankLogger<TEntity>())
         {
 

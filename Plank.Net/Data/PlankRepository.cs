@@ -19,10 +19,9 @@ namespace Plank.Net.Data
 
         #region CONSTRUCTORS
 
-        public PlankRepository(DbContext context)
+        public PlankRepository(PlankDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _context.Configuration.LazyLoadingEnabled = false;
         }
 
         #endregion

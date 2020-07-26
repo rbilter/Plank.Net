@@ -5,7 +5,6 @@ using Plank.Net.Models;
 using Plank.Net.Search;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -21,7 +20,7 @@ namespace Plank.Net.Controllers
 
         #region  CONSTRUCTORS
 
-        public PlankController(DbContext context)
+        public PlankController(PlankDbContext context)
         {
             var repo = new PlankRepository<TEntity>(context);
             repo.RegisterNext(new EndRepository<TEntity>());
