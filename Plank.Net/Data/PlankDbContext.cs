@@ -14,6 +14,7 @@ namespace Plank.Net.Data
         {
             Configuration.AutoDetectChangesEnabled = false;
             Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
             Configuration.ValidateOnSaveEnabled = false;
         }
 

@@ -89,7 +89,7 @@ namespace Plank.Net.Data
                 }
             }
 
-            var result = await query.OrderBy(e => e.Id).ToPagedListAsync(pageNumber, pageSize).ConfigureAwait(false);
+            var result = await query.AsNoTracking().OrderBy(e => e.Id).ToPagedListAsync(pageNumber, pageSize).ConfigureAwait(false);
             if(result != null)
             {
                 return result;
