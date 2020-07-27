@@ -12,7 +12,9 @@ namespace Plank.Net.Data
         protected PlankDbContext(string connectionString)
             : base(connectionString)
         {
+            Configuration.AutoDetectChangesEnabled = false;
             Configuration.LazyLoadingEnabled = false;
+            Configuration.ValidateOnSaveEnabled = false;
         }
 
         #endregion
