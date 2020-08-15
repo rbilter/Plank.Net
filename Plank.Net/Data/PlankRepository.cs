@@ -13,7 +13,7 @@ namespace Plank.Net.Data
     {
         #region MEMBERS
 
-        private readonly DbContext _context;
+        private readonly PlankDbContext _context;
 
         #endregion
 
@@ -40,6 +40,7 @@ namespace Plank.Net.Data
 
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.DetachAllEntitiesAsync().ConfigureAwait(false);
         }
 
         public async Task BulkAddAsync(IEnumerable<TEntity> entities)
@@ -48,6 +49,7 @@ namespace Plank.Net.Data
 
             _context.Set<TEntity>().AddRange(entities);
             await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.DetachAllEntitiesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
@@ -58,11 +60,12 @@ namespace Plank.Net.Data
             _context.Set<TEntity>().Attach(item);
             _context.Set<TEntity>().Remove(item);
             await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.DetachAllEntitiesAsync().ConfigureAwait(false);
         }
 
         public async Task<TEntity> GetAsync(int id)
         {
-            var result = await _context.Set<TEntity>().SingleOrDefaultAsync(i => i.Id == id).ConfigureAwait(false);
+            var result = await _context.Set<TEntity>().AsNoTracking().SingleOrDefaultAsync(i => i.Id == id).ConfigureAwait(false);
             if(result != null)
             {
                 return result;
@@ -79,7 +82,7 @@ namespace Plank.Net.Data
 
         public async Task<IPagedList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> expression, List<Expression<Func<TEntity, object>>> includes = null, int pageNumber = 1, int pageSize = 10)
         {
-            var query = _context.Set<TEntity>().Where(expression);
+            var query = _context.Set<TEntity>().AsNoTracking().Where(expression);
 
             if (includes != null)
             {
@@ -89,7 +92,7 @@ namespace Plank.Net.Data
                 }
             }
 
-            var result = await query.AsNoTracking().OrderBy(e => e.Id).ToPagedListAsync(pageNumber, pageSize).ConfigureAwait(false);
+            var result = await query.OrderBy(e => e.Id).ToPagedListAsync(pageNumber, pageSize).ConfigureAwait(false);
             if(result != null)
             {
                 return result;
@@ -104,6 +107,7 @@ namespace Plank.Net.Data
 
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.DetachAllEntitiesAsync().ConfigureAwait(false);
         }
 
         #endregion

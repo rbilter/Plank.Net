@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Plank.Net.Data
 {
@@ -21,6 +22,23 @@ namespace Plank.Net.Data
         #endregion
 
         #region METHODS
+
+        public async Task DetachAllEntitiesAsync()
+        {
+            var entries = await ChangeTracker
+                .Entries()
+                .Where(e => e.State != EntityState.Detached)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            foreach (var entry in entries)
+            {
+                if (entry.Entity != null)
+                {
+                    entry.State = EntityState.Detached;
+                }
+            }
+        }
 
         public override Task<int> SaveChangesAsync()
         {
